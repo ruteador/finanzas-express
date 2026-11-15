@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Planificador Financiero y Mapa de Fugas</title>
+    <title>Planificador Financiero y Mini-App Finanzas Express</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -16,15 +16,20 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { 50: '#f0fdf4', 500: '#22c55e', 600: '#16a34a', 700: '#15803d' }
+                        brand: { 50: '#f0fdf4', 500: '#22c55e', 600: '#16a34a', 700: '#15803d' },
+                        azulPremium: '#0F3D74',
+                        naranjaAcento: '#F29F05',
+                        celesteActividad: '#9CCCE3',
+                        grafito: '#1A1A1A'
                     }
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; font-size: 16px; }
+        .font-rubik { font-family: 'Rubik', sans-serif; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
@@ -37,15 +42,18 @@
         <!-- NAVEGACIÓN DE PESTAÑAS -->
         <div class="border-b border-slate-800">
             <nav class="flex gap-2 sm:gap-4 overflow-x-auto pb-px" aria-label="Tabs">
-                <button onclick="switchTab('planner')" id="btn-planner" class="tab-btn px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-brand-500 text-brand-500 whitespace-nowrap flex items-center gap-1.5 transition-all">
+                <button onclick="switchTab('planner')" id="btn-planner" class="tab-btn px-3 sm:px-4 py-3 text-sm font-rubik font-semibold border-b-2 border-brand-500 text-brand-500 whitespace-nowrap flex items-center gap-1.5 transition-all cursor-pointer">
                     <i data-lucide="calculator" class="w-4 h-4"></i> Planificador Mensual
                 </button>
-                <button onclick="switchTab('leaks')" id="btn-leaks" class="tab-btn px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all">
+                <button onclick="switchTab('leaks')" id="btn-leaks" class="tab-btn px-3 sm:px-4 py-3 text-sm font-rubik font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all cursor-pointer">
                     <i data-lucide="search" class="w-4 h-4"></i> Mapa de Fugas (Día 7)
-                    <span id="leaks-badge" class="px-1.5 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 rounded-full border border-amber-500/30">0</span>
+                    <span id="leaks-badge" class="px-1.5 py-0.5 text-[11px] bg-amber-500/20 text-amber-400 rounded-full border border-amber-500/30">0</span>
                 </button>
-                <button onclick="switchTab('challenge')" id="btn-challenge" class="tab-btn px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all">
+                <button onclick="switchTab('challenge')" id="btn-challenge" class="tab-btn px-3 sm:px-4 py-3 text-sm font-rubik font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all cursor-pointer">
                     <i data-lucide="calendar" class="w-4 h-4"></i> Reto 7 Días (Día 1)
+                </button>
+                <button onclick="switchTab('dia2')" id="btn-dia2" class="tab-btn px-3 sm:px-4 py-3 text-sm font-rubik font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap flex items-center gap-1.5 transition-all cursor-pointer">
+                    <i data-lucide="clock" class="w-4 h-4"></i> Reto 7 Días (Día 2)
                 </button>
             </nav>
         </div>
@@ -53,24 +61,24 @@
         <!-- PESTAÑA 1: PLANIFICADOR MENSUAL -->
         <div id="content-planner" class="tab-content space-y-6">
             <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
-                <span class="text-xs font-bold text-brand-400 uppercase tracking-wider">Mes Corriente</span>
-                <h3 class="text-sm font-semibold text-white">Centro de Comando Financiero</h3>
-                <p class="text-xs text-slate-400">Registra tus ingresos y gastos fijos u obligaciones. Puedes agregar, editar o borrar cualquier ítem libremente.</p>
+                <span class="text-xs font-rubik font-bold text-brand-400 uppercase tracking-wider">Mes Corriente</span>
+                <h3 class="text-lg font-rubik font-bold text-white">Centro de Comando Financiero</h3>
+                <p class="text-base text-slate-300">Registra tus ingresos y gastos fijos u obligaciones. Puedes agregar, editar o borrar cualquier ítem libremente.</p>
             </div>
 
             <!-- Resumen superior -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
-                    <span class="text-xs text-slate-400 block uppercase">Ingresos Totales</span>
-                    <span id="plan-total-income" class="text-xl font-bold text-emerald-400">$0</span>
+                    <span class="text-xs font-rubik uppercase text-slate-400 block">Ingresos Totales</span>
+                    <span id="plan-total-income" class="text-2xl font-rubik font-bold text-emerald-400">$0</span>
                 </div>
                 <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
-                    <span class="text-xs text-slate-400 block uppercase">Gastos Fijos Totales</span>
-                    <span id="plan-total-expense" class="text-xl font-bold text-rose-400">$0</span>
+                    <span class="text-xs font-rubik uppercase text-slate-400 block">Gastos Fijos Totales</span>
+                    <span id="plan-total-expense" class="text-2xl font-rubik font-bold text-rose-400">$0</span>
                 </div>
                 <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800">
-                    <span class="text-xs text-slate-400 block uppercase">Dinero Libre Disponible</span>
-                    <span id="plan-net-balance" class="text-xl font-bold text-white">$0</span>
+                    <span class="text-xs font-rubik uppercase text-slate-400 block">Dinero Libre Disponible</span>
+                    <span id="plan-net-balance" class="text-2xl font-rubik font-bold text-white">$0</span>
                 </div>
             </div>
 
@@ -79,10 +87,10 @@
                 <!-- Ingresos -->
                 <div class="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-sm sm:text-base font-semibold text-white flex items-center gap-2">
+                        <h3 class="text-lg font-rubik font-bold text-white flex items-center gap-2">
                             <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-400"></i> Ingresos
                         </h3>
-                        <button onclick="openModal('income')" class="px-3 py-1.5 text-xs font-medium bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/30 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
+                        <button onclick="openModal('income')" class="px-3 py-1.5 text-xs font-rubik font-semibold bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/30 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
                             <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar
                         </button>
                     </div>
@@ -91,10 +99,10 @@
                 <!-- Gastos Fijos -->
                 <div class="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-sm sm:text-base font-semibold text-white flex items-center gap-2">
+                        <h3 class="text-lg font-rubik font-bold text-white flex items-center gap-2">
                             <i data-lucide="minus-circle" class="w-5 h-5 text-rose-400"></i> Gastos Fijos y Obligaciones
                         </h3>
-                        <button onclick="openModal('expense')" class="px-3 py-1.5 text-xs font-medium bg-rose-500/10 text-rose-400 hover:bg-rose-500/25 border border-rose-500/30 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
+                        <button onclick="openModal('expense')" class="px-3 py-1.5 text-xs font-rubik font-semibold bg-rose-500/10 text-rose-400 hover:bg-rose-500/25 border border-rose-500/30 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
                             <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar
                         </button>
                     </div>
@@ -104,7 +112,7 @@
 
             <!-- Gráfico del Planificador -->
             <div class="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-                <h3 class="text-sm sm:text-base font-semibold text-white">Análisis Visual del Mes</h3>
+                <h3 class="text-lg font-rubik font-bold text-white">Análisis Visual del Mes</h3>
                 <div class="w-full max-w-sm mx-auto h-56">
                     <canvas id="plannerChart"></canvas>
                 </div>
@@ -115,9 +123,9 @@
         <div id="content-leaks" class="tab-content hidden space-y-6">
             <div class="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
                 <div class="border-b border-slate-800 pb-4 space-y-2">
-                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Material de Pago — Día 7</span>
-                    <h2 class="text-lg font-semibold text-white">Mapa de Fugas: Descubre a dónde se te escapa el dinero</h2>
-                    <p class="text-xs sm:text-sm text-slate-400">
+                    <span class="text-xs font-rubik font-bold text-amber-400 uppercase tracking-wider">Material de Pago — Día 7</span>
+                    <h2 class="text-2xl font-rubik font-bold text-white">Mapa de Fugas: Descubre a dónde se te escapa el dinero</h2>
+                    <p class="text-base text-slate-300">
                         Para cada categoría, usa tu último mes calendario completo (el que ya terminó). Una estimación honesta alcanza para ver el total que hoy no ves.
                     </p>
                 </div>
@@ -125,20 +133,20 @@
                 <!-- Totales y Proyección -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="p-4 rounded-xl bg-slate-950 border border-amber-500/30 flex flex-col justify-center">
-                        <span class="text-xs text-slate-400 uppercase">Total Mensual en Fugas</span>
-                        <span id="mapa-total-mensual" class="text-2xl font-bold text-amber-400 mt-1">$0</span>
+                        <span class="text-xs font-rubik uppercase text-slate-400">Total Mensual en Fugas</span>
+                        <span id="mapa-total-mensual" class="text-2xl font-rubik font-bold text-amber-400 mt-1">$0</span>
                     </div>
                     <div class="p-4 rounded-xl bg-slate-950 border border-rose-500/30 flex flex-col justify-center">
-                        <span class="text-xs text-slate-400 uppercase">Proyección a 12 Meses (Si nada cambia)</span>
-                        <span id="mapa-proyeccion-anual" class="text-2xl font-bold text-rose-400 mt-1">$0</span>
+                        <span class="text-xs font-rubik uppercase text-slate-400">Proyección a 12 Meses (Si nada cambia)</span>
+                        <span id="mapa-proyeccion-anual" class="text-2xl font-rubik font-bold text-rose-400 mt-1">$0</span>
                     </div>
                 </div>
 
                 <!-- Top 3 Automático -->
                 <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-                    <h4 class="text-xs font-bold text-brand-400 uppercase tracking-wider">Tus 3 Fugas Más Grandes — Por dónde empezar primero</h4>
+                    <h4 class="text-xs font-rubik font-bold text-brand-400 uppercase tracking-wider">Tus 3 Fugas Más Grandes — Por dónde empezar primero</h4>
                     <div id="top-3-fugas" class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-                        <p class="text-slate-500 text-xs col-span-3">Completa los montos abajo para calcular tu Top 3 automáticamente.</p>
+                        <p class="text-slate-400 text-base col-span-3">Completa los montos abajo para calcular tu Top 3 automáticamente.</p>
                     </div>
                 </div>
 
@@ -147,7 +155,7 @@
 
                 <!-- Gráfico de Barras del Mapa -->
                 <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Tus Fugas, de un Vistazo</h4>
+                    <h4 class="text-xs font-rubik font-bold text-slate-300 uppercase tracking-wider">Tus Fugas, de un Vistazo</h4>
                     <div class="w-full h-64">
                         <canvas id="leaksChart"></canvas>
                     </div>
@@ -159,11 +167,11 @@
         <div id="content-challenge" class="tab-content hidden space-y-6">
             <div class="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
                 <div class="border-b border-slate-800 pb-4">
-                    <span class="text-xs font-bold text-brand-400 uppercase tracking-wider">Material Gratuito — Día 1</span>
-                    <h2 class="text-base font-semibold text-white flex items-center gap-2 mt-1">
-                        <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i> Reto Financiero de 7 Días
+                    <span class="text-xs font-rubik font-bold text-brand-400 uppercase tracking-wider">Material Gratuito — Día 1</span>
+                    <h2 class="text-2xl font-rubik font-bold text-white flex items-center gap-2 mt-1">
+                        <i data-lucide="trophy" class="w-6 h-6 text-amber-400"></i> Reto Financiero de 7 Días
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">El espejo de tus finanzas: identifica tus autoengaños antes de reestructurar el dinero.</p>
+                    <p class="text-base text-slate-300 mt-1">El espejo de tus finanzas: identifica tus autoengaños antes de reestructurar el dinero.</p>
                 </div>
 
                 <div class="w-full bg-slate-950 rounded-full h-3 p-0.5 border border-slate-800">
@@ -171,76 +179,142 @@
                 </div>
 
                 <div class="space-y-4 pt-2">
-                    <div id="checklist-form" class="space-y-2">
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> A fin de mes no sé exactamente en qué se me fue el dinero.
+                    <div id="checklist-form" class="space-y-3">
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> A fin de mes no sé exactamente en qué se me fue el dinero.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Digo "...este mes me ordeno..." y a los pocos días ya volví a improvisar.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Digo "...este mes me ordeno..." y a los pocos días ya volví a improvisar.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Miro el saldo de mi billetera virtual o app bancaria como si fuera una sorpresa, aunque yo hice todos los gastos.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Miro el saldo de mi billetera virtual o app bancaria como si fuera una sorpresa, aunque yo hice todos los gastos.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Pago el mínimo de la tarjeta y después me convenzo de que "...el mes que viene lo arreglo..."
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Pago el mínimo de la tarjeta y después me convenzo de que "...el mes que viene lo arreglo..."
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Compro cosas baratas porque "...total no es tanto dinero...", pero después no entiendo por qué no llego a fin de mes.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Compro cosas baratas porque "...total no es tanto dinero...", pero después no entiendo por qué no llego a fin de mes.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Me prometo ahorrar cuando cobre, pero termino intentando ahorrar lo que sobra.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Me prometo ahorrar cuando cobre, pero termino intentando ahorrar lo que sobra.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Evito revisar los movimientos de la cuenta porque prefiero no saber.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Evito revisar los movimientos de la cuenta porque prefiero no saber.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Uso cuotas para sentir que algo no pesa tanto, aunque sé que igual lo voy a pagar.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Uso cuotas para sentir que algo no pesa tanto, aunque sé que igual lo voy a pagar.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Presto dinero aunque ya sé que probablemente tenga que reclamarla.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Presto dinero aunque ya sé que probablemente tenga que reclamarla.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Gasto en salidas, regalos o compromisos para no quedar mal, aunque por dentro esté calculando cómo llegar.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Gasto en salidas, regalos o compromisos para no quedar mal, aunque por dentro esté calculando cómo llegar.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Me digo que mi problema es el sueldo, pero nunca revisé con honestidad mis gastos de los últimos 30 días.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Me digo que mi problema es el sueldo, pero nunca revisé con honestidad mis gastos de los últimos 30 días.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Sé qué gasto debería cortar, pero lo sigo justificando con frases como "...me lo merezco..."
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Sé qué gasto debería cortar, pero lo sigo justificando con frases como "...me lo merezco..."
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Me da vergüenza hablar de dinero, entonces termino aceptando planes, gastos o pedidos que no puedo sostener.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Me da vergüenza hablar de dinero, entonces termino aceptando planes, gastos o pedidos que no puedo sostener.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Cuando cobro siento alivio, pero a los pocos días ya estoy haciendo cuentas otra vez.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Cuando cobro siento alivio, pero a los pocos días ya estoy haciendo cuentas otra vez.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Tengo suscripciones, débitos o gastos automáticos que hace meses no reviso.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Tengo suscripciones, débitos o gastos automáticos que hace meses no reviso.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Apuesto dinero online o en lugares físicos, aunque sea de vez en cuando, y no lo registro como gasto.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Apuesto dinero online o en lugares físicos, aunque sea de vez en cuando, y no lo registro como gasto.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Me enojo con la inflación, el país o el contexto, pero no tengo un sistema mínimo para manejar mi dinero.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Me enojo con la inflación, el país o el contexto, pero no tengo un sistema mínimo para manejar mi dinero.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Siento que "...no gasto tanto...", aunque nunca lo confirmé con números reales.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Siento que "...no gasto tanto...", aunque nunca lo confirmé con números reales.
                         </label>
-                        <label class="flex items-start gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-slate-300 cursor-pointer hover:border-slate-700">
-                            <input type="checkbox" value="1" class="mt-0.5 w-4 h-4 accent-brand-500 rounded shrink-0"> Cuando aparece un gasto inesperado, no tengo margen: tengo que postergar algo, usar tarjeta o pedir ayuda.
+                        <label class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-base text-slate-200 cursor-pointer hover:border-slate-700">
+                            <input type="checkbox" value="1" class="mt-1 w-4 h-4 accent-brand-500 rounded shrink-0"> Cuando aparece un gasto inesperado, no tengo margen: tengo que postergar algo, usar tarjeta o pedir ayuda.
                         </label>
 
-                        <button onclick="calcularResultadoDía1()" class="w-full mt-4 bg-brand-600 hover:bg-brand-500 text-slate-950 font-bold py-3 px-4 rounded-xl transition-colors text-sm cursor-pointer">
+                        <button onclick="calcularResultadoDía1()" class="w-full mt-4 bg-brand-600 hover:bg-brand-500 text-slate-950 font-rubik font-bold py-3.5 px-4 rounded-xl transition-colors text-base cursor-pointer">
                             Ver mi resultado del Día 1
                         </button>
                     </div>
 
                     <div id="result-dia1" class="hidden p-4 sm:p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-                        <h4 id="profile-title" class="text-base font-semibold text-brand-400"></h4>
-                        <p id="profile-desc" class="text-xs sm:text-sm text-slate-300"></p>
-                        <p id="profile-phrase" class="text-xs sm:text-sm italic font-medium text-slate-200 border-l-2 border-brand-500 pl-3 py-1"></p>
+                        <h4 id="profile-title" class="text-lg font-rubik font-bold text-brand-400"></h4>
+                        <p id="profile-desc" class="text-base text-slate-300"></p>
+                        <p id="profile-phrase" class="text-base italic font-medium text-slate-200 border-l-2 border-brand-500 pl-3 py-1"></p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA 4: RETO DÍA 2 (EL MÉTODO DE LOS 3 MOMENTOS) -->
+        <div id="content-dia2" class="tab-content hidden space-y-6">
+            <div class="p-4 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6 max-w-2xl mx-auto text-slate-100">
+                
+                <!-- Encabezado oficial -->
+                <div class="bg-azulPremium text-white p-5 rounded-xl">
+                    <span class="font-rubik text-naranjaAcento font-bold text-sm uppercase tracking-wider block mb-1">Día 2 — Actividad Práctica</span>
+                    <h2 class="font-rubik text-2xl font-bold m-0 leading-snug">El Método de los 3 Momentos</h2>
+                </div>
+
+                <!-- Copy previo obligatorio de encuadre -->
+                <div class="bg-slate-950 border-l-4 border-naranjaAcento p-4 rounded-r-xl text-base leading-relaxed space-y-2 text-slate-300">
+                    <p class="text-white font-semibold">No es para castigarte. Es para dejar de adivinar.</p>
+                    <p>Durante los próximos <strong>7 días</strong> (y hasta 30 si decides continuar el hábito), registra únicamente los gastos que impliquen una decisión tuya: café, transporte, delivery, antojos o compras por impulso. No anotes servicios automáticos ni alquiler.</p>
+                    <p>Hazlo en <strong>3 momentos cortos</strong> (Mañana, Mediodía/Tarde y Noche) para no llegar agotado al final del día intentando recordar en qué se fue el dinero.</p>
+                </div>
+
+                <!-- Área Interactiva (Celeste Actividad) -->
+                <div class="bg-celesteActividad text-grafito p-5 rounded-xl space-y-4">
+                    <h3 class="font-rubik font-bold text-xl text-azulPremium m-0">Registrar movimiento</h3>
+
+                    <div class="space-y-1">
+                        <label for="selector-dia-reto" class="block font-semibold text-sm text-grafito">Día de registro (1 al 30)</label>
+                        <select id="selector-dia-reto" class="w-full p-3 border border-slate-300 rounded-lg font-sans text-base bg-white text-grafito focus:outline-none focus:ring-2 focus:ring-azulPremium"></select>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="selector-momento" class="block font-semibold text-sm text-grafito">Momento del día</label>
+                        <select id="selector-momento" class="w-full p-3 border border-slate-300 rounded-lg font-sans text-base bg-white text-grafito focus:outline-none focus:ring-2 focus:ring-azulPremium">
+                            <option value="Mañana">Momento 1 — Mañana</option>
+                            <option value="Mediodía / Tarde">Momento 2 — Mediodía o Tarde</option>
+                            <option value="Noche">Momento 3 — Noche</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="input-concepto" class="block font-semibold text-sm text-grafito">¿En qué gastaste el dinero?</label>
+                        <input type="text" id="input-concepto" placeholder="Ej. Café, transporte, comida rápida..." class="w-full p-3 border border-slate-300 rounded-lg font-sans text-base bg-white text-grafito focus:outline-none focus:ring-2 focus:ring-azulPremium">
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="input-monto" class="block font-semibold text-sm text-grafito">Monto ($)</label>
+                        <input type="number" id="input-monto" inputmode="decimal" placeholder="0" min="0" step="any" class="w-full p-3 border border-slate-300 rounded-lg font-sans text-base bg-white text-grafito focus:outline-none focus:ring-2 focus:ring-azulPremium">
+                    </div>
+
+                    <button type="button" onclick="agregarGastoDia2()" class="w-full bg-azulPremium text-white font-rubik font-semibold text-base py-3.5 rounded-lg cursor-pointer hover:opacity-90 transition-opacity">Guardar gasto</button>
+                </div>
+
+                <!-- Panel de Totales -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-grafito text-white p-4 rounded-xl text-center border border-slate-800">
+                        <span id="etiqueta-total-dia" class="block text-xs text-slate-400 mb-1">Total Día 1</span>
+                        <strong id="valor-total-dia" class="font-rubik text-xl text-naranjaAcento">$0</strong>
+                    </div>
+                    <div class="bg-grafito text-white p-4 rounded-xl text-center border border-slate-800">
+                        <span class="block text-xs text-slate-400 mb-1">Acumulado Total (30 días)</span>
+                        <strong id="valor-total-general" class="font-rubik text-xl text-naranjaAcento">$0</strong>
+                    </div>
+                </div>
+
+                <!-- Historial del día seleccionado -->
+                <ul id="lista-gastos-dia2" class="space-y-2"></ul>
+
             </div>
         </div>
 
@@ -250,36 +324,30 @@
     <div id="modal-form" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-5 space-y-4 shadow-2xl">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 id="modal-title" class="text-base font-semibold text-white">Concepto</h3>
+                <h3 id="modal-title" class="text-lg font-rubik font-bold text-white">Concepto</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Nombre del concepto</label>
-                    <input type="text" id="item-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-500" placeholder="Ej: Sueldo, Alquiler, Luz...">
+                    <label class="block text-xs font-rubik font-medium text-slate-400 mb-1">Nombre del concepto</label>
+                    <input type="text" id="item-name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-base text-white focus:outline-none focus:border-brand-500" placeholder="Ej: Sueldo, Alquiler, Luz...">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Monto ($)</label>
-                    <input type="number" id="item-amount" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-500" placeholder="0">
+                    <label class="block text-xs font-rubik font-medium text-slate-400 mb-1">Monto ($)</label>
+                    <input type="number" id="item-amount" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-base text-white focus:outline-none focus:border-brand-500" placeholder="0">
                 </div>
             </div>
             <div class="flex justify-end gap-3 pt-2">
-                <button onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-white cursor-pointer">Cancelar</button>
-                <button onclick="saveItem()" class="px-4 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-500 text-slate-950 rounded-xl cursor-pointer">Guardar</button>
+                <button onclick="closeModal()" class="px-4 py-2 text-base font-medium text-slate-400 hover:text-white cursor-pointer">Cancelar</button>
+                <button onclick="saveItem()" class="px-4 py-2 text-base font-rubik font-bold bg-brand-600 hover:bg-brand-500 text-slate-950 rounded-xl cursor-pointer">Guardar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- ESTADO DE DATOS ---
-        let incomes = JSON.parse(localStorage.getItem('21dp_incomes')) || [
-            { id: 1, name: 'Sueldo Principal', amount: 1500 }
-        ];
-        let expenses = JSON.parse(localStorage.getItem('21dp_expenses')) || [
-            { id: 1, name: 'Alquiler / Hipoteca', amount: 500 },
-            { id: 2, name: 'Supermercado', amount: 300 },
-            { id: 3, name: 'Servicios (Luz, Agua, Gas)', amount: 120 }
-        ];
+        // --- ESTADO DE DATOS (PLANIFICADOR Y MAPA DE FUGAS) ---
+        let incomes = JSON.parse(localStorage.getItem('21dp_incomes')) || [];
+        let expenses = JSON.parse(localStorage.getItem('21dp_expenses')) || [];
         
         const defaultLeaks = [
             { id: 'streaming', name: 'Streaming y apps duplicadas', desc: 'Netflix, Spotify, apps que pagas y no usas o tienes repetidas', amount: 0 },
@@ -300,16 +368,18 @@
         let chartPlanner = null;
         let chartLeaks = null;
 
-        // --- NAVEGACIÓN ENTRE PESTAÑAS (CORREGIDA Y VERIFICADA) ---
+        // --- ESTADO DE DATOS (DÍA 2) ---
+        const STORAGE_KEY_DIA2 = '21dp_registro_gastos_v1';
+        let registrosGastos = JSON.parse(localStorage.getItem(STORAGE_KEY_DIA2)) || [];
+
+        // --- NAVEGACIÓN ENTRE PESTAÑAS ---
         function switchTab(tabId) {
-            // Ocultar todo
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('border-brand-500', 'text-brand-500');
                 btn.classList.add('border-transparent', 'text-slate-400');
             });
 
-            // Mostrar la seleccionada
             document.getElementById('content-' + tabId).classList.remove('hidden');
             const activeBtn = document.getElementById('btn-' + tabId);
             if (activeBtn) {
@@ -317,9 +387,9 @@
                 activeBtn.classList.add('border-brand-500', 'text-brand-500');
             }
 
-            // Renderizar gráficos correspondientes si aplica
             if (tabId === 'planner') renderPlannerChart();
             if (tabId === 'leaks') renderLeaksChart();
+            if (tabId === 'dia2') renderizarDia2();
             
             lucide.createIcons();
         }
@@ -387,28 +457,28 @@
             const incList = document.getElementById('income-list');
             const expList = document.getElementById('expense-list');
             
-            incList.innerHTML = incomes.length === 0 ? `<p class="text-xs text-slate-500 text-center py-4">No hay ingresos cargados.</p>` : '';
+            incList.innerHTML = incomes.length === 0 ? `<p class="text-base text-slate-500 text-center py-4">No hay ingresos cargados.</p>` : '';
             incomes.forEach(item => {
                 incList.innerHTML += `
-                    <div class="flex justify-between items-center p-3 rounded-xl bg-slate-950 border border-slate-800">
-                        <span class="text-xs sm:text-sm text-slate-200">${item.name}</span>
-                        <div class="flex items-center gap-2 sm:gap-3">
-                            <span class="text-xs sm:text-sm font-semibold text-emerald-400">$${item.amount.toLocaleString('es-AR')}</span>
-                            <button onclick="openModal('income', ${item.id})" class="text-slate-400 hover:text-white cursor-pointer"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
-                            <button onclick="deleteItem('income', ${item.id})" class="text-slate-400 hover:text-rose-400 cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                    <div class="flex justify-between items-center p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                        <span class="text-base text-slate-200">${item.name}</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-base font-rubik font-semibold text-emerald-400">$${item.amount.toLocaleString('es-AR')}</span>
+                            <button onclick="openModal('income', ${item.id})" class="text-slate-400 hover:text-white cursor-pointer"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                            <button onclick="deleteItem('income', ${item.id})" class="text-slate-400 hover:text-rose-400 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </div>`;
             });
 
-            expList.innerHTML = expenses.length === 0 ? `<p class="text-xs text-slate-500 text-center py-4">No hay gastos cargados.</p>` : '';
+            expList.innerHTML = expenses.length === 0 ? `<p class="text-base text-slate-500 text-center py-4">No hay gastos cargados.</p>` : '';
             expenses.forEach(item => {
                 expList.innerHTML += `
-                    <div class="flex justify-between items-center p-3 rounded-xl bg-slate-950 border border-slate-800">
-                        <span class="text-xs sm:text-sm text-slate-200">${item.name}</span>
-                        <div class="flex items-center gap-2 sm:gap-3">
-                            <span class="text-xs sm:text-sm font-semibold text-rose-400">$${item.amount.toLocaleString('es-AR')}</span>
-                            <button onclick="openModal('expense', ${item.id})" class="text-slate-400 hover:text-white cursor-pointer"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
-                            <button onclick="deleteItem('expense', ${item.id})" class="text-slate-400 hover:text-rose-400 cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                    <div class="flex justify-between items-center p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                        <span class="text-base text-slate-200">${item.name}</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-base font-rubik font-semibold text-rose-400">$${item.amount.toLocaleString('es-AR')}</span>
+                            <button onclick="openModal('expense', ${item.id})" class="text-slate-400 hover:text-white cursor-pointer"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                            <button onclick="deleteItem('expense', ${item.id})" class="text-slate-400 hover:text-rose-400 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </div>`;
             });
@@ -438,12 +508,12 @@
                 data: {
                     labels: ['Ingresos', 'Gastos Fijos'],
                     datasets: [{
-                        data: [totalInc, totalExp],
+                        data: [totalInc || 1, totalExp],
                         backgroundColor: ['#22c55e', '#f43f5e'],
                         borderWidth: 0
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 14 } } } } }
             });
         }
 
@@ -462,16 +532,16 @@
             container.innerHTML = '';
             leaksData.forEach(item => {
                 container.innerHTML += `
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-slate-950 border border-slate-800">
                         <div class="flex-1">
-                            <span class="text-sm font-medium text-white block">${item.name}</span>
-                            <span class="text-xs text-slate-400">${item.desc}</span>
+                            <span class="text-base font-rubik font-medium text-white block">${item.name}</span>
+                            <span class="text-sm text-slate-300">${item.desc}</span>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <span class="text-slate-400 text-sm">$</span>
+                            <span class="text-slate-400 text-base">$</span>
                             <input type="number" min="0" value="${item.amount > 0 ? item.amount : ''}" placeholder="0"
                                 oninput="updateLeakAmount('${item.id}', this.value)"
-                                class="w-32 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-right text-amber-400 font-semibold focus:outline-none focus:border-amber-500">
+                                class="w-36 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-base text-right text-amber-400 font-rubik font-semibold focus:outline-none focus:border-amber-500">
                         </div>
                     </div>`;
             });
@@ -489,15 +559,15 @@
             const topContainer = document.getElementById('top-3-fugas');
             
             if (sorted.length === 0) {
-                topContainer.innerHTML = `<p class="text-slate-500 text-xs col-span-3">Completa los montos abajo para calcular tu Top 3 automáticamente.</p>`;
+                topContainer.innerHTML = `<p class="text-slate-400 text-base col-span-3">Completa los montos abajo para calcular tu Top 3 automáticamente.</p>`;
             } else {
                 topContainer.innerHTML = '';
                 sorted.forEach((item, index) => {
                     topContainer.innerHTML += `
-                        <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
-                            <span class="text-[10px] font-bold text-amber-400 uppercase">${index + 1}° Lugar</span>
-                            <p class="text-xs font-medium text-white truncate mt-0.5">${item.name}</p>
-                            <p class="text-sm font-bold text-rose-400 mt-1">$${item.amount.toLocaleString('es-AR')}/mes</p>
+                        <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800">
+                            <span class="text-xs font-rubik font-bold text-amber-400 uppercase">${index + 1}° Lugar</span>
+                            <p class="text-sm font-rubik font-medium text-white truncate mt-0.5">${item.name}</p>
+                            <p class="text-base font-rubik font-bold text-rose-400 mt-1">$${item.amount.toLocaleString('es-AR')}/mes</p>
                         </div>`;
                 });
             }
@@ -527,8 +597,8 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
-                        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } }
+                        y: { ticks: { color: '#94a3b8', font: { size: 12 } }, grid: { color: '#1e293b' } },
+                        x: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
                     },
                     plugins: { legend: { display: false } }
                 }
@@ -560,11 +630,118 @@
             document.getElementById('result-dia1').classList.remove('hidden');
         }
 
+        // --- DÍA 2 (EL MÉTODO DE LOS 3 MOMENTOS) ---
+        function inicializarDia2() {
+            const selectorDia = document.getElementById('selector-dia-reto');
+            if (!selectorDia) return;
+
+            selectorDia.innerHTML = '';
+            for (let i = 1; i <= 30; i++) {
+                const opcion = document.createElement('option');
+                opcion.value = i;
+                opcion.textContent = `Día ${i}`;
+                selectorDia.appendChild(opcion);
+            }
+
+            selectorDia.addEventListener('change', renderizarDia2);
+        }
+
+        function agregarGastoDia2() {
+            const dia = parseInt(document.getElementById('selector-dia-reto').value, 10);
+            const momento = document.getElementById('selector-momento').value;
+            const conceptoInput = document.getElementById('input-concepto');
+            const montoInput = document.getElementById('input-monto');
+
+            const concepto = conceptoInput.value.trim();
+            const monto = parseFloat(montoInput.value);
+
+            if (!concepto || isNaN(monto) || monto <= 0) {
+                alert('Por favor, ingresa una descripción y un monto mayor a cero.');
+                return;
+            }
+
+            const nuevoRegistro = {
+                id: Date.now(),
+                dia: dia,
+                momento: momento,
+                concepto: concepto,
+                monto: monto
+            };
+
+            registrosGastos.push(nuevoRegistro);
+            localStorage.setItem(STORAGE_KEY_DIA2, JSON.stringify(registrosGastos));
+
+            conceptoInput.value = '';
+            montoInput.value = '';
+
+            renderizarDia2();
+        }
+
+        function eliminarGastoDia2(id) {
+            registrosGastos = registrosGastos.filter(item => item.id !== id);
+            localStorage.setItem(STORAGE_KEY_DIA2, JSON.stringify(registrosGastos));
+            renderizarDia2();
+        }
+
+        function renderizarDia2() {
+            const selectorDia = document.getElementById('selector-dia-reto');
+            if (!selectorDia) return;
+
+            const diaSeleccionado = parseInt(selectorDia.value, 10) || 1;
+            const listaEl = document.getElementById('lista-gastos-dia2');
+            const etiquetaDiaEl = document.getElementById('etiqueta-total-dia');
+            const totalDiaEl = document.getElementById('valor-total-dia');
+            const totalGeneralEl = document.getElementById('valor-total-general');
+
+            if (etiquetaDiaEl) etiquetaDiaEl.textContent = `Total Día ${diaSeleccionado}`;
+
+            let sumaDia = 0;
+            let sumaGeneral = 0;
+
+            registrosGastos.forEach(item => {
+                sumaGeneral += item.monto;
+                if (item.dia === diaSeleccionado) {
+                    sumaDia += item.monto;
+                }
+            });
+
+            if (totalDiaEl) totalDiaEl.textContent = `$${sumaDia.toLocaleString('es-AR')}`;
+            if (totalGeneralEl) totalGeneralEl.textContent = `$${sumaGeneral.toLocaleString('es-AR')}`;
+
+            const gastosDelDia = registrosGastos.filter(item => item.dia === diaSeleccionado);
+            if (listaEl) {
+                listaEl.innerHTML = '';
+
+                if (gastosDelDia.length === 0) {
+                    listaEl.innerHTML = '<li class="text-center text-slate-400 py-4 text-sm bg-slate-950 rounded-xl border border-slate-800">No hay gastos registrados en este día.</li>';
+                    return;
+                }
+
+                gastosDelDia.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center bg-slate-950 border border-slate-800 p-3.5 rounded-xl';
+                    li.innerHTML = `
+                        <div>
+                            <strong class="block text-base font-semibold text-white">${item.concepto}</strong>
+                            <small class="text-slate-400 text-xs">${item.momento}</small>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="font-rubik font-semibold text-base text-azulPremium text-emerald-400">$${item.monto.toLocaleString('es-AR')}</span>
+                            <button type="button" onclick="eliminarGastoDia2(${item.id})" class="text-rose-400 hover:text-rose-300 text-base font-bold cursor-pointer px-2 py-1" title="Eliminar">✕</button>
+                        </div>
+                    `;
+                    listaEl.appendChild(li);
+                });
+            }
+        }
+
         // --- INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
             updatePlannerData();
             renderLeaksList();
             renderLeaksChart();
+            inicializarDia2();
+            renderizarDia2();
             lucide.createIcons();
         });
     </script>
