@@ -3,277 +3,862 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Planificador Financiero y Reto 7 Días - Finanzas Express</title>
-    <!-- Tailwind CSS -->
+    <title>Finanzas Express — Reto de 7 Días</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 0; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Rubik', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #1A1A1A; color: #F8FAFC; margin: 0; padding: 0; font-size: 16px; }
+        h1, h2, h3, h4 { font-family: 'Rubik', sans-serif; }
+        .btn-primary { background-color: #0F3D74; color: #FFFFFF; }
+        .btn-primary:hover { background-color: #0b2e59; }
+        .btn-accent { background-color: #F29F05; color: #1A1A1A; }
+        .btn-accent:hover { background-color: #d98d04; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Header Principal -->
-    <header style="background-color: #0F3D74;" class="border-b border-blue-900 px-4 py-3 sticky top-0 z-50 shadow-md">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div style="background-color: #F29F05;" class="text-slate-950 p-2 rounded-xl font-extrabold text-lg shadow">FE</div>
+    <!-- Header -->
+    <header style="background-color: #0F3D74;" class="border-b border-blue-900 px-4 py-3.5 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-lg mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div style="background-color: #F29F05; color: #1A1A1A;" class="px-2.5 py-1.5 rounded-xl font-extrabold text-lg shadow">FE</div>
                 <div>
-                    <h1 class="font-bold text-base leading-tight tracking-wide text-white">Finanzas Express</h1>
-                    <p class="text-xs text-blue-100 font-medium opacity-90">Reto de 7 Días • Entrada</p>
+                    <h1 class="font-bold text-lg leading-tight text-white">Finanzas Express</h1>
+                    <p class="text-xs text-[#9CCCE3] font-medium">Reto de 7 Días • Ruta de Diagnóstico</p>
                 </div>
             </div>
-            <button onclick="volverAlDashboard()" id="btnHome" style="display: none;" class="text-xs bg-black/40 hover:bg-black/60 text-white px-3 py-1.5 rounded-lg font-medium transition cursor-pointer">
-                ⬅ Menú
+            <button type="button" onclick="irVista('dashboard')" id="btnMenu" style="display:none;" class="text-sm bg-black/40 hover:bg-black/60 text-white px-3.5 py-2 rounded-xl font-semibold cursor-pointer border border-white/15">
+                ⬅ Inicio
             </button>
         </div>
     </header>
 
-    <!-- Contenedor Principal / Vistas -->
-    <main class="max-w-md w-full mx-auto p-4 mb-16 flex-grow">
+    <!-- Main Container -->
+    <main class="max-w-lg w-full mx-auto p-4 pb-24 flex-grow">
 
-        <!-- ================= VISTA: DASHBOARD / INICIO ================= -->
-        <div id="view-dashboard" class="space-y-6">
-            <div style="background: linear-gradient(to bottom right, #0F3D74, #0b2e59);" class="p-5 rounded-2xl shadow-xl border border-blue-400/30">
-                <span style="color: #F29F05; background-color: rgba(242, 159, 5, 0.1);" class="text-xs font-bold uppercase px-2.5 py-1 rounded-full border border-amber-500/20">Tu Ruta de Diagnóstico</span>
-                <h2 class="font-extrabold text-2xl mt-3 text-white">Domina tu realidad financiera en 7 pasos</h2>
-                <p class="text-sm text-blue-50 mt-2 leading-relaxed opacity-95">Desarma los autoengaños, detecta fugas invisibles y diagnostica tu tarjeta principal sin rodeos ni planillas complejas.</p>
+        <!-- ==================== DASHBOARD / INICIO ==================== -->
+        <section id="view-dashboard" class="space-y-6">
+            <div style="background: linear-gradient(135deg, #0F3D74 0%, #09264a 100%);" class="p-6 rounded-2xl shadow-xl border border-[#9CCCE3]/30">
+                <span style="color: #F29F05; background-color: rgba(242, 159, 5, 0.15);" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-[#F29F05]/30">Tu Hoja de Ruta</span>
+                <h2 class="font-extrabold text-2xl mt-3 text-white leading-snug">7 días para ver lo que hoy no estás viendo</h2>
+                <p class="text-base text-blue-100 mt-2 leading-relaxed">Avanza paso a paso. Cada día desbloquea una herramienta concreta para ordenar tu dinero sin teorías eternas.</p>
+                <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center text-sm">
+                    <span class="text-[#9CCCE3]">Progreso del reto:</span>
+                    <span id="progreso-texto" class="font-bold text-[#F29F05]">0 de 7 completados</span>
+                </div>
+            </div>
+
+            <div class="space-y-3" id="menu-dias">
+                <!-- Tarjetas generadas dinámicamente para asegurar respuesta al clic -->
+            </div>
+        </section>
+
+        <!-- ==================== DÍA 1: CHECKLIST + AUDIO ==================== -->
+        <section id="view-dia1" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 1 • Diagnóstico Conductual</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">¿Cuántos Autoengaños Tienes?</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">No hace falta que te castigues. Tampoco hace falta que te mientas. Marca cada frase que sea cierta para ti hoy.</p>
+            </div>
+
+            <!-- Bloque de Audio de Bienvenida (Dia1B) -->
+            <div class="bg-[#0F3D74]/40 border border-[#9CCCE3]/40 p-4 rounded-2xl space-y-2.5">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">🎧</span>
+                    <div>
+                        <h3 class="font-bold text-base text-white">Audio de Bienvenida — Día 1</h3>
+                        <p class="text-xs text-[#9CCCE3]">Escucha esto antes de marcar el checklist (2 min)</p>
+                    </div>
+                </div>
+                <audio controls class="w-full h-10 rounded-lg" preload="none">
+                    <!-- Reemplaza el src con el enlace directo público de tu MP3 (Dia1B_Audio_Bienvenida_LATAM.mp3) -->
+                    <source src="Dia1B_Audio_Bienvenida_LATAM.mp3" type="audio/mpeg">
+                    Tu navegador no soporta el reproductor de audio.
+                </audio>
+                <p class="text-xs text-neutral-400 italic">Tip: Si subes el archivo <code class="text-neutral-200">Dia1B_Audio_Bienvenida_LATAM.mp3</code> a la misma carpeta de GitHub que este HTML, sonará automáticamente aquí.</p>
+            </div>
+
+            <!-- Checklist 19 afirmaciones -->
+            <div class="space-y-3" id="contenedor-checklist-d1"></div>
+
+            <!-- Barra de Conteo y Botón -->
+            <div class="bg-neutral-900 border border-neutral-700 p-4 rounded-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-base font-medium text-neutral-300">Autoengaños marcados:</span>
+                    <span id="contador-d1" class="font-extrabold text-2xl text-[#F29F05]">0 / 19</span>
+                </div>
+                <button type="button" onclick="calcularPerfilDia1()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                    Ver Mi Perfil Financiero
+                </button>
+            </div>
+
+            <!-- Resultado Perfil Día 1 -->
+            <div id="resultado-d1" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-3 shadow-xl">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Tu Resultado</span>
+                <h3 id="titulo-perfil-d1" class="font-extrabold text-xl text-white"></h3>
+                <p id="desc-perfil-d1" class="text-base text-neutral-300 leading-relaxed whitespace-pre-line"></p>
+                <div class="bg-black/40 p-3.5 rounded-xl border border-neutral-700">
+                    <p id="frase-perfil-d1" class="text-sm font-bold text-[#9CCCE3] italic"></p>
+                </div>
+                <button type="button" onclick="irVista('dia2')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base mt-2 cursor-pointer">
+                    Continuar al Día 2 ➔
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== DÍA 2: REGISTRO DE GASTOS ==================== -->
+        <section id="view-dia2" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 2 • Visibilidad Real</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">Registro de Gastos Diario</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Un número te muestra un momento. El patrón te muestra la verdad. Registra cada gasto el día que lo pagas, sin redondear.</p>
+            </div>
+
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
+                <h3 class="font-bold text-lg text-white">Cargar Movimiento</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-300 mb-1">Día del reto</label>
+                        <select id="d2-dia" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3 py-2.5 text-base text-white"></select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-300 mb-1">Momento</label>
+                        <select id="d2-momento" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3 py-2.5 text-base text-white">
+                            <option value="☀️ Mañana">☀️ Mañana</option>
+                            <option value="🌤️ Tarde">🌤️ Tarde</option>
+                            <option value="🌙 Noche">🌙 Noche</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">¿Qué fue? (Descripción corta)</label>
+                    <input type="text" id="d2-desc" placeholder="Ej: Café, transporte, factura..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">¿Cuánto? ($ exacto)</label>
+                    <input type="number" id="d2-monto" placeholder="0.00" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <button type="button" onclick="agregarGastoD2()" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base shadow cursor-pointer">
+                    + Guardar Gasto
+                </button>
+            </div>
+
+            <!-- Historial -->
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-lg text-white">Tus Registros</h3>
+                    <select id="d2-filtro" onchange="renderGastosD2()" class="bg-neutral-950 border border-neutral-700 rounded-xl px-3 py-1.5 text-sm text-white"></select>
+                </div>
+                <div class="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800 flex justify-between items-center">
+                    <span class="text-sm text-neutral-400">Total acumulado:</span>
+                    <span id="d2-total" class="font-extrabold text-xl text-[#F29F05]">$0.00</span>
+                </div>
+                <div id="d2-lista" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+                <p class="text-xs text-neutral-400 italic">Regla de oro: Un día sin registrar es un tropiezo. Dos días es una señal. Tres días seguidos es abandonar.</p>
+            </div>
+
+            <button type="button" onclick="completarDia(2, 'dia3')" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                Marcar Día 2 Completado y Seguir ➔
+            </button>
+        </section>
+
+        <!-- ==================== DÍA 3: ESCÁNER TARJETA PRINCIPAL ==================== -->
+        <section id="view-dia3" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Día 3 • El Costo Real de tu Deuda</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">Escáner de tu Tarjeta Principal</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Tu banco muestra una tasa pequeña en letra grande, pero por ley existe otro número que suma intereses, seguros, comisiones e impuestos.</p>
+            </div>
+
+            <!-- Guía rápida por país (Dia3B) -->
+            <div class="bg-[#0F3D74]/30 border border-[#9CCCE3]/30 p-4 rounded-2xl space-y-2">
+                <h4 class="font-bold text-sm text-[#9CCCE3] uppercase">¿Qué tasa buscar en tu resumen?</h4>
+                <ul class="text-sm text-neutral-200 space-y-1">
+                    <li>🇦🇷 <strong>Argentina:</strong> CFTEA con IVA</li>
+                    <li>🇲🇽 <strong>México:</strong> CAT (Costo Anual Total)</li>
+                    <li>🇵🇪 <strong>Perú:</strong> TCEA</li>
+                    <li>🇨🇱 <strong>Chile:</strong> CTC o CAE</li>
+                    <li>🇨🇴 <strong>Colombia:</strong> TEA</li>
+                </ul>
+            </div>
+
+            <!-- Formulario 1 sola tarjeta -->
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
+                <h3 class="font-bold text-lg text-white">Analiza tu Tarjeta Más Pesada</h3>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Nombre de la tarjeta</label>
+                    <input type="text" id="d3-nombre" placeholder="Ej: Visa Banco Principal" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Deuda total actual ($)</label>
+                    <input type="number" id="d3-deuda" placeholder="Ej: 150000" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Tasa anual real sin el símbolo % (Ej: 128.08)</label>
+                    <input type="number" id="d3-tasa" placeholder="Ej: 128.08" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Pago mínimo actual de tu resumen ($)</label>
+                    <input type="number" id="d3-minimo" placeholder="Ej: 15000" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <button type="button" onclick="analizarTarjetaD3()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                    Calcular Lo Que Le Regalo al Banco
+                </button>
+            </div>
+
+            <!-- Resultado Día 3 -->
+            <div id="resultado-d3" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-4 shadow-xl">
+                <h4 class="font-extrabold text-lg text-[#F29F05]">Radiografía de tu Tarjeta</h4>
+                <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800 space-y-2">
+                    <div class="flex justify-between text-base">
+                        <span class="text-neutral-400">Interés mensual que generas:</span>
+                        <span id="d3-interes-mes" class="font-extrabold text-rose-400">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm pt-2 border-t border-neutral-800">
+                        <span class="text-neutral-400">Diagnóstico del mínimo:</span>
+                        <span id="d3-estado" class="font-bold text-[#F29F05]"></span>
+                    </div>
+                </div>
+                <p id="d3-explicacion" class="text-base text-neutral-300 leading-relaxed"></p>
+                <button type="button" onclick="completarDia(3, 'dia4')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base cursor-pointer">
+                    Continuar al Día 4 ➔
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== DÍA 4: MINI-TEST PATRÓN DE AHORRO ==================== -->
+        <section id="view-dia4" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 4 • Tu Psicología del Dinero</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">¿Cuál es tu Patrón de Ahorro?</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Los números dicen cuánto gastas, pero no por qué. Responde las 8 preguntas eligiendo lo que haces en la vida real.</p>
+            </div>
+
+            <div id="contenedor-test-d4" class="space-y-4"></div>
+
+            <button type="button" onclick="calcularTestD4()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                Descubrir Mi Patrón de Ahorro
+            </button>
+
+            <div id="resultado-d4" style="display:none;" class="bg-neutral-900 border-2 border-[#9CCCE3] p-5 rounded-2xl space-y-3 shadow-xl">
+                <span class="text-xs font-bold uppercase text-[#9CCCE3]">Resultado del Mini-Test</span>
+                <h3 id="titulo-perfil-d4" class="font-extrabold text-xl text-white"></h3>
+                <p id="desc-perfil-d4" class="text-base text-neutral-300 leading-relaxed"></p>
+                <button type="button" onclick="completarDia(4, 'dia5')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base mt-2 cursor-pointer">
+                    Continuar al Día 5 ➔
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== DÍA 5: CÓMO DECIR QUE NO SIN DRAMA ==================== -->
+        <section id="view-dia5" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 5 • Asertividad Financiera</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">Cómo Decir Que No Sin Drama</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Muchas fugas nacen por no quedar mal en salidas, regalos o préstamos. Elige tus guiones de respuesta rápida para proteger tu bolsillo sin dar explicaciones de más.</p>
             </div>
 
             <div class="space-y-3">
-                <h3 class="font-bold text-sm text-slate-400 uppercase tracking-wider px-1">Etapas Activas del Reto</h3>
-                
-                <!-- Tarjeta Día 1 -->
-                <div onclick="cambiarVista('dia1')" class="w-full text-left bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-blue-400 p-4 rounded-xl transition flex items-center justify-between cursor-pointer shadow-sm">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center border border-emerald-500/30">D1</div>
-                        <div>
-                            <h4 class="font-bold text-white">El Semáforo de Autoengaños</h4>
-                            <p class="text-xs text-slate-400 mt-0.5">Identifica y desarma tus excusas mentales.</p>
-                        </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-2">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">Situación 1: Salidas o planes caros</span>
+                    <p class="text-base text-white font-medium">"Esta semana estoy enfocado en ordenar mis números y no voy a salir, pero nos juntamos a tomar unos mates/café en casa."</p>
+                </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-2">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">Situación 2: Pedidos de dinero prestado</span>
+                    <p class="text-base text-white font-medium">"Hoy tengo todo mi dinero comprometido en pagos fijos y no tengo margen para prestar sin desordenarme."</p>
+                </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-2">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">Situación 3: Compras impulsivas ("Me lo merezco")</span>
+                    <p class="text-base text-white font-medium">"Regla de las 48 horas: si pasado mañana lo sigo queriendo y entra en mi presupuesto sin cuotas, lo compro."</p>
+                </div>
+            </div>
+
+            <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-3">
+                <label class="block text-sm font-bold text-white">Tu compromiso práctico para hoy:</label>
+                <textarea id="d5-compromiso" rows="2" placeholder="Escribe qué gasto social o compromiso vas a frenar esta semana..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl p-3 text-base text-white"></textarea>
+            </div>
+
+            <button type="button" onclick="guardarDia5()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                Guardar Compromiso y Ir al Día 6 ➔
+            </button>
+        </section>
+
+        <!-- ==================== DÍA 6: HOJA GUIADA DE REFLEXIÓN ==================== -->
+        <section id="view-dia6" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 6 • Auditoría Interna</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">Hoja Guiada de Reflexión Financiera</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Antes de ir al Mapa de Fugas final, responde con total honestidad estas 3 preguntas clave.</p>
+            </div>
+
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1.5">1. ¿Cuál fue el gasto más innecesario que descubriste esta semana?</label>
+                    <input type="text" id="d6-p1" placeholder="Tu respuesta honesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1.5">2. ¿Qué emoción suele disparar tus compras sin planificar?</label>
+                    <input type="text" id="d6-p2" placeholder="Ej: Cansancio, estrés, aburrimiento, ansiedad..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1.5">3. Si cortaras una sola fuga hoy, ¿cuánto dinero recuperarías al mes?</label>
+                    <input type="text" id="d6-p3" placeholder="Ej: $25.000 por mes..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
+                </div>
+            </div>
+
+            <button type="button" onclick="guardarDia6()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                Guardar Reflexión e Ir al Día 7 ➔
+            </button>
+        </section>
+
+        <!-- ==================== DÍA 7: MAPA DE FUGAS (10 CATEGORÍAS) ==================== -->
+        <section id="view-dia7" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Día 7 • Cierre del Diagnóstico</span>
+                <h2 class="font-extrabold text-2xl text-white mt-1">Tu Mapa de Fugas (Últimos 30 Días)</h2>
+                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Estima cuánto gastaste en tu último mes cerrado en cada una de estas 10 categorías hormiga. No hace falta exactitud al centavo, sino honestidad.</p>
+            </div>
+
+            <div id="contenedor-fugas-d7" class="space-y-3"></div>
+
+            <button type="button" onclick="calcularMapaFugasD7()" class="w-full btn-accent font-extrabold py-4 rounded-xl text-base shadow-lg cursor-pointer">
+                Calcular Proyección Anual y Top 3 Fugas
+            </button>
+
+            <!-- Resultados Mapa de Fugas -->
+            <div id="resultado-d7" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-5 shadow-xl">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800">
+                        <span class="text-xs text-neutral-400 block">Total Mensual en Fugas</span>
+                        <span id="d7-total-mes" class="font-extrabold text-xl text-white">$0</span>
                     </div>
-                    <span class="text-slate-500 text-lg">›</span>
-                </div>
-
-                <!-- Tarjeta Día 2 -->
-                <div onclick="cambiarVista('dia2')" class="w-full text-left bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-blue-400 p-4 rounded-xl transition flex items-center justify-between cursor-pointer shadow-sm">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 font-bold flex items-center justify-center border border-blue-500/30">D2</div>
-                        <div>
-                            <h4 class="font-bold text-white">El Método de los 3 Momentos</h4>
-                            <p class="text-xs text-slate-400 mt-0.5">Control de micro-gastos y fugas en caliente.</p>
-                        </div>
-                    </div>
-                    <span class="text-slate-500 text-lg">›</span>
-                </div>
-
-                <!-- Tarjeta Día 3 -->
-                <div onclick="cambiarVista('dia3')" class="w-full text-left bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-blue-400 p-4 rounded-xl transition flex items-center justify-between cursor-pointer shadow-sm">
-                    <div class="flex items-center space-x-3">
-                        <div style="background-color: rgba(242, 159, 5, 0.2); color: #F29F05;" class="w-10 h-10 rounded-lg font-bold flex items-center justify-center border border-amber-500/30">D3</div>
-                        <div>
-                            <h4 class="font-bold text-white">El Escáner de la Tarjeta Principal</h4>
-                            <p class="text-xs text-slate-400 mt-0.5">Diagnóstico de deuda y la trampa del pago mínimo.</p>
-                        </div>
-                    </div>
-                    <span class="text-slate-500 text-lg">›</span>
-                </div>
-
-                <!-- Días 4 a 7 -->
-                <div class="pt-2">
-                    <div class="bg-slate-900/50 border border-slate-800 p-4 rounded-xl opacity-60 flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-lg bg-slate-800 text-slate-500 font-bold flex items-center justify-center">🔒</div>
-                            <div>
-                                <h4 class="font-bold text-slate-400">Días 4 al 7: Siguientes Etapas</h4>
-                                <p class="text-xs text-slate-500 mt-0.5">Disponibles al completar el diagnóstico base.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= VISTA: DÍA 1 ================= -->
-        <div id="view-dia1" style="display: none;" class="space-y-6">
-            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl shadow-lg">
-                <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">🛡️ Día 1 del Reto</span>
-                <h2 class="font-extrabold text-xl text-white mt-1">El Semáforo de Autoengaños</h2>
-                <p class="text-sm text-slate-300 mt-2 leading-relaxed">Selecciona las justificaciones que sueles decirte cuando gastas de más.</p>
-            </div>
-            <div class="space-y-3" id="lista-autoenganos"></div>
-        </div>
-
-        <!-- ================= VISTA: DÍA 2 ================= -->
-        <div id="view-dia2" style="display: none;" class="space-y-6">
-            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl shadow-lg">
-                <span class="text-blue-400 text-xs font-bold uppercase tracking-wider">⏰ Día 2 del Reto</span>
-                <h2 class="font-extrabold text-xl text-white mt-1">El Método de los 3 Momentos</h2>
-                <p class="text-sm text-slate-300 mt-2 leading-relaxed">Registra tus gastos fraccionados por turnos del día.</p>
-            </div>
-
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl space-y-4">
-                <h3 class="font-bold text-sm text-white">Nuevo Movimiento</h3>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Día de registro (1 al 30)</label>
-                    <select id="gasto-dia-num" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"></select>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Momento del día</label>
-                    <select id="gasto-momento" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                        <option value="☀️ Mañana">☀️ Mañana</option>
-                        <option value="🌤️ Tarde">🌤️ Tarde</option>
-                        <option value="🌙 Noche">🌙 Noche</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Descripción</label>
-                    <input type="text" id="gasto-desc" placeholder="Ej: Café, delivery..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Monto ($)</label>
-                    <input type="number" id="gasto-monto" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                </div>
-                <button onclick="agregarGasto()" style="background-color: #0F3D74;" class="w-full hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-sm transition cursor-pointer shadow">
-                    Registrar Gasto
-                </button>
-            </div>
-
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-sm text-white">Historial</h3>
-                    <select id="filtro-dia-ver" onchange="renderizarGastos()" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white"></select>
-                </div>
-                <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
-                    <span class="text-xs text-slate-400">Total Día:</span>
-                    <span id="label-total-dia" style="color: #F29F05;" class="font-bold text-base">$0.00</span>
-                </div>
-                <div id="lista-gastos" class="space-y-2 max-h-60 overflow-y-auto"></div>
-            </div>
-        </div>
-
-        <!-- ================= VISTA: DÍA 3 ================= -->
-        <div id="view-dia3" style="display: none;" class="space-y-6">
-            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl shadow-lg">
-                <span style="color: #F29F05;" class="text-xs font-bold uppercase tracking-wider">💳 Día 3 del Reto</span>
-                <h2 class="font-extrabold text-xl text-white mt-1">El Escáner de la Tarjeta Principal</h2>
-                <p class="text-sm text-slate-300 mt-2 leading-relaxed">Diagnóstico de deuda y la trampa del pago mínimo.</p>
-            </div>
-
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl space-y-4">
-                <h3 class="font-bold text-sm text-white">Datos de tu Tarjeta Crítica</h3>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Nombre o Banco</label>
-                    <input type="text" id="t-nombre" placeholder="Ej: Visa Banco X" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Deuda Total Actual ($)</label>
-                    <input type="number" id="t-deuda" placeholder="Ej: 150000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Tasa Anual (%) / CAT / CFTEA</label>
-                    <input type="number" id="t-tasa" placeholder="Ej: 120" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Pago Mínimo Mensual ($)</label>
-                    <input type="number" id="t-minimo" placeholder="Ej: 15000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
-                </div>
-                <button onclick="calcularTarjetaPrincipal()" style="background-color: #F29F05;" class="w-full hover:bg-amber-600 text-slate-950 font-extrabold py-2.5 rounded-lg text-sm transition cursor-pointer shadow">
-                    Analizar Impacto Real
-                </button>
-            </div>
-
-            <div id="resultado-tarjeta" style="display: none;" class="bg-slate-900 border border-amber-500/40 p-4 rounded-xl space-y-3 shadow-xl">
-                <h4 style="color: #F29F05;" class="font-bold text-sm">Diagnóstico de Impacto</h4>
-                <p id="diag-texto" class="text-xs text-slate-300 leading-relaxed"></p>
-                <div class="bg-slate-800 p-3 rounded-lg border border-slate-700 space-y-1">
-                    <div class="flex justify-between text-xs">
-                        <span class="text-slate-400">Interés mensual estimado:</span>
-                        <span id="diag-interes" class="font-bold text-rose-400">$0.00</span>
-                    </div>
-                    <div class="flex justify-between text-xs pt-1 border-t border-slate-700">
-                        <span class="text-slate-400">Estado:</span>
-                        <span id="diag-alerta" style="color: #F29F05;" class="font-semibold">Riesgo Alto</span>
+                    <div class="bg-neutral-950 p-3.5 rounded-xl border border-[#F29F05]/40">
+                        <span class="text-xs text-[#F29F05] block">Proyección a 12 Meses</span>
+                        <span id="d7-total-anio" class="font-extrabold text-xl text-[#F29F05]">$0</span>
                     </div>
                 </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-base text-white">🔥 Tus 3 Fugas Más Grandes (Por dónde empezar):</h4>
+                    <div id="d7-top3" class="space-y-2"></div>
+                </div>
+
+                <!-- Gráfico de Barras Visual -->
+                <div class="space-y-2 pt-2 border-t border-neutral-800">
+                    <h4 class="font-bold text-sm text-neutral-400 uppercase">Comparativa Visual</h4>
+                    <div id="d7-barras" class="space-y-2"></div>
+                </div>
+
+                <div class="bg-[#0F3D74]/40 border border-[#9CCCE3]/30 p-4 rounded-xl space-y-2">
+                    <h4 class="font-bold text-base text-white">🎉 ¡Completaste el Diagnóstico de 7 Días!</h4>
+                    <p class="text-sm text-blue-100 leading-relaxed">Ya pusiste luz sobre tus autoengaños, tus gastos diarios, el costo real de tu tarjeta principal y tus fugas anuales. Ahora tienes claridad total para dar el siguiente paso hacia el sistema completo de 21 días.</p>
+                </div>
             </div>
-        </div>
+        </section>
 
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-3 px-4 text-center text-xs text-slate-500 w-full">
-        Finanzas Express • Ecosistema Editorial Profesional
+    <footer class="bg-neutral-950 border-t border-neutral-800 py-3.5 px-4 text-center text-xs text-neutral-500 w-full">
+        Finanzas Express • Método 21DP
     </footer>
 
-    <!-- Script Directo -->
     <script>
-        let estadoApp = {
-            autoenganos: JSON.parse(localStorage.getItem('fe_autoenganos')) || {
-                1: { texto: "Total, este mes cobro más y me recupero", estado: false },
-                2: { texto: "Trabajo duro, me lo merezco", estado: false },
-                3: { texto: "Es una pequeña cuota, no afecta en nada", estado: false },
-                4: { texto: "Ya fue, total ya estoy endeudado", estado: false }
-            },
-            gastos: JSON.parse(localStorage.getItem('fe_gastos')) || [],
-            tarjeta: JSON.parse(localStorage.getItem('fe_tarjeta')) || null
+        // ================= DATOS ORIGINALES DE CLAUDE =================
+        const FRASES_DIA_1 = [
+            "A fin de mes no sé exactamente en qué se me fue la plata.",
+            "Digo '...este mes me ordeno...' y a los pocos días ya volví a improvisar.",
+            "Miro el saldo de mi billetera virtual o app bancaria como si fuera una sorpresa, aunque yo hice todos los gastos.",
+            "Pago el mínimo de la tarjeta y después me convenzo de que '...el mes que viene lo arreglo...'",
+            "Compro cosas baratas porque '...total no es tanta plata...', pero después no entiendo por qué no llego a fin de mes.",
+            "Me prometo ahorrar cuando cobre, pero termino intentando ahorrar lo que sobra.",
+            "Evito revisar los movimientos de la cuenta porque prefiero no saber.",
+            "Uso cuotas para sentir que algo no pesa tanto, aunque sé que igual lo voy a pagar.",
+            "Presto plata aunque ya sé que probablemente tenga que reclamarla.",
+            "Gasto en salidas, regalos o compromisos para no quedar mal, aunque por dentro esté calculando cómo llegar.",
+            "Me digo que mi problema es el sueldo, pero nunca revisé con honestidad mis gastos de los últimos 30 días.",
+            "Sé qué gasto debería cortar, pero lo sigo justificando con frases como '...me lo merezco...'",
+            "Me da vergüenza hablar de plata, entonces termino aceptando planes, gastos o pedidos que no puedo sostener.",
+            "Cuando cobro siento alivio, pero a los pocos días ya estoy haciendo cuentas otra vez.",
+            "Tengo suscripciones, débitos o gastos automáticos que hace meses no reviso.",
+            "Apuesto dinero online o en lugares físicos, aunque sea de vez en cuando, y no lo registro como gasto.",
+            "Me enojo con la inflación, el país o el contexto, pero no tengo un sistema mínimo para manejar mi plata.",
+            "Siento que '...no gasto tanto...', aunque nunca lo confirmé con números reales.",
+            "Cuando aparece un gasto inesperado, no tengo margen: tengo que postergar algo, usar tarjeta o pedir ayuda."
+        ];
+
+        const PREGUNTAS_DIA_4 = [
+            { q: "1. Cuando cobras, ¿qué es lo primero que pasa con tu dinero?", opts: [
+                { t: "Pago lo urgente, gasto lo necesario y veo si queda algo para guardar.", p: 2 },
+                { t: "Me digo que esta vez voy a ahorrar, pero primero quiero 'ordenar todo'.", p: 1 },
+                { t: "Separo algo solo si el mes viene tranquilo y no hay gastos raros.", p: 3 }
+            ]},
+            { q: "2. Cuando piensas en ahorrar, ¿qué frase aparece más rápido en tu cabeza?", opts: [
+                { t: "'...si sobra algo después de pagar todo, lo guardo...'", p: 2 },
+                { t: "'...cuando cobre un poco más, ahí sí voy a poder hacerlo bien...'", p: 3 },
+                { t: "'...arranco el mes que viene, ahora ya está un poco desordenado...'", p: 1 }
+            ]},
+            { q: "3. Si te quedara dinero disponible antes de fin de mes, ¿qué suele pasar?", opts: [
+                { t: "Lo guardo solo si sé que no viene ningún gasto pendiente.", p: 3 },
+                { t: "Lo dejo 'por las dudas', pero termina desapareciendo en cualquier cosa.", p: 1 },
+                { t: "Lo uso para llegar más cómodo y, si queda algo, lo ahorro.", p: 2 }
+            ]},
+            { q: "4. ¿Qué haces cuando aparece una compra pequeña que no estaba planeada?", opts: [
+                { t: "La hago si siento que este mes '...me lo puedo permitir...'", p: 3 },
+                { t: "La hago y me digo que no cambia nada, total después veo cómo lo arreglo.", p: 1 },
+                { t: "La hago si creo que igual me va a sobrar algo a fin de mes.", p: 2 }
+            ]},
+            { q: "5. ¿Cómo usas las apps de tu banco o billetera virtual para ahorrar?", opts: [
+                { t: "Las uso para guardar solo cuando el mes está estable y no tengo miedo de necesitar ese dinero.", p: 3 },
+                { t: "Mando algo cuando veo que quedó saldo suelto.", p: 2 },
+                { t: "Tengo la intención de separar dinero ahí, pero casi nunca lo hago a tiempo.", p: 1 }
+            ]},
+            { q: "6. Cuando un mes logras ahorrar algo, ¿qué pasa después?", opts: [
+                { t: "Me siento bien, aunque sé que fue más porque sobró que porque lo decidí.", p: 2 },
+                { t: "Lo hago mientras no aparezcan gastos, presión familiar, salidas o imprevistos.", p: 3 },
+                { t: "Me entusiasmo, pero al mes siguiente pierdo el ritmo.", p: 1 }
+            ]},
+            { q: "7. Si alguien te dijera 'separa ahorro apenas cobras', ¿qué pensarías?", opts: [
+                { t: "'...podría, si tuviera un ingreso más alto o menos gastos encima...'", p: 3 },
+                { t: "'...sí, debería hacerlo, pero primero necesito organizarme mejor...'", p: 1 },
+                { t: "'...me gustaría, pero prefiero esperar a ver cuánto queda después de pagar...'", p: 2 }
+            ]},
+            { q: "8. ¿Cuál de estas frases te representa más?", opts: [
+                { t: "Ahorro si el mes acompaña. Si no, es imposible.", p: 3 },
+                { t: "Sé que tengo que empezar, pero nunca encuentro el momento limpio para hacerlo.", p: 1 },
+                { t: "Yo ahorro cuando puedo. El problema es que casi nunca sobra.", p: 2 }
+            ]}
+        ];
+
+        const CATEGORIAS_FUGAS_D7 = [
+            { nombre: "Streaming y apps duplicadas", desc: "Netflix, Spotify, apps que pagas y no usas o tienes repetidas" },
+            { nombre: "Delivery de comida", desc: "Pedidos a domicilio — no el supermercado, la comida ya lista" },
+            { nombre: "Café o kiosco diario", desc: "El café de todos los días, snacks de kiosco, máquina de la oficina" },
+            { nombre: "Salidas sociales", desc: "Bares, comidas afuera, juntadas — lo que no es tu comida esencial" },
+            { nombre: "Compras impulsivas online", desc: "Compras de un clic que no planeaste — ropa, gadgets, ofertas" },
+            { nombre: "Gimnasio o apps de fitness sin usar", desc: "La cuota que pagas hace meses y no pisas" },
+            { nombre: "Tabaco o vapeo", desc: "Cigarrillos, vapeadores, recargas" },
+            { nombre: "Apuestas online", desc: "Casas de apuestas, casinos online, loterías digitales" },
+            { nombre: "Transporte por apps evitable", desc: "Viajes en apps que podrías haber evitado o combinado" },
+            { nombre: "Seguros olvidados", desc: "Celular, electrodomésticos, protección de compras, robo en cajero" }
+        ];
+
+        // ================= ESTADO PERSISTENTE (ARRANCA EN CERO) =================
+        let appData = {
+            completados: JSON.parse(localStorage.getItem('fe7_completados')) || [],
+            d1Checks: JSON.parse(localStorage.getItem('fe7_d1_checks')) || new Array(19).fill(false),
+            d2Gastos: JSON.parse(localStorage.getItem('fe7_d2_gastos')) || [],
+            d3Tarjeta: JSON.parse(localStorage.getItem('fe7_d3_tarjeta')) || null,
+            d4Respuestas: JSON.parse(localStorage.getItem('fe7_d4_resp')) || {},
+            d5Compromiso: localStorage.getItem('fe7_d5_comp') || "",
+            d6Reflexion: JSON.parse(localStorage.getItem('fe7_d6_ref')) || { p1: "", p2: "", p3: "" },
+            d7Fugas: JSON.parse(localStorage.getItem('fe7_d7_fugas')) || new Array(10).fill(0)
         };
 
-        function guardarEstado() {
-            localStorage.setItem('fe_autoenganos', JSON.stringify(estadoApp.autoenganos));
-            localStorage.setItem('fe_gastos', JSON.stringify(estadoApp.gastos));
-            if(estadoApp.tarjeta) localStorage.setItem('fe_tarjeta', JSON.stringify(estadoApp.tarjeta));
+        function saveApp() {
+            localStorage.setItem('fe7_completados', JSON.stringify(appData.completados));
+            localStorage.setItem('fe7_d1_checks', JSON.stringify(appData.d1Checks));
+            localStorage.setItem('fe7_d2_gastos', JSON.stringify(appData.d2Gastos));
+            if(appData.d3Tarjeta) localStorage.setItem('fe7_d3_tarjeta', JSON.stringify(appData.d3Tarjeta));
+            localStorage.setItem('fe7_d4_resp', JSON.stringify(appData.d4Respuestas));
+            localStorage.setItem('fe7_d5_comp', appData.d5Compromiso);
+            localStorage.setItem('fe7_d6_ref', JSON.stringify(appData.d6Reflexion));
+            localStorage.setItem('fe7_d7_fugas', JSON.stringify(appData.d7Fugas));
         }
 
-        function cambiarVista(vista) {
-            ['dashboard', 'dia1', 'dia2', 'dia3'].forEach(v => {
+        // ================= NAVEGACIÓN ROBUSTA =================
+        function irVista(idVista) {
+            const vistas = ['dashboard', 'dia1', 'dia2', 'dia3', 'dia4', 'dia5', 'dia6', 'dia7'];
+            vistas.forEach(v => {
                 const el = document.getElementById('view-' + v);
-                if(el) el.style.display = 'none';
+                if (el) el.style.display = 'none';
             });
-            const target = document.getElementById('view-' + vista);
-            if(target) target.style.display = 'block';
 
-            const btnHome = document.getElementById('btnHome');
-            if(btnHome) {
-                btnHome.style.display = vista === 'dashboard' ? 'none' : 'block';
-            }
+            const activa = document.getElementById('view-' + idVista);
+            if (activa) activa.style.display = 'block';
+
+            const btnMenu = document.getElementById('btnMenu');
+            if (btnMenu) btnMenu.style.display = (idVista === 'dashboard') ? 'none' : 'inline-block';
+
+            if (idVista === 'dashboard') renderDashboard();
             window.scrollTo(0, 0);
         }
 
-        function volverAlDashboard() {
-            cambiarVista('dashboard');
+        function completarDia(numDia, siguienteVista) {
+            if (!appData.completados.includes(numDia)) {
+                appData.completados.push(numDia);
+                saveApp();
+            }
+            irVista(siguienteVista);
         }
 
-        function renderizarAutoenganos() {
-            const contenedor = document.getElementById('lista-autoenganos');
-            if(!contenedor) return;
-            contenedor.innerHTML = '';
-            Object.keys(estadoApp.autoenganos).forEach(id => {
-                const item = estadoApp.autoenganos[id];
-                const div = document.createElement('div');
-                div.className = `p-3.5 rounded-xl border transition flex items-center justify-between cursor-pointer ${item.estado ? 'bg-emerald-950/30 border-emerald-500/50' : 'bg-slate-800 border-slate-700'}`;
-                div.onclick = () => {
-                    estadoApp.autoenganos[id].estado = !estadoApp.autoenganos[id].estado;
-                    guardarEstado();
-                    renderizarAutoenganos();
-                };
-                div.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <div class="w-6 h-6 rounded-md flex items-center justify-center border ${item.estado ? 'bg-emerald-500 border-emerald-400 text-slate-950 font-bold' : 'border-slate-600 bg-slate-900'}">
-                            ${item.estado ? '✓' : ''}
+        function renderDashboard() {
+            const menu = document.getElementById('menu-dias');
+            const prog = document.getElementById('progreso-texto');
+            prog.textContent = `${appData.completados.length} de 7 completados`;
+
+            const diasInfo = [
+                { n: 1, id: 'dia1', titulo: '¿Cuántos Autoengaños Tienes?', sub: 'Audio de bienvenida + Checklist de 19 frases' },
+                { n: 2, id: 'dia2', titulo: 'Registro de Gastos Diario', sub: 'Detecta tu patrón real día por día' },
+                { n: 3, id: 'dia3', titulo: 'El Escáner de tu Tarjeta', sub: 'Costo real (CFTEA/CAT) y trampa del mínimo' },
+                { n: 4, id: 'dia4', titulo: '¿Cuál es tu Patrón de Ahorro?', sub: 'Mini-test psicológico de 8 preguntas' },
+                { n: 5, id: 'dia5', titulo: 'Cómo Decir Que No Sin Drama', sub: 'Guiones prácticos para frenar gastos sociales' },
+                { n: 6, id: 'dia6', titulo: 'Hoja de Reflexión Financiera', sub: 'Auditoría emocional de tus hábitos' },
+                { n: 7, id: 'dia7', titulo: 'Mapa de Fugas (10 Categorías)', sub: 'Proyección anual y Top 3 de fugas' }
+            ];
+
+            menu.innerHTML = '';
+            diasInfo.forEach(d => {
+                const done = appData.completados.includes(d.n);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => irVista(d.id);
+                btn.className = `w-full text-left p-4 rounded-2xl border transition flex items-center justify-between cursor-pointer shadow-sm ${done ? 'bg-emerald-950/25 border-emerald-500/40' : 'bg-neutral-900 hover:bg-neutral-800 border-neutral-800 hover:border-[#9CCCE3]'}`;
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3.5">
+                        <div style="background-color: ${done ? '#10B981' : '#0F3D74'}; color: #FFF;" class="w-11 h-11 rounded-xl font-extrabold text-base flex items-center justify-center shrink-0">
+                            ${done ? '✓' : 'D' + d.n}
                         </div>
-                        <span class="text-sm text-slate-200 font-medium">${item.texto}</span>
+                        <div>
+                            <h3 class="font-bold text-base text-white">${d.titulo}</h3>
+                            <p class="text-xs text-neutral-400 mt-0.5">${d.sub}</p>
+                        </div>
                     </div>
+                    <span class="text-neutral-400 text-xl font-bold pl-2">›</span>
                 `;
-                contenedor.appendChild(div);
+                menu.appendChild(btn);
             });
         }
 
-        function inicializarSelectoresDia() {
-            const selGasto = document.getElementById('gasto-dia-num');
-            const selFiltro = document.getElementById('filtro-dia-ver');
-            if(!selGasto || !selFiltro) return;
-            
-            selGasto.innerHTML = '';
-            selFiltro.innerHTML
+        // ================= LÓGICA DÍA 1 =================
+        function renderDia1() {
+            const cont = document.getElementById('contenedor-checklist-d1');
+            cont.innerHTML = '';
+            let marcados = 0;
+
+            FRASES_DIA_1.forEach((frase, idx) => {
+                const isChecked = appData.d1Checks[idx];
+                if (isChecked) marcados++;
+
+                const card = document.createElement('div');
+                card.onclick = () => {
+                    appData.d1Checks[idx] = !appData.d1Checks[idx];
+                    saveApp();
+                    renderDia1();
+                };
+                card.className = `p-4 rounded-2xl border transition flex items-start space-x-3.5 cursor-pointer ${isChecked ? 'bg-[#0F3D74]/35 border-[#F29F05]' : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'}`;
+                card.innerHTML = `
+                    <div class="w-6 h-6 rounded-lg mt-0.5 shrink-0 flex items-center justify-center border font-bold text-sm ${isChecked ? 'bg-[#F29F05] border-[#F29F05] text-black' : 'bg-neutral-950 border-neutral-600 text-transparent'}">
+                        ✓
+                    </div>
+                    <p class="text-base text-neutral-100 leading-snug">${frase}</p>
+                `;
+                cont.appendChild(card);
+            });
+
+            document.getElementById('contador-d1').textContent = `${marcados} / 19`;
+        }
+
+        function calcularPerfilDia1() {
+            const pts = appData.d1Checks.filter(Boolean).length;
+            const resBox = document.getElementById('resultado-d1');
+            const titulo = document.getElementById('titulo-perfil-d1');
+            const desc = document.getElementById('desc-perfil-d1');
+            const frase = document.getElementById('frase-perfil-d1');
+
+            resBox.style.display = 'block';
+
+            if (pts <= 5) {
+                titulo.textContent = `Perfil 1 — El Negador (${pts} puntos)`;
+                desc.textContent = "Todavía crees que el problema está casi siempre afuera: la inflación, el sueldo, el país, los precios o la mala suerte. Y sí, todo eso existe. Pero si no miras tus propios movimientos, cualquier explicación externa te va a servir para no cambiar nada.\n\nTu desafío no es resolver toda tu vida financiera hoy. Tu desafío es empezar a mirar. Sin dramatizar, pero sin escaparte.";
+                frase.textContent = "Frase para llevarte: No puedes ordenar lo que todavía prefieres no ver.";
+            } else if (pts <= 12) {
+                titulo.textContent = `Perfil 2 — El Consciente Inmóvil (${pts} puntos)`;
+                desc.textContent = "Ya lo sabes. Ese es el problema. Sabes que ciertas compras te desordenan, que la tarjeta te está comiendo de a poco y que el '...después lo veo...' casi nunca termina bien.\n\nPero entre saber y cambiar hay una distancia enorme llena de excusas elegantes ('...ahora no es el momento...', '...cuando cobre mejor...'). El punto no es que no entiendas: es que todavía no transformaste lo que sabes en acción concreta.";
+                frase.textContent = "Frase para llevarte: La conciencia sin movimiento también es una forma de autoengaño.";
+            } else {
+                titulo.textContent = `Perfil 3 — El Autoengañado Crónico (${pts} puntos)`;
+                desc.textContent = "Esto no empezó este mes. Hace tiempo vienes repitiendo el mismo patrón con distintos nombres: una tarjeta, una deuda chica, una salida, un gasto '...necesario...'.\n\nEste perfil no significa que no puedas salir. Significa que ya no te sirve seguir diciendo que '...es solo una mala racha...'. Cuando una mala racha se repite demasiado, se vuelve sistema.";
+                frase.textContent = "Frase para llevarte: No estás trabado porque no puedes. Estás trabado porque todavía no nombraste el patrón.";
+            }
+
+            if (!appData.completados.includes(1)) {
+                appData.completados.push(1);
+                saveApp();
+            }
+            resBox.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================= LÓGICA DÍA 2 =================
+        function initDia2() {
+            const selDia = document.getElementById('d2-dia');
+            const selFiltro = document.getElementById('d2-filtro');
+            selDia.innerHTML = '';
+            selFiltro.innerHTML = '<option value="todos">Todos los días</option>';
+            for (let i = 1; i <= 30; i++) {
+                selDia.innerHTML += `<option value="${i}">Día ${i}</option>`;
+                selFiltro.innerHTML += `<option value="${i}">Día ${i}</option>`;
+            }
+            renderGastosD2();
+        }
+
+        function agregarGastoD2() {
+            const dia = document.getElementById('d2-dia').value;
+            const momento = document.getElementById('d2-momento').value;
+            const desc = document.getElementById('d2-desc').value.trim();
+            const monto = parseFloat(document.getElementById('d2-monto').value);
+
+            if (!desc || isNaN(monto) || monto <= 0) {
+                alert("Completa la descripción y un monto válido.");
+                return;
+            }
+            appData.d2Gastos.unshift({ id: Date.now(), dia, momento, desc, monto });
+            saveApp();
+            document.getElementById('d2-desc').value = '';
+            document.getElementById('d2-monto').value = '';
+            renderGastosD2();
+        }
+
+        function borrarGastoD2(id) {
+            appData.d2Gastos = appData.d2Gastos.filter(g => g.id !== id);
+            saveApp();
+            renderGastosD2();
+        }
+
+        function renderGastosD2() {
+            const filtro = document.getElementById('d2-filtro').value;
+            const lista = document.getElementById('d2-lista');
+            const filtrados = filtro === 'todos' ? appData.d2Gastos : appData.d2Gastos.filter(g => g.dia === filtro);
+
+            const total = filtrados.reduce((sum, g) => sum + g.monto, 0);
+            document.getElementById('d2-total').textContent = `$${total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+
+            if (filtrados.length === 0) {
+                lista.innerHTML = `<p class="text-sm text-neutral-500 text-center py-4">Aún no hay gastos cargados aquí.</p>`;
+                return;
+            }
+
+            lista.innerHTML = '';
+            filtrados.forEach(g => {
+                const row = document.createElement('div');
+                row.className = "bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex justify-between items-center";
+                row.innerHTML = `
+                    <div>
+                        <span class="text-xs font-bold text-[#9CCCE3]">Día ${g.dia}</span> • <span class="text-xs text-neutral-400">${g.momento}</span>
+                        <p class="text-sm font-medium text-white mt-0.5">${g.desc}</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="font-bold text-base text-[#F29F05]">$${g.monto.toLocaleString('es-AR')}</span>
+                        <button type="button" onclick="borrarGastoD2(${g.id})" class="text-neutral-500 hover:text-rose-400 font-bold text-lg cursor-pointer">×</button>
+                    </div>
+                `;
+                lista.appendChild(row);
+            });
+        }
+
+        // ================= LÓGICA DÍA 3 =================
+        function analizarTarjetaD3() {
+            const nombre = document.getElementById('d3-nombre').value.trim();
+            const deuda = parseFloat(document.getElementById('d3-deuda').value);
+            const tasa = parseFloat(document.getElementById('d3-tasa').value);
+            const minimo = parseFloat(document.getElementById('d3-minimo').value);
+
+            if (!nombre || isNaN(deuda) || isNaN(tasa) || isNaN(minimo)) {
+                alert("Completa todos los datos de tu tarjeta principal.");
+                return;
+            }
+
+            const interesMes = deuda * ((tasa / 100) / 12);
+            appData.d3Tarjeta = { nombre, deuda, tasa, minimo };
+            saveApp();
+
+            document.getElementById('resultado-d3').style.display = 'block';
+            document.getElementById('d3-interes-mes').textContent = `$${interesMes.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            const estadoEl = document.getElementById('d3-estado');
+            const expEl = document.getElementById('d3-explicacion');
+
+            if (minimo <= interesMes) {
+                estadoEl.textContent = "CRÍTICO: El mínimo no cubre los intereses";
+                estadoEl.className = "font-bold text-rose-400";
+                expEl.innerHTML = `Cada mes que pagas solo el mínimo en <strong>${nombre}</strong>, generas $${interesMes.toFixed(0)} solo en intereses y cargos. Como tu mínimo ($${minimo.toLocaleString('es-AR')}) es menor o igual a ese interés, <strong>tu deuda crece sola aunque dejes de usar la tarjeta</strong>.`;
+            } else {
+                estadoEl.textContent = "ALERTA: Estás regalando margen al banco";
+                estadoEl.className = "font-bold text-[#F29F05]";
+                expEl.innerHTML = `En <strong>${nombre}</strong>, de los $${minimo.toLocaleString('es-AR')} de pago mínimo, <strong>$${interesMes.toFixed(0)} se van directo a intereses</strong> y apenas una fracción reduce tu deuda real.`;
+            }
+        }
+
+        // ================= LÓGICA DÍA 4 =================
+        function renderDia4() {
+            const cont = document.getElementById('contenedor-test-d4');
+            cont.innerHTML = '';
+
+            PREGUNTAS_DIA_4.forEach((item, qIdx) => {
+                const box = document.createElement('div');
+                box.className = "bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-2.5";
+                let htmlOpts = `<p class="font-bold text-base text-white">${item.q}</p><div class="space-y-2 pt-1">`;
+
+                item.opts.forEach((opt, oIdx) => {
+                    const selected = appData.d4Respuestas[qIdx] === opt.p;
+                    htmlOpts += `
+                        <button type="button" onclick="seleccionarOptD4(${qIdx}, ${opt.p})" class="w-full text-left p-3 rounded-xl border text-sm transition cursor-pointer ${selected ? 'bg-[#0F3D74] border-[#9CCCE3] text-white font-semibold' : 'bg-neutral-950 border-neutral-800 text-neutral-300 hover:border-neutral-600'}">
+                            ${opt.t}
+                        </button>
+                    `;
+                });
+                htmlOpts += `</div>`;
+                box.innerHTML = htmlOpts;
+                cont.appendChild(box);
+            });
+        }
+
+        function seleccionarOptD4(qIdx, puntos) {
+            appData.d4Respuestas[qIdx] = puntos;
+            saveApp();
+            renderDia4();
+        }
+
+        function calcularTestD4() {
+            const keys = Object.keys(appData.d4Respuestas);
+            if (keys.length < 8) {
+                alert("Responde las 8 preguntas para conocer tu patrón de ahorro.");
+                return;
+            }
+            const total = Object.values(appData.d4Respuestas).reduce((a, b) => a + b, 0);
+            const resBox = document.getElementById('resultado-d4');
+            const titulo = document.getElementById('titulo-perfil-d4');
+            const desc = document.getElementById('desc-perfil-d4');
+
+            resBox.style.display = 'block';
+            if (total <= 12) {
+                titulo.textContent = `Perfil A — El Eterno Postergador (${total} pts)`;
+                desc.textContent = "Tratas el ahorro como una tarea que necesita el momento perfecto ('cuando me organice', 'cuando pase este mes'). Mientras esperas un mes limpio para empezar, el mes te pasa por arriba.";
+            } else if (total <= 18) {
+                titulo.textContent = `Perfil B — El Ahorrista del Resto (${total} pts)`;
+                desc.textContent = "Intentas ahorrar lo que sobra a fin de mes después de pagar y gastar. El problema es que el gasto siempre se expande hasta ocupar todo el dinero disponible.";
+            } else {
+                titulo.textContent = `Perfil C — El Condicionado (${total} pts)`;
+                desc.textContent = "Solo ahorras si el contexto acompaña y no hay imprevistos. Tu ahorro depende de tu estado de ánimo o de que el mes sea tranquilo, en lugar de ser una regla fija apenas cobras.";
+            }
+            resBox.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================= LÓGICA DÍAS 5 Y 6 =================
+        function guardarDia5() {
+            appData.d5Compromiso = document.getElementById('d5-compromiso').value.trim();
+            saveApp();
+            completarDia(5, 'dia6');
+        }
+
+        function guardarDia6() {
+            appData.d6Reflexion = {
+                p1: document.getElementById('d6-p1').value.trim(),
+                p2: document.getElementById('d6-p2').value.trim(),
+                p3: document.getElementById('d6-p3').value.trim()
+            };
+            saveApp();
+            completarDia(6, 'dia7');
+        }
+
+        // ================= LÓGICA DÍA 7: MAPA DE FUGAS =================
+        function renderDia7() {
+            const cont = document.getElementById('contenedor-fugas-d7');
+            cont.innerHTML = '';
+
+            CATEGORIAS_FUGAS_D7.forEach((cat, idx) => {
+                const val = appData.d7Fugas[idx] || '';
+                const div = document.createElement('div');
+                div.className = "bg-neutral-900 border border-neutral-800 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+                div.innerHTML = `
+                    <div class="pr-2">
+                        <h4 class="font-bold text-base text-white">${idx + 1}. ${cat.nombre}</h4>
+                        <p class="text-xs text-neutral-400 mt-0.5">${cat.desc}</p>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0">
+                        <span class="text-neutral-400 font-bold">$</span>
+                        <input type="number" min="0" value="${val}" onchange="actualizarFugaD7(${idx}, this.value)" placeholder="0" class="w-32 bg-neutral-950 border border-[#F29F05]/50 rounded-xl px-3 py-2 text-base font-bold text-white text-right">
+                    </div>
+                `;
+                cont.appendChild(div);
+            });
+        }
+
+        function actualizarFugaD7(idx, valor) {
+            appData.d7Fugas[idx] = parseFloat(valor) || 0;
+            saveApp();
+        }
+
+        function calcularMapaFugasD7() {
+            const totalMes = appData.d7Fugas.reduce((a, b) => a + b, 0);
+            const totalAnio = totalMes * 12;
+
+            document.getElementById('resultado-d7').style.display = 'block';
+            document.getElementById('d7-total-mes').textContent = `$${totalMes.toLocaleString('es-AR')}`;
+            document.getElementById('d7-total-anio').textContent = `$${totalAnio.toLocaleString('es-AR')}`;
+
+            // Ordenar Top 3
+            const ranking = CATEGORIAS_FUGAS_D7.map((c, i) => ({
+                nombre: c.nombre,
+                monto: appData.d7Fugas[i] || 0
+            })).sort((a, b) => b.monto - a.monto);
+
+            const top3Div = document.getElementById('d7-top3');
+            top3Div.innerHTML = '';
+            ranking.slice(0, 3).forEach((item, pos) => {
+                top3Div.innerHTML += `
+                    <div class="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex justify-between items-center text-sm">
+                        <span><strong class="text-[#F29F05]">${pos + 1}° lugar:</strong> ${item.nombre}</span>
+                        <span class="font-bold text-white">$${item.monto.toLocaleString('es-AR')}/mes</span>
+                    </div>
+                `;
+            });
+
+            // Barras visuales
+            const maxVal = ranking[0].monto || 1;
+            const barrasDiv = document.getElementById('d7-barras');
+            barrasDiv.innerHTML = '';
+            ranking.forEach(item => {
+                if (item.monto > 0) {
+                    const pct = Math.round((item.monto / maxVal) * 100);
+                    barrasDiv.innerHTML += `
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs text-neutral-300">
+                                <span>${item.nombre}</span>
+                                <span class="font-bold">$${item.monto.toLocaleString('es-AR')}</span>
+                            </div>
+                            <div class="w-full bg-neutral-950 h-2.5 rounded-full overflow-hidden">
+                                <div style="width: ${pct}%; background-color: #F29F05;" class="h-full rounded-full"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (!appData.completados.includes(7)) {
+                appData.completados.push(7);
+                saveApp();
+            }
+            document.getElementById('resultado-d7').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================= INICIALIZACIÓN =================
+        renderDashboard();
+        renderDia1();
+        initDia2();
+        renderDia4();
+        renderDia7();
+
+        if (appData.d3Tarjeta) {
+            document.getElementById('d3-nombre').value = appData.d3Tarjeta.nombre;
+            document.getElementById('d3-deuda').value = appData.d3Tarjeta.deuda;
+            document.getElementById('d3-tasa').value = appData.d3Tarjeta.tasa;
+            document.getElementById('d3-minimo').value = appData.d3Tarjeta.minimo;
+        }
+        document.getElementById('d5-compromiso').value = appData.d5Compromiso;
+        document.getElementById('d6-p1').value = appData.d6Reflexion.p1;
+        document.getElementById('d6-p2').value = appData.d6Reflexion.p2;
+        document.getElementById('d6-p3').value = appData.d6Reflexion.p3;
+    </script>
+</body>
+</html>
