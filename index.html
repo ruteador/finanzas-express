@@ -59,7 +59,7 @@
                 <p class="text-base text-neutral-300 mt-2 leading-relaxed">No hace falta que te castigues. Tampoco hace falta que te mientas. Marca cada frase que sea cierta para ti hoy.</p>
             </div>
 
-            <!-- Bloque de Audio de Bienvenida (Dia1B) -->
+            <!-- Bloque de Audio de Bienvenida -->
             <div class="bg-[#0F3D74]/40 border border-[#9CCCE3]/40 p-4 rounded-2xl space-y-2.5">
                 <div class="flex items-center space-x-2">
                     <span class="text-xl">🎧</span>
@@ -77,7 +77,6 @@
             <!-- Checklist 19 afirmaciones -->
             <div class="space-y-3" id="contenedor-checklist-d1"></div>
 
-            <!-- Barra de Conteo y Botón -->
             <div class="bg-neutral-900 border border-neutral-700 p-4 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <span class="text-base font-medium text-neutral-300">Autoengaños marcados:</span>
@@ -88,7 +87,6 @@
                 </button>
             </div>
 
-            <!-- Resultado Perfil Día 1 -->
             <div id="resultado-d1" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-3 shadow-xl">
                 <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Tu Resultado</span>
                 <h3 id="titulo-perfil-d1" class="font-extrabold text-xl text-white"></h3>
@@ -96,7 +94,7 @@
                 <div class="bg-black/40 p-3.5 rounded-xl border border-neutral-700">
                     <p id="frase-perfil-d1" class="text-sm font-bold text-[#9CCCE3] italic"></p>
                 </div>
-                <button type="button" onclick="irVista('dia2')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base mt-2 cursor-pointer">
+                <button type="button" onclick="completarDia(1, 'dia2')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base mt-2 cursor-pointer">
                     Continuar al Día 2 ➔
                 </button>
             </div>
@@ -139,7 +137,6 @@
                 </button>
             </div>
 
-            <!-- Historial -->
             <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="font-bold text-lg text-white">Tus Registros</h3>
@@ -158,10 +155,8 @@
             </button>
         </section>
 
-        <!-- ==================== DÍA 3: EL COSTO REAL DE TU DEUDA (CLAUDE ÍNTEGRO) ==================== -->
+        <!-- ==================== DÍA 3: EL COSTO REAL DE TU DEUDA ==================== -->
         <section id="view-dia3" style="display:none;" class="space-y-6">
-            
-            <!-- Bloque 1: Infografía Dia3A (Los 5 pasos) -->
             <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4 shadow-lg">
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Día 3 • El Costo Real de tu Deuda</span>
@@ -173,37 +168,26 @@
                     <div class="bg-neutral-950 p-3.5 rounded-xl border-l-4 border-[#9CCCE3]">
                         <p class="font-bold text-white">1. El pago mínimo</p>
                         <p class="text-neutral-300 italic">"Solo por este mes. El mes que viene lo arreglo."</p>
-                        <p class="text-neutral-400 text-xs mt-1">Alivio inmediato. El problema no desaparece: crece con intereses.</p>
                     </div>
                     <div class="bg-neutral-950 p-3.5 rounded-xl border-l-4 border-[#F29F05]">
                         <p class="font-bold text-white">2. El préstamo personal del banco</p>
                         <p class="text-neutral-300 italic">"Cancelo la tarjeta y listo. Tasa más baja."</p>
-                        <p class="text-neutral-400 text-xs mt-1">La tarjeta queda en cero. En 3 meses: préstamo corriendo + deuda nueva en la tarjeta.</p>
                     </div>
                     <div class="bg-neutral-950 p-3.5 rounded-xl border-l-4 border-amber-500">
                         <p class="font-bold text-white">3. El crédito de la app o billetera virtual</p>
                         <p class="text-neutral-300 italic">"Aprobación en 2 minutos. Es solo para salir del paso."</p>
-                        <p class="text-neutral-400 text-xs mt-1">Más rápido. Tasa más alta. El paso del que quieres salir lo creó el paso anterior.</p>
                     </div>
                     <div class="bg-neutral-950 p-3.5 rounded-xl border-l-4 border-orange-600">
                         <p class="font-bold text-white">4. La financiera</p>
                         <p class="text-neutral-300 italic">"Menos requisitos. Más rápido."</p>
-                        <p class="text-neutral-400 text-xs mt-1">La velocidad con que te aprueban es proporcional al costo que te van a cobrar.</p>
                     </div>
                     <div class="bg-neutral-950 p-3.5 rounded-xl border-l-4 border-rose-600">
                         <p class="font-bold text-white">5. El prestamista informal</p>
                         <p class="text-neutral-300 italic">"Sin contrato. Sin espera."</p>
-                        <p class="text-neutral-400 text-xs mt-1">Sin tasa oficial. Con intereses que se cobran de otra manera. Este no te llama. Te golpea la puerta.</p>
                     </div>
-                </div>
-
-                <div class="bg-black/50 p-3.5 rounded-xl border border-neutral-800 text-sm text-neutral-300 space-y-1">
-                    <p class="font-bold text-white">Lo que todos los que llegaron al paso 5 tienen en común:</p>
-                    <p>En algún momento creyeron que estaban en el paso 2 por última vez. La frase que te estás diciendo ahora mismo <em>"este mes veo cómo lo arreglo"</em> es exactamente la misma que se dijeron ellos.</p>
                 </div>
             </div>
 
-            <!-- Bloque 2: Antes de cargar nada, lee esto (Copys exactos del Excel) -->
             <div class="bg-neutral-900 border border-[#0F3D74] p-5 rounded-2xl space-y-4">
                 <div style="background-color: #F29F05; color: #1A1A1A;" class="px-3 py-1.5 rounded-lg font-extrabold text-sm uppercase text-center">
                     Antes de cargar nada, lee esto
@@ -214,7 +198,6 @@
                     <p class="font-bold text-rose-400">Ese es el que te dice cuánto te cuesta REALMENTE tu tarjeta.</p>
                 </div>
 
-                <!-- Tabla Países completa incluyendo Uruguay -->
                 <div class="space-y-2 pt-2">
                     <h4 class="font-bold text-sm text-[#9CCCE3] uppercase bg-black/50 px-3 py-2 rounded-lg">¿Cómo se llama ese número en tu país?</h4>
                     <div class="divide-y divide-neutral-800 bg-neutral-950 rounded-xl border border-neutral-800 text-sm">
@@ -239,57 +222,40 @@
                             <span class="font-bold text-[#F29F05] shrink-0">CFTEA</span>
                         </div>
                         <div class="p-3 flex justify-between items-center gap-2">
-                            <div><strong class="text-white">Colombia</strong><span class="block text-xs text-neutral-400">Tasa efectiva + cargo fijo mensual por separado</span></div>
+                            <div><strong class="text-white">Colombia</strong><span class="block text-xs text-neutral-400">Tasa efectiva + cargo fijo mensual</span></div>
                             <span class="font-bold text-[#F29F05] shrink-0 text-right">TEA + cuota manejo</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- ¿Dónde lo encuentras? -->
-                <div class="space-y-2 pt-1">
-                    <h4 class="font-bold text-sm text-[#9CCCE3] uppercase bg-black/50 px-3 py-2 rounded-lg">¿Dónde lo encuentras?</h4>
-                    <ul class="text-sm text-neutral-300 space-y-1.5 list-disc pl-5">
-                        <li>En el resumen o estado de cuenta de tu tarjeta (papel o app del banco).</li>
-                        <li>En la web de tu banco, en la sección 'tarifas' o 'costos del producto'.</li>
-                        <li>Los bancos están obligados a mostrarlo — muchas veces en letra pequeña, al pie del resumen.</li>
-                        <li>Si no lo encuentras: llama a tu banco y pídelo por su nombre exacto. Es tu derecho.</li>
-                    </ul>
-                    <div class="bg-rose-950/50 border border-rose-500/40 p-3 rounded-xl text-center">
-                        <p class="text-sm font-bold text-rose-400">Carga el CFTEA/CAT/TCEA/CAE abajo, no la tasa que aparece grande arriba de todo.</p>
-                    </div>
-                </div>
-
-                <!-- Aclaraciones Deuda en Dólares / Moneda Extranjera -->
                 <div class="space-y-2.5 pt-1">
                     <h4 class="font-bold text-sm text-white uppercase bg-black/70 px-3 py-2 rounded-lg">¿Tienes deuda en dólares u otra moneda extranjera?</h4>
                     <div class="bg-emerald-950/30 border border-emerald-500/30 p-3 rounded-xl text-sm text-emerald-200">
-                        <strong>LATAM (Colombia, México, Perú, Chile, Uruguay):</strong> tu banco ya convirtió las compras en dólares a tu moneda local en el resumen. Carga directamente el saldo total en moneda local que figura en tu resumen.
+                        <strong>LATAM (Colombia, México, Perú, Chile, Uruguay):</strong> tu banco ya convirtió las compras en dólares a tu moneda local en el resumen. Carga directamente el saldo total en moneda local.
                     </div>
                     <div class="bg-amber-950/30 border border-amber-500/30 p-3 rounded-xl text-sm text-amber-200">
-                        <strong>Argentina:</strong> si tu resumen muestra un saldo en dólares separado, tienes dos opciones antes del vencimiento: (1) Pagarlo en dólares → deuda cancelada + banco devuelve la percepción del 30% en el próximo resumen. (2) No pagarlo o pagar el mínimo → el banco lo pesifica automáticamente y lo financia a tasa en pesos. En ambos casos, para usar esta herramienta carga el saldo ya en pesos.
-                    </div>
-                    <div class="bg-blue-950/30 border border-blue-500/30 p-3 rounded-xl text-sm text-blue-200">
-                        <strong>Excepción Perú:</strong> si tienes una tarjeta específicamente en dólares, carga la deuda en dólares y usa la TCEA en dólares de tu resumen.
+                        <strong>Argentina:</strong> si tu resumen muestra saldo en dólares, tienes dos caminos: 
+                        <br><strong>(1) Pagas los dólares con dólares propios (entre cierre y vencimiento):</strong> la deuda en dólares queda cancelada (descuenta el 30% de percepción RG 5617 al pagar en pesos, y pide *Stop Debit* si tienes débito automático). <em>No cargues esos dólares en la calculadora, porque ya los cancelaste.</em>
+                        <br><strong>(2) No los pagas en dólares o pagas solo el mínimo:</strong> al día siguiente del vencimiento el banco los pesifica y los suma a tu deuda en pesos (con el 30% incluido). <em>En este caso, carga el saldo total ya convertido a pesos</em> en la calculadora.
                     </div>
                 </div>
             </div>
 
-            <!-- Bloque 3: Formulario 1 Sola Tarjeta -->
             <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
                 <div>
                     <h3 class="font-bold text-lg text-white">Escáner de tu Tarjeta Principal</h3>
-                    <p class="text-xs text-neutral-400 mt-0.5">Usa PUNTO para decimales (Ej: 128.08). Si tienes más tarjetas, analiza una por vez.</p>
+                    <p class="text-xs text-neutral-400 mt-0.5">Usa PUNTO para decimales (Ej: 128.08).</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-300 mb-1">Nombre de la tarjeta</label>
                     <input type="text" id="d3-nombre" placeholder="Ej: Visa Banco Principal" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Deuda total actual (en tu moneda local) $</label>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Deuda total actual ($)</label>
                     <input type="number" id="d3-deuda" inputmode="decimal" placeholder="Ej: 150000" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Tasa anual, SIN el símbolo % (CFTEA/CAT/TCEA/CAE/TEA)</label>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Tasa anual sin % (CFTEA/CAT/TCEA/CAE/TEA)</label>
                     <input type="number" id="d3-tasa" inputmode="decimal" placeholder="Ej: 128.08" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
                 </div>
                 <div>
@@ -297,7 +263,7 @@
                     <input type="number" id="d3-cargo-fijo" inputmode="decimal" value="0" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Pago mínimo actual $ (de tu resumen)</label>
+                    <label class="block text-sm font-medium text-neutral-300 mb-1">Pago mínimo actual $</label>
                     <input type="number" id="d3-minimo" inputmode="decimal" placeholder="Ej: 15000" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
                 </div>
                 <button type="button" onclick="analizarTarjetaD3()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
@@ -305,7 +271,6 @@
                 </button>
             </div>
 
-            <!-- Resultado Día 3 -->
             <div id="resultado-d3" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-4 shadow-xl">
                 <h4 class="font-extrabold text-lg text-[#F29F05]">Radiografía de tu Tarjeta</h4>
                 <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800 space-y-2.5">
@@ -329,7 +294,7 @@
             </div>
         </section>
 
-        <!-- ==================== DÍA 4: MINI-TEST PATRÓN DE AHORRO (CLAUDE ÍNTEGRO) ==================== -->
+        <!-- ==================== DÍA 4: MINI-TEST PATRÓN DE AHORRO ==================== -->
         <section id="view-dia4" style="display:none;" class="space-y-6">
             <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg space-y-3">
                 <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 4 • Tu Psicología del Dinero</span>
@@ -337,8 +302,6 @@
                 <div class="text-base text-neutral-300 space-y-2.5 leading-relaxed">
                     <p>A veces el problema no es que no puedas ahorrar. Es que tienes un patrón tan repetido que ya ni lo ves.</p>
                     <p>Te prometes que este mes va a ser distinto. Cobras. Pagas. Te acomodas. Aparece algo. Después otra cosa. Y cuando quieres acordarte, vuelves a decirte lo mismo: <em>"...bueno, el mes que viene arranco..."</em></p>
-                    <p>Este mini-test no está para juzgarte. Está para mostrarte qué tipo de excusa se disfraza de realidad cuando hablas de ahorro.</p>
-                    <p class="font-bold text-white bg-black/40 p-3 rounded-xl border border-neutral-800 text-sm">Marca una sola opción por pregunta. La que más se parezca a ti en la vida real. No la que te gustaría ser. La que eres cuando nadie te está mirando.</p>
                 </div>
             </div>
 
@@ -348,7 +311,6 @@
                 Descubrir Mi Patrón de Ahorro
             </button>
 
-            <!-- Resultado Día 4 + Cierre + Mini Acción de 5 Minutos -->
             <div id="resultado-d4" style="display:none;" class="space-y-5">
                 <div class="bg-neutral-900 border-2 border-[#9CCCE3] p-5 rounded-2xl space-y-3.5 shadow-xl">
                     <span class="text-xs font-bold uppercase text-[#9CCCE3]">Tu Perfil de Ahorro</span>
@@ -360,12 +322,9 @@
                     </div>
                 </div>
 
-                <!-- Cierre + Mini Acción de 5 Minutos -->
                 <div class="bg-[#0F3D74]/40 border border-[#9CCCE3]/40 p-5 rounded-2xl space-y-4">
                     <h4 class="font-extrabold text-lg text-white">Cierre — Mini acción de 5 minutos</h4>
-                    <p class="text-base text-blue-100 leading-relaxed">No importa qué perfil te haya dado. Importa que ahora tienes un nombre para eso que antes parecía <em>"...la vida..."</em>. Cuando lo nombras, empieza a perder poder.</p>
-                    <p class="text-base text-blue-100 leading-relaxed">Hoy no necesitas resolver toda tu vida financiera. Necesitas hacer una sola cosa: <strong>elegir un porcentaje mínimo para Pagarte a Ti Primero en tu próximo cobro</strong>. Puede ser poco. Incluso ridículo. Pero tiene que salir primero. Antes de que el mes opine.</p>
-                    
+                    <p class="text-base text-blue-100 leading-relaxed">Elegir un porcentaje mínimo para <strong>Pagarte a Ti Primero</strong> en tu próximo cobro. Antes de que el mes opine.</p>
                     <div class="bg-neutral-950 p-4 rounded-xl border border-[#F29F05]/50 space-y-3">
                         <p class="text-sm text-neutral-200 font-medium">Completa esta frase:</p>
                         <div class="text-base text-white leading-relaxed">
@@ -373,9 +332,7 @@
                             <input type="number" id="d4-porcentaje" min="1" max="100" placeholder="%" class="w-20 bg-neutral-900 border border-[#F29F05] rounded-lg px-2 py-1 text-center font-extrabold text-[#F29F05] mx-1"> 
                             % de lo que entre para ahorro."
                         </div>
-                        <p class="text-xs text-neutral-400 italic">No porque me sobre. Porque si espero a que sobre, ya sé cómo termina.</p>
                     </div>
-
                     <button type="button" onclick="guardarMiniAccionD4()" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base cursor-pointer">
                         Guardar Mi Compromiso y Continuar al Día 5 ➔
                     </button>
@@ -383,549 +340,50 @@
             </div>
         </section>
 
-        <!-- ==================== DÍAS 5, 6 Y 7 (PENDIENTES DE REVISIÓN CONTRA CLAUDE) ==================== -->
+        <!-- ==================== DÍA 5: CÓMO DECIR QUE NO SIN DRAMA ==================== -->
         <section id="view-dia5" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 5</span>
-                <h2 class="font-extrabold text-2xl text-white mt-1">Pendiente de integrar material de Claude</h2>
-                <p class="text-base text-neutral-300 mt-2">Pásame el material original del Día 5 para cargarlo aquí con exactitud.</p>
-                <button type="button" onclick="irVista('dashboard')" class="w-full btn-primary font-bold py-3 rounded-xl text-base mt-4 cursor-pointer">Volver al Inicio</button>
-            </div>
-        </section>
-
-        <section id="view-dia6" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 6</span>
-                <h2 class="font-extrabold text-2xl text-white mt-1">Pendiente de integrar material de Claude</h2>
-                <p class="text-base text-neutral-300 mt-2">Pásame el material original del Día 6 para cargarlo aquí con exactitud.</p>
-                <button type="button" onclick="irVista('dashboard')" class="w-full btn-primary font-bold py-3 rounded-xl text-base mt-4 cursor-pointer">Volver al Inicio</button>
-            </div>
-        </section>
-
-        <section id="view-dia7" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Día 7 • Cierre del Diagnóstico</span>
-                <h2 class="font-extrabold text-2xl text-white mt-1">Tu Mapa de Fugas (Últimos 30 Días)</h2>
-                <p class="text-base text-neutral-300 mt-2 leading-relaxed">Estima cuánto gastaste en tu último mes cerrado en cada una de estas 10 categorías hormiga. No hace falta exactitud al centavo, sino honestidad.</p>
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg space-y-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 5 • Asertividad Financiera</span>
+                <h2 class="font-extrabold text-2xl text-white">Cómo Decir Que No Sin Drama</h2>
+                <p class="text-base text-neutral-300 leading-relaxed">A veces no gastas por ganas. Gastas para evitar una conversación. Pon límites sanos sin romper tus vínculos[cite: 8].</p>
             </div>
 
-            <div id="contenedor-fugas-d7" class="space-y-3"></div>
+            <div class="space-y-3 text-sm">
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">1. Salidas de trabajo</span>
+                    <p class="text-base text-white font-medium">"Hoy no me sumo, estoy cuidando bastante los gastos esta semana. Vayan tranquilos[cite: 8]."</p>
+                </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">2. La vaquita / colecta de regalo</span>
+                    <p class="text-base text-white font-medium">"Esta vez no voy a poder sumarme, pero le dejo un mensaje lindo y la saludo personalmente[cite: 9]."</p>
+                </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">3. Cumpleaños familiar</span>
+                    <p class="text-base text-white font-medium">"Este mes no puedo poner ese monto. Sí puedo colaborar con lo que me entre o ayudar con otra cosa[cite: 9]."</p>
+                </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">4. Préstamo a un amigo</span>
+                    <p class="text-base text-white font-medium">"No puedo prestarte más dinero ahora. Todavía está pendiente lo anterior, y prefiero que primero ordenemos eso[cite: 10]."</p>
+                </div>
+                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
+                    <span class="text-xs font-bold text-[#F29F05] uppercase">5. Salidas en pareja</span>
+                    <p class="text-base text-white font-medium">"Me encanta hacer planes contigo, pero este mes necesito cuidar más el dinero. Busquemos algo que podamos disfrutar[cite: 10]."</p>
+                </div>
+            </div>
 
-            <button type="button" onclick="calcularMapaFugasD7()" class="w-full btn-accent font-extrabold py-4 rounded-xl text-base shadow-lg cursor-pointer">
-                Calcular Proyección Anual y Top 3 Fugas
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3">
+                <label class="block text-sm font-bold text-white">Tu compromiso práctico para hoy:</label>
+                <textarea id="d5-compromiso" rows="2" placeholder="Escribe tu frase o situación a frenar esta semana..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl p-3 text-base text-white"></textarea>
+            </div>
+
+            <button type="button" onclick="completarDia(5, 'dia6')" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
+                Guardar Compromiso y Continuar al Día 6 ➔
             </button>
-
-            <div id="resultado-d7" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-5 shadow-xl">
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800">
-                        <span class="text-xs text-neutral-400 block">Total Mensual en Fugas</span>
-                        <span id="d7-total-mes" class="font-extrabold text-xl text-white">$0</span>
-                    </div>
-                    <div class="bg-neutral-950 p-3.5 rounded-xl border border-[#F29F05]/40">
-                        <span class="text-xs text-[#F29F05] block">Proyección a 12 Meses</span>
-                        <span id="d7-total-anio" class="font-extrabold text-xl text-[#F29F05]">$0</span>
-                    </div>
-                </div>
-                <div class="space-y-2">
-                    <h4 class="font-bold text-base text-white">🔥 Tus 3 Fugas Más Grandes (Por dónde empezar):</h4>
-                    <div id="d7-top3" class="space-y-2"></div>
-                </div>
-                <div class="space-y-2 pt-2 border-t border-neutral-800">
-                    <h4 class="font-bold text-sm text-neutral-400 uppercase">Comparativa Visual</h4>
-                    <div id="d7-barras" class="space-y-2"></div>
-                </div>
-            </div>
         </section>
 
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-neutral-950 border-t border-neutral-800 py-3.5 px-4 text-center text-xs text-neutral-500 w-full">
-        Finanzas Express • Método 21DP
-    </footer>
-
-    <script>
-        const FRASES_DIA_1 = [
-            "A fin de mes no sé exactamente en qué se me fue la plata.",
-            "Digo '...este mes me ordeno...' y a los pocos días ya volví a improvisar.",
-            "Miro el saldo de mi billetera virtual o app bancaria como si fuera una sorpresa, aunque yo hice todos los gastos.",
-            "Pago el mínimo de la tarjeta y después me convenzo de que '...el mes que viene lo arreglo...'",
-            "Compro cosas baratas porque '...total no es tanta plata...', pero después no entiendo por qué no llego a fin de mes.",
-            "Me prometo ahorrar cuando cobre, pero termino intentando ahorrar lo que sobra.",
-            "Evito revisar los movimientos de la cuenta porque prefiero no saber.",
-            "Uso cuotas para sentir que algo no pesa tanto, aunque sé que igual lo voy a pagar.",
-            "Presto plata aunque ya sé que probablemente tenga que reclamarla.",
-            "Gasto en salidas, regalos o compromisos para no quedar mal, aunque por dentro esté calculando cómo llegar.",
-            "Me digo que mi problema es el sueldo, pero nunca revisé con honestidad mis gastos de los últimos 30 días.",
-            "Sé qué gasto debería cortar, pero lo sigo justificando con frases como '...me lo merezco...'",
-            "Me da vergüenza hablar de plata, entonces termino aceptando planes, gastos o pedidos que no puedo sostener.",
-            "Cuando cobro siento alivio, pero a los pocos días ya estoy haciendo cuentas otra vez.",
-            "Tengo suscripciones, débitos o gastos automáticos que hace meses no reviso.",
-            "Apuesto dinero online o en lugares físicos, aunque sea de vez en cuando, y no lo registro como gasto.",
-            "Me enojo con la inflación, el país o el contexto, pero no tengo un sistema mínimo para manejar mi plata.",
-            "Siento que '...no gasto tanto...', aunque nunca lo confirmé con números reales.",
-            "Cuando aparece un gasto inesperado, no tengo margen: tengo que postergar algo, usar tarjeta o pedir ayuda."
-        ];
-
-        const PREGUNTAS_DIA_4 = [
-            { q: "1. Cuando cobras, ¿qué es lo primero que pasa con tu dinero?", opts: [
-                { t: "a) Pago lo urgente, gasto lo necesario y veo si queda algo para guardar.", p: 2 },
-                { t: "b) Me digo que esta vez voy a ahorrar, pero primero quiero \"ordenar todo\".", p: 1 },
-                { t: "c) Separo algo solo si el mes viene tranquilo y no hay gastos raros.", p: 3 }
-            ]},
-            { q: "2. Cuando piensas en ahorrar, ¿qué frase aparece más rápido en tu cabeza?", opts: [
-                { t: "a) \"...si sobra algo después de pagar todo, lo guardo...\"", p: 2 },
-                { t: "b) \"...cuando cobre un poco más, ahí sí voy a poder hacerlo bien...\"", p: 3 },
-                { t: "c) \"...arranco el mes que viene, ahora ya está un poco desordenado...\"", p: 1 }
-            ]},
-            { q: "3. Si te quedara dinero disponible antes de fin de mes, ¿qué suele pasar?", opts: [
-                { t: "a) Lo guardo solo si sé que no viene ningún gasto pendiente.", p: 3 },
-                { t: "b) Lo dejo \"por las dudas\", pero termina desapareciendo en cualquier cosa.", p: 1 },
-                { t: "c) Lo uso para llegar más cómodo y, si queda algo, lo ahorro.", p: 2 }
-            ]},
-            { q: "4. ¿Qué haces cuando aparece una compra pequeña que no estaba planeada?", opts: [
-                { t: "a) La hago si siento que este mes \"...me lo puedo permitir...\"", p: 3 },
-                { t: "b) La hago y me digo que no cambia nada, total después veo cómo lo arreglo.", p: 1 },
-                { t: "c) La hago si creo que igual me va a sobrar algo a fin de mes.", p: 2 }
-            ]},
-            { q: "5. ¿Cómo usas las apps de tu banco o billetera virtual para ahorrar?", opts: [
-                { t: "a) Las uso para guardar solo cuando el mes está estable y no tengo miedo de necesitar ese dinero.", p: 3 },
-                { t: "b) Mando algo cuando veo que quedó saldo suelto.", p: 2 },
-                { t: "c) Tengo la intención de separar dinero ahí, pero casi nunca lo hago a tiempo.", p: 1 }
-            ]},
-            { q: "6. Cuando un mes logras ahorrar algo, ¿qué pasa después?", opts: [
-                { t: "a) Me siento bien, aunque sé que fue más porque sobró que porque lo decidí.", p: 2 },
-                { t: "b) Lo hago mientras no aparezcan gastos, presión familiar, salidas o imprevistos.", p: 3 },
-                { t: "c) Me entusiasmo, pero al mes siguiente pierdo el ritmo.", p: 1 }
-            ]},
-            { q: "7. Si alguien te dijera \"separa ahorro apenas cobras\", ¿qué pensarías?", opts: [
-                { t: "a) \"...podría, si tuviera un ingreso más alto o menos gastos encima...\"", p: 3 },
-                { t: "b) \"...sí, debería hacerlo, pero primero necesito organizarme mejor...\"", p: 1 },
-                { t: "c) \"...me gustaría, pero prefiero esperar a ver cuánto queda después de pagar...\"", p: 2 }
-            ]},
-            { q: "8. ¿Cuál de estas frases te representa más?", opts: [
-                { t: "a) \"Ahorro si el mes acompaña. Si no, es imposible.\"", p: 3 },
-                { t: "b) \"Sé que tengo que empezar, pero nunca encuentro el momento limpio para hacerlo.\"", p: 1 },
-                { t: "c) \"Yo ahorro cuando puedo. El problema es que casi nunca sobra.\"", p: 2 }
-            ]}
-        ];
-
-        const CATEGORIAS_FUGAS_D7 = [
-            { nombre: "Streaming y apps duplicadas", desc: "Netflix, Spotify, apps que pagas y no usas o tienes repetidas" },
-            { nombre: "Delivery de comida", desc: "Pedidos a domicilio — no el supermercado, la comida ya lista" },
-            { nombre: "Café o kiosco diario", desc: "El café de todos los días, snacks de kiosco, máquina de la oficina" },
-            { nombre: "Salidas sociales", desc: "Bares, comidas afuera, juntadas — lo que no es tu comida esencial" },
-            { nombre: "Compras impulsivas online", desc: "Compras de un clic que no planeaste — ropa, gadgets, ofertas" },
-            { nombre: "Gimnasio o apps de fitness sin usar", desc: "La cuota que pagas hace meses y no pisas" },
-            { nombre: "Tabaco o vapeo", desc: "Cigarrillos, vapeadores, recargas" },
-            { nombre: "Apuestas online", desc: "Casas de apuestas, casinos online, loterías digitales" },
-            { nombre: "Transporte por apps evitable", desc: "Viajes en apps que podrías haber evitado o combinado" },
-            { nombre: "Seguros olvidados", desc: "Celular, electrodomésticos, protección de compras, robo en cajero" }
-        ];
-
-        let appData = {
-            completados: JSON.parse(localStorage.getItem('fe7_completados')) || [],
-            d1Checks: JSON.parse(localStorage.getItem('fe7_d1_checks')) || new Array(19).fill(false),
-            d2Gastos: JSON.parse(localStorage.getItem('fe7_d2_gastos')) || [],
-            d3Tarjeta: JSON.parse(localStorage.getItem('fe7_d3_tarjeta')) || null,
-            d4Respuestas: JSON.parse(localStorage.getItem('fe7_d4_resp')) || {},
-            d4Porcentaje: localStorage.getItem('fe7_d4_pct') || "",
-            d7Fugas: JSON.parse(localStorage.getItem('fe7_d7_fugas')) || new Array(10).fill(0)
-        };
-
-        function saveApp() {
-            localStorage.setItem('fe7_completados', JSON.stringify(appData.completados));
-            localStorage.setItem('fe7_d1_checks', JSON.stringify(appData.d1Checks));
-            localStorage.setItem('fe7_d2_gastos', JSON.stringify(appData.d2Gastos));
-            if(appData.d3Tarjeta) localStorage.setItem('fe7_d3_tarjeta', JSON.stringify(appData.d3Tarjeta));
-            localStorage.setItem('fe7_d4_resp', JSON.stringify(appData.d4Respuestas));
-            localStorage.setItem('fe7_d4_pct', appData.d4Porcentaje);
-            localStorage.setItem('fe7_d7_fugas', JSON.stringify(appData.d7Fugas));
-        }
-
-        function irVista(idVista) {
-            const vistas = ['dashboard', 'dia1', 'dia2', 'dia3', 'dia4', 'dia5', 'dia6', 'dia7'];
-            vistas.forEach(v => {
-                const el = document.getElementById('view-' + v);
-                if (el) el.style.display = 'none';
-            });
-            const activa = document.getElementById('view-' + idVista);
-            if (activa) activa.style.display = 'block';
-            const btnMenu = document.getElementById('btnMenu');
-            if (btnMenu) btnMenu.style.display = (idVista === 'dashboard') ? 'none' : 'inline-block';
-            if (idVista === 'dashboard') renderDashboard();
-            window.scrollTo(0, 0);
-        }
-
-        function completarDia(numDia, siguienteVista) {
-            if (!appData.completados.includes(numDia)) {
-                appData.completados.push(numDia);
-                saveApp();
-            }
-            irVista(siguienteVista);
-        }
-
-        function renderDashboard() {
-            const menu = document.getElementById('menu-dias');
-            const prog = document.getElementById('progreso-texto');
-            prog.textContent = `${appData.completados.length} de 7 completados`;
-
-            const diasInfo = [
-                { n: 1, id: 'dia1', titulo: '¿Cuántos Autoengaños Tienes?', sub: 'Audio de bienvenida + Checklist de 19 frases' },
-                { n: 2, id: 'dia2', titulo: 'Registro de Gastos Diario (31 días)', sub: 'Detecta tu patrón real día por día' },
-                { n: 3, id: 'dia3', titulo: 'El Costo Real de tu Deuda', sub: 'Camino de escalada + Escáner de tarjeta' },
-                { n: 4, id: 'dia4', titulo: '¿Cuál es tu Patrón de Ahorro?', sub: 'Mini-test de 8 preguntas + Mini acción' },
-                { n: 5, id: 'dia5', titulo: 'Día 5 (Pendiente material Claude)', sub: 'Por integrar' },
-                { n: 6, id: 'dia6', titulo: 'Día 6 (Pendiente material Claude)', sub: 'Por integrar' },
-                { n: 7, id: 'dia7', titulo: 'Mapa de Fugas (10 Categorías)', sub: 'Proyección anual y Top 3 de fugas' }
-            ];
-
-            menu.innerHTML = '';
-            diasInfo.forEach(d => {
-                const done = appData.completados.includes(d.n);
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.onclick = () => irVista(d.id);
-                btn.className = `w-full text-left p-4 rounded-2xl border transition flex items-center justify-between cursor-pointer shadow-sm ${done ? 'bg-emerald-950/25 border-emerald-500/40' : 'bg-neutral-900 hover:bg-neutral-800 border-neutral-800 hover:border-[#9CCCE3]'}`;
-                btn.innerHTML = `
-                    <div class="flex items-center space-x-3.5">
-                        <div style="background-color: ${done ? '#10B981' : '#0F3D74'}; color: #FFF;" class="w-11 h-11 rounded-xl font-extrabold text-base flex items-center justify-center shrink-0">
-                            ${done ? '✓' : 'D' + d.n}
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-base text-white">${d.titulo}</h3>
-                            <p class="text-xs text-neutral-400 mt-0.5">${d.sub}</p>
-                        </div>
-                    </div>
-                    <span class="text-neutral-400 text-xl font-bold pl-2">›</span>
-                `;
-                menu.appendChild(btn);
-            });
-        }
-
-        // ================= LÓGICA DÍA 1 =================
-        function renderDia1() {
-            const cont = document.getElementById('contenedor-checklist-d1');
-            cont.innerHTML = '';
-            let marcados = 0;
-
-            FRASES_DIA_1.forEach((frase, idx) => {
-                const isChecked = appData.d1Checks[idx];
-                if (isChecked) marcados++;
-                const card = document.createElement('div');
-                card.onclick = () => {
-                    appData.d1Checks[idx] = !appData.d1Checks[idx];
-                    saveApp();
-                    renderDia1();
-                };
-                card.className = `p-4 rounded-2xl border transition flex items-start space-x-3.5 cursor-pointer ${isChecked ? 'bg-[#0F3D74]/35 border-[#F29F05]' : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'}`;
-                card.innerHTML = `
-                    <div class="w-6 h-6 rounded-lg mt-0.5 shrink-0 flex items-center justify-center border font-bold text-sm ${isChecked ? 'bg-[#F29F05] border-[#F29F05] text-black' : 'bg-neutral-950 border-neutral-600 text-transparent'}">✓</div>
-                    <p class="text-base text-neutral-100 leading-snug">${frase}</p>
-                `;
-                cont.appendChild(card);
-            });
-            document.getElementById('contador-d1').textContent = `${marcados} / 19`;
-        }
-
-        function calcularPerfilDia1() {
-            const pts = appData.d1Checks.filter(Boolean).length;
-            const resBox = document.getElementById('resultado-d1');
-            const titulo = document.getElementById('titulo-perfil-d1');
-            const desc = document.getElementById('desc-perfil-d1');
-            const frase = document.getElementById('frase-perfil-d1');
-
-            resBox.style.display = 'block';
-            if (pts <= 5) {
-                titulo.textContent = `Perfil 1 — El Negador (${pts} puntos)`;
-                desc.textContent = "Todavía crees que el problema está casi siempre afuera: la inflación, el sueldo, el país, los precios o la mala suerte. Y sí, todo eso existe. Pero si no miras tus propios movimientos, cualquier explicación externa te va a servir para no cambiar nada.\n\nTu desafío no es resolver toda tu vida financiera hoy. Tu desafío es empezar a mirar. Sin dramatizar, pero sin escaparte.";
-                frase.textContent = "Frase para llevarte: No puedes ordenar lo que todavía prefieres no ver.";
-            } else if (pts <= 12) {
-                titulo.textContent = `Perfil 2 — El Consciente Inmóvil (${pts} puntos)`;
-                desc.textContent = "Ya lo sabes. Ese es el problema. Sabes que ciertas compras te desordenan, que la tarjeta te está comiendo de a poco y que el '...después lo veo...' casi nunca termina bien.\n\nPero entre saber y cambiar hay una distancia enorme llena de excusas elegantes ('...ahora no es el momento...', '...cuando cobre mejor...'). El punto no es que no entiendas: es que todavía no transformaste lo que sabes en acción concreta.";
-                frase.textContent = "Frase para llevarte: La conciencia sin movimiento también es una forma de autoengaño.";
-            } else {
-                titulo.textContent = `Perfil 3 — El Autoengañado Crónico (${pts} puntos)`;
-                desc.textContent = "Esto no empezó este mes. Hace tiempo vienes repitiendo el mismo patrón con distintos nombres: una tarjeta, una deuda chica, una salida, un gasto '...necesario...'.\n\nEste perfil no significa que no puedas salir. Significa que ya no te sirve seguir diciendo que '...es solo una mala racha...'. Cuando una mala racha se repite demasiado, se vuelve sistema.";
-                frase.textContent = "Frase para llevarte: No estás trabado porque no puedes. Estás trabado porque todavía no nombraste el patrón.";
-            }
-            if (!appData.completados.includes(1)) {
-                appData.completados.push(1);
-                saveApp();
-            }
-            resBox.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // ================= LÓGICA DÍA 2 (31 DÍAS) =================
-        function initDia2() {
-            const selDia = document.getElementById('d2-dia');
-            const selFiltro = document.getElementById('d2-filtro');
-            selDia.innerHTML = '';
-            selFiltro.innerHTML = '<option value="todos">Todos los días (1 a 31)</option>';
-            for (let i = 1; i <= 31; i++) {
-                selDia.innerHTML += `<option value="${i}">Día ${i}</option>`;
-                selFiltro.innerHTML += `<option value="${i}">Día ${i}</option>`;
-            }
-            renderGastosD2();
-        }
-
-        function agregarGastoD2() {
-            const dia = document.getElementById('d2-dia').value;
-            const momento = document.getElementById('d2-momento').value;
-            const desc = document.getElementById('d2-desc').value.trim();
-            const monto = parseFloat(document.getElementById('d2-monto').value);
-
-            if (!desc || isNaN(monto) || monto <= 0) {
-                alert("Completa la descripción y un monto válido.");
-                return;
-            }
-            appData.d2Gastos.unshift({ id: Date.now(), dia, momento, desc, monto });
-            saveApp();
-            document.getElementById('d2-desc').value = '';
-            document.getElementById('d2-monto').value = '';
-            renderGastosD2();
-        }
-
-        function borrarGastoD2(id) {
-            appData.d2Gastos = appData.d2Gastos.filter(g => g.id !== id);
-            saveApp();
-            renderGastosD2();
-        }
-
-        function renderGastosD2() {
-            const filtro = document.getElementById('d2-filtro').value;
-            const lista = document.getElementById('d2-lista');
-            const filtrados = filtro === 'todos' ? appData.d2Gastos : appData.d2Gastos.filter(g => g.dia === filtro);
-
-            const total = filtrados.reduce((sum, g) => sum + g.monto, 0);
-            document.getElementById('d2-total').textContent = `$${total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-
-            if (filtrados.length === 0) {
-                lista.innerHTML = `<p class="text-sm text-neutral-500 text-center py-4">Aún no hay gastos cargados aquí.</p>`;
-                return;
-            }
-
-            lista.innerHTML = '';
-            filtrados.forEach(g => {
-                const row = document.createElement('div');
-                row.className = "bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex justify-between items-center";
-                row.innerHTML = `
-                    <div>
-                        <span class="text-xs font-bold text-[#9CCCE3]">Día ${g.dia}</span> • <span class="text-xs text-neutral-400">${g.momento}</span>
-                        <p class="text-sm font-medium text-white mt-0.5">${g.desc}</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="font-bold text-base text-[#F29F05]">$${g.monto.toLocaleString('es-AR')}</span>
-                        <button type="button" onclick="borrarGastoD2(${g.id})" class="text-neutral-500 hover:text-rose-400 font-bold text-lg cursor-pointer">×</button>
-                    </div>
-                `;
-                lista.appendChild(row);
-            });
-        }
-
-        // ================= LÓGICA DÍA 3 =================
-        function analizarTarjetaD3() {
-            const nombre = document.getElementById('d3-nombre').value.trim();
-            const deuda = parseFloat(document.getElementById('d3-deuda').value);
-            const tasa = parseFloat(document.getElementById('d3-tasa').value);
-            const cargoFijo = parseFloat(document.getElementById('d3-cargo-fijo').value) || 0;
-            const minimo = parseFloat(document.getElementById('d3-minimo').value);
-
-            if (!nombre || isNaN(deuda) || isNaN(tasa) || isNaN(minimo)) {
-                alert("Completa todos los datos de tu tarjeta principal.");
-                return;
-            }
-
-            // Conversión financiera exacta de Tasa Efectiva Anual (CFTEA/TEA/TCEA) a Tasa Efectiva Mensual
-            const tasaMensualEfectiva = Math.pow(1 + (tasa / 100), 1 / 12) - 1;
-            const costoMensualTotal = (deuda * tasaMensualEfectiva) + cargoFijo;
-
-            appData.d3Tarjeta = { nombre, deuda, tasa, cargoFijo, minimo };
-            saveApp();
-
-            document.getElementById('resultado-d3').style.display = 'block';
-            document.getElementById('d3-tasa-mensual').textContent = `${(tasaMensualEfectiva * 100).toFixed(2)}%`;
-            document.getElementById('d3-interes-mes').textContent = `$${costoMensualTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-            const estadoEl = document.getElementById('d3-estado');
-            const expEl = document.getElementById('d3-explicacion');
-
-            if (minimo <= costoMensualTotal) {
-                estadoEl.textContent = "CRÍTICO: El mínimo no cubre los intereses";
-                estadoEl.className = "font-bold text-rose-400 text-right";
-                expEl.innerHTML = `Cada mes que pagas solo el mínimo en <strong>${nombre}</strong>, generas $${costoMensualTotal.toFixed(0)} solo en intereses y cargos. Como tu mínimo ($${minimo.toLocaleString('es-AR')}) es menor o igual a ese costo, <strong>tu deuda crece sola aunque dejes de usar la tarjeta</strong>.`;
-            } else {
-                estadoEl.textContent = "ALERTA: Estás regalando margen al banco";
-                estadoEl.className = "font-bold text-[#F29F05] text-right";
-                expEl.innerHTML = `En <strong>${nombre}</strong>, de los $${minimo.toLocaleString('es-AR')} de pago mínimo, <strong>$${costoMensualTotal.toFixed(0)} se van directo a intereses y cargos</strong> y apenas una fracción reduce tu deuda real.`;
-            }
-        }
-
-        // ================= LÓGICA DÍA 4 (CLAUDE ÍNTEGRO) =================
-        function renderDia4() {
-            const cont = document.getElementById('contenedor-test-d4');
-            cont.innerHTML = '';
-
-            PREGUNTAS_DIA_4.forEach((item, qIdx) => {
-                const box = document.createElement('div');
-                box.className = "bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-2.5";
-                let htmlOpts = `<p class="font-bold text-base text-white">${item.q}</p><div class="space-y-2 pt-1">`;
-
-                item.opts.forEach((opt) => {
-                    const selected = appData.d4Respuestas[qIdx] === opt.p;
-                    htmlOpts += `
-                        <button type="button" onclick="seleccionarOptD4(${qIdx}, ${opt.p})" class="w-full text-left p-3 rounded-xl border text-sm transition cursor-pointer ${selected ? 'bg-[#0F3D74] border-[#9CCCE3] text-white font-semibold' : 'bg-neutral-950 border-neutral-800 text-neutral-300 hover:border-neutral-600'}">
-                            ${opt.t}
-                        </button>
-                    `;
-                });
-                htmlOpts += `</div>`;
-                box.innerHTML = htmlOpts;
-                cont.appendChild(box);
-            });
-        }
-
-        function seleccionarOptD4(qIdx, puntos) {
-            appData.d4Respuestas[qIdx] = puntos;
-            saveApp();
-            renderDia4();
-        }
-
-        function calcularTestD4() {
-            const keys = Object.keys(appData.d4Respuestas);
-            if (keys.length < 8) {
-                alert("Responde las 8 preguntas para conocer tu patrón de ahorro.");
-                return;
-            }
-            const total = Object.values(appData.d4Respuestas).reduce((a, b) => a + b, 0);
-            const resBox = document.getElementById('resultado-d4');
-            const titulo = document.getElementById('titulo-perfil-d4');
-            const desc = document.getElementById('desc-perfil-d4');
-            const frase = document.getElementById('frase-perfil-d4');
-
-            resBox.style.display = 'block';
-            if (total <= 12) {
-                titulo.textContent = `Perfil A — El Eterno Postergador (${total} puntos)`;
-                desc.textContent = "Tu problema no es que no entiendas el ahorro. Tu problema es que lo tratas como una tarea que necesita el momento perfecto.\n\nY el momento perfecto, casualmente, siempre está en el futuro. \"...cuando me organice...\" / \"...cuando pase este mes...\" / \"...cuando termine de acomodarme...\"\n\nSuena razonable. Pero también suena igual que el mes pasado. El Eterno Postergador no dice \"no quiero ahorrar\". Dice algo mucho más convincente: \"Todavía no es el momento.\"\n\nY ahí está la trampa. Porque mientras esperas que el mes esté ordenado para empezar, el mes te pasa por arriba.";
-                frase.textContent = "Si siempre necesitas empezar desde cero, quizás el problema no es el desorden. Es la excusa de necesitar un comienzo perfecto.";
-            } else if (total <= 18) {
-                titulo.textContent = `Perfil B — El Ahorrista del Resto (${total} puntos)`;
-                desc.textContent = "Tú no decides cuánto ahorrar. Le preguntas al mes cuánto tuvo ganas de dejarte. Y casi siempre, el mes te contesta lo mismo: \"...nada...\"\n\nEste patrón es más común de lo que parece. No se siente como autoengaño porque parece prudente. Primero pagas. Primero cumples. Primero cubres lo urgente. Después, si queda algo, ahorras.\n\nEl problema es que el Ahorro del Resto casi nunca compite bien contra la vida real. Siempre aparece una salida, una compra pequeña, un envío, una promoción, una transferencia, algo para comer, una \"...necesidad...\" que justo cae antes de que puedas guardar algo.\n\nNo eres irresponsable. Pero estás dejando que tu ahorro sea lo último en la fila. Y lo último en la fila, en nuestra región, muchas veces no llega.";
-                frase.textContent = "Si tu ahorro depende de lo que sobra, no tienes un plan de ahorro. Tienes una esperanza mensual.";
-            } else {
-                titulo.textContent = `Perfil C — El Condicionado (${total} puntos)`;
-                desc.textContent = "Tú ahorrarías. Pero con condiciones. Si el sueldo fuera un poco mejor. Si no hubiera inflación. Si no aparecieran imprevistos. Si este mes no viniera tan cargado. Si nadie pidiera dinero. Si la tarjeta no estuviera tan pesada. Si la vida colaborara un poco.\n\nY ojo: algunas de esas cosas son reales. El problema es que las convertiste en permiso para no empezar.\n\nEl Condicionado no está mintiendo del todo. Tiene razones. Tiene contexto. Tiene números que explican parte del problema. Pero también tiene una trampa interna: espera que el entorno se acomode antes de tomar una decisión propia.\n\nY el entorno rara vez avisa. Un mes es el alquiler. Otro mes es la tarjeta. Otro mes es el cumpleaños. Otro mes es el arreglo. Otro mes es el cansancio. Entonces el ahorro queda atado a un milagro: que todo salga bien al mismo tiempo.";
-                frase.textContent = "Si solo puedes ahorrar cuando todo acompaña, todavía no tienes un hábito. Tienes una condición.";
-            }
-            resBox.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function guardarMiniAccionD4() {
-            const pct = document.getElementById('d4-porcentaje').value.trim();
-            if (!pct || parseFloat(pct) <= 0) {
-                alert("Completa el porcentaje mínimo que vas a separar en tu próximo cobro.");
-                return;
-            }
-            appData.d4Porcentaje = pct;
-            saveApp();
-            completarDia(4, 'dia5');
-        }
-
-        // ================= LÓGICA DÍA 7 =================
-        function renderDia7() {
-            const cont = document.getElementById('contenedor-fugas-d7');
-            cont.innerHTML = '';
-            CATEGORIAS_FUGAS_D7.forEach((cat, idx) => {
-                const val = appData.d7Fugas[idx] || '';
-                const div = document.createElement('div');
-                div.className = "bg-neutral-900 border border-neutral-800 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-                div.innerHTML = `
-                    <div class="pr-2">
-                        <h4 class="font-bold text-base text-white">${idx + 1}. ${cat.nombre}</h4>
-                        <p class="text-xs text-neutral-400 mt-0.5">${cat.desc}</p>
-                    </div>
-                    <div class="flex items-center space-x-2 shrink-0">
-                        <span class="text-neutral-400 font-bold">$</span>
-                        <input type="number" min="0" value="${val}" onchange="actualizarFugaD7(${idx}, this.value)" placeholder="0" class="w-32 bg-neutral-950 border border-[#F29F05]/50 rounded-xl px-3 py-2 text-base font-bold text-white text-right">
-                    </div>
-                `;
-                cont.appendChild(div);
-            });
-        }
-
-        function actualizarFugaD7(idx, valor) {
-            appData.d7Fugas[idx] = parseFloat(valor) || 0;
-            saveApp();
-        }
-
-        function calcularMapaFugasD7() {
-            const totalMes = appData.d7Fugas.reduce((a, b) => a + b, 0);
-            const totalAnio = totalMes * 12;
-
-            document.getElementById('resultado-d7').style.display = 'block';
-            document.getElementById('d7-total-mes').textContent = `$${totalMes.toLocaleString('es-AR')}`;
-            document.getElementById('d7-total-anio').textContent = `$${totalAnio.toLocaleString('es-AR')}`;
-
-            const ranking = CATEGORIAS_FUGAS_D7.map((c, i) => ({
-                nombre: c.nombre,
-                monto: appData.d7Fugas[i] || 0
-            })).sort((a, b) => b.monto - a.monto);
-
-            const top3Div = document.getElementById('d7-top3');
-            top3Div.innerHTML = '';
-            ranking.slice(0, 3).forEach((item, pos) => {
-                top3Div.innerHTML += `
-                    <div class="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex justify-between items-center text-sm">
-                        <span><strong class="text-[#F29F05]">${pos + 1}° lugar:</strong> ${item.nombre}</span>
-                        <span class="font-bold text-white">$${item.monto.toLocaleString('es-AR')}/mes</span>
-                    </div>
-                `;
-            });
-
-            const maxVal = ranking[0].monto || 1;
-            const barrasDiv = document.getElementById('d7-barras');
-            barrasDiv.innerHTML = '';
-            ranking.forEach(item => {
-                if (item.monto > 0) {
-                    const pct = Math.round((item.monto / maxVal) * 100);
-                    barrasDiv.innerHTML += `
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-xs text-neutral-300">
-                                <span>${item.nombre}</span>
-                                <span class="font-bold">$${item.monto.toLocaleString('es-AR')}</span>
-                            </div>
-                            <div class="w-full bg-neutral-950 h-2.5 rounded-full overflow-hidden">
-                                <div style="width: ${pct}%; background-color: #F29F05;" class="h-full rounded-full"></div>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-            if (!appData.completados.includes(7)) {
-                appData.completados.push(7);
-                saveApp();
-            }
-            document.getElementById('resultado-d7').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // ================= INICIALIZACIÓN =================
-        renderDashboard();
-        renderDia1();
-        initDia2();
-        renderDia4();
-        renderDia7();
-
-        if (appData.d3Tarjeta) {
-            document.getElementById('d3-nombre').value = appData.d3Tarjeta.nombre;
-            document.getElementById('d3-deuda').value = appData.d3Tarjeta.deuda;
-            document.getElementById('d3-tasa').value = appData.d3Tarjeta.tasa;
-            document.getElementById('d3-cargo-fijo').value = appData.d3Tarjeta.cargoFijo || 0;
-            document.getElementById('d3-minimo').value = appData.d3Tarjeta.minimo;
-        }
-        if (appData.d4Porcentaje) {
-            document.getElementById('d4-porcentaje').value = appData.d4Porcentaje;
-        }
-    </script>
-</body>
-</html>
+        <!-- ==================== DÍA 6: TU HISTORIA FINANCIERA EN 10 PREGUNTAS ==================== -->
+        <section id="view-dia6" style="display:none;" class="space-y-6">
+            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg space-y-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 6 • Auditoría Interna</span>
+                <h2 class="font-extrabold text-2xl text-white">Tu Historia Financiera en 10 Preguntas</h2>
+                <p class="text-base text-neutral-300 leading-relaxed">Tu relación con el dinero no empezó este mes. Responde con total honestidad estas preguntas clave para identificar tu patrón[cite: 20, 21]
