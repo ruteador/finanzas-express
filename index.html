@@ -1,768 +1,2003 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finanzas Express — Reto de 7 Días (21DP)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #1A1A1A; color: #F8FAFC; margin: 0; padding: 0; font-size: 16px; line-height: 1.6; }
-        h1, h2, h3, h4 { font-family: 'Rubik', sans-serif; }
-        .title-main { font-size: 24px; font-weight: 700; }
-        .subtitle-main { font-size: 19px; font-weight: 600; }
-        .btn-primary { background-color: #0F3D74; color: #FFFFFF; }
-        .btn-primary:hover { background-color: #0b2e59; }
-        .btn-accent { background-color: #F29F05; color: #1A1A1A; }
-        .btn-accent:hover { background-color: #d98d04; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finanzas Express — Reto de 7 Días | 21DP</title>
+  <style>
+    :root {
+      --bg-primary: #0b1120;
+      --bg-card: #111827;
+      --bg-card-inner: #0f172a;
+      --border-subtle: #1e293b;
+      --border-accent: #334155;
+      --brand-blue: #0f4c81;
+      --brand-blue-hover: #1d4ed8;
+      --brand-yellow: #facc15;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    /* Top Bar */
+    .topbar {
+      background: linear-gradient(90deg, #0b3a66 0%, #0f4c81 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background-color: var(--brand-yellow);
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .brand-title h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .brand-title p {
+      font-size: 12px;
+      color: #bfdbfe;
+    }
+
+    .btn-nav {
+      background: rgba(15, 23, 42, 0.75);
+      color: #f8fafc;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-nav:hover {
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    /* Day Navigation Pills */
+    .day-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      scrollbar-width: thin;
+    }
+
+    .day-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .day-pill:hover {
+      border-color: var(--border-accent);
+      color: #fff;
+    }
+
+    .day-pill.active {
+      background: var(--brand-blue);
+      border-color: #3b82f6;
+      color: #fff;
+    }
+
+    .dot-done {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--success);
+      display: inline-block;
+    }
+
+    /* Cards & Typography */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #60a5fa;
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      margin-bottom: 12px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Callout / Insight Boxes */
+    .callout {
+      background-color: var(--bg-card-inner);
+      border-left: 3px solid #3b82f6;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .callout.yellow {
+      border-left-color: var(--brand-yellow);
+    }
+
+    .callout.green {
+      border-left-color: var(--success);
+    }
+
+    .callout.amber {
+      border-left-color: var(--warning);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 560px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      background-color: var(--bg-card-inner);
+      border: 1px solid var(--border-accent);
+      border-radius: 9px;
+      padding: 10px 12px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #3b82f6;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 68px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: var(--brand-blue);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background-color: var(--brand-blue-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card-inner);
+      border: 1px solid var(--border-accent);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background-color: #1e293b;
+      color: #fff;
+    }
+
+    .btn-danger-outline {
+      background-color: transparent;
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+      padding: 8px 14px;
+      font-size: 13px;
+      width: auto;
+    }
+
+    .btn-danger-outline:hover {
+      background-color: rgba(239, 68, 68, 0.15);
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12.5px;
+      width: auto;
+    }
+
+    /* Home Grid */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .day-card-btn {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 18px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .day-card-btn:hover {
+      border-color: #3b82f6;
+      transform: translateY(-1px);
+    }
+
+    .day-card-meta {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .day-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 2px 0;
+    }
+
+    .day-card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .status-badge {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #1e293b;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .status-badge.done {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    /* Checklist & Radio Lists */
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      padding: 11px 13px;
+      border-radius: 9px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: border-color 0.15s ease;
+    }
+
+    .check-item:hover {
+      border-color: var(--border-accent);
+    }
+
+    .check-item input {
+      margin-top: 3px;
+      accent-color: #3b82f6;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Tabs inside Day */
+    .subtabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .subtab {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .subtab.active {
+      background: #1e293b;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+
+    /* Summary Metrics */
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      padding: 13px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .metric-label {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brand-yellow);
+    }
+
+    /* Records List */
+    .record-item {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .record-meta {
+      font-size: 12px;
+      color: #60a5fa;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .record-tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 5px;
+      margin-left: 6px;
+      background: #1e293b;
+      color: var(--text-secondary);
+    }
+
+    .record-tag.fijo {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fcd34d;
+    }
+
+    .record-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .record-amount {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand-yellow);
+      white-space: nowrap;
+    }
+
+    .btn-del {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px 6px;
+    }
+
+    .btn-del:hover {
+      color: var(--danger);
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      background: var(--bg-card-inner);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Traffic Light */
+    .traffic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 560px) {
+      .traffic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .traffic-box {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .traffic-box.verde { border-top: 3px solid var(--success); }
+    .traffic-box.amarillo { border-top: 3px solid var(--warning); }
+    .traffic-box.rojo { border-top: 3px solid var(--danger); }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 28px;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Header -->
-    <header style="background-color: #0F3D74;" class="border-b border-blue-900 px-4 py-3.5 sticky top-0 z-50 shadow-lg">
-        <div class="max-w-lg mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div style="background-color: #F29F05; color: #1A1A1A;" class="px-2.5 py-1.5 rounded-xl font-extrabold text-lg shadow">21DP</div>
-                <div>
-                    <h1 class="font-bold text-lg leading-tight text-white">Finanzas Express</h1>
-                    <p class="text-xs text-[#9CCCE3] font-medium">Reto de 7 Días • Diagnóstico Sin Filtro</p>
-                </div>
-            </div>
-            <button type="button" onclick="irVista('dashboard')" id="btnMenu" style="display:none;" class="text-sm bg-black/40 hover:bg-black/60 text-white px-3.5 py-2 rounded-xl font-semibold cursor-pointer border border-white/15">
-                ⬅ Inicio
-            </button>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">21DP</div>
+        <div class="brand-title">
+          <h1>Finanzas Express</h1>
+          <p>Reto de 7 Días • Diagnóstico Sin Filtro</p>
         </div>
-    </header>
+      </div>
+      <button class="btn-nav" onclick="goHome()">← Inicio</button>
+    </div>
+  </header>
 
-    <!-- Main Container -->
-    <main class="max-w-lg w-full mx-auto p-4 pb-24 flex-grow space-y-6">
+  <main class="container">
+    <!-- Day Navigation -->
+    <nav class="day-pills" id="dayPills"></nav>
 
-        <!-- ==================== DASHBOARD / INICIO ==================== -->
-        <section id="view-dashboard" class="space-y-6">
-            <div style="background: linear-gradient(135deg, #0F3D74 0%, #09264a 100%);" class="p-6 rounded-2xl shadow-xl border border-[#9CCCE3]/30 space-y-3">
-                <span style="color: #F29F05; background-color: rgba(242, 159, 5, 0.15);" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-[#F29F05]/30">Tu Hoja de Ruta</span>
-                <h2 class="title-main text-white leading-snug">7 días para ver lo que hoy no estás viendo</h2>
-                <p class="text-base text-blue-100 leading-relaxed">No avances por avanzar. No leas como quien scrollea. Cada día activa un mecanismo concreto para salir de la niebla financiera.</p>
-                <div class="pt-3 border-t border-white/10 flex justify-between items-center text-sm">
-                    <span class="text-[#9CCCE3]">Progreso del reto:</span>
-                    <span id="progreso-texto" class="font-bold text-[#F29F05]">0 de 7 completados</span>
-                </div>
+    <!-- HOME VIEW -->
+    <section id="view-home">
+      <div class="card">
+        <div class="eyebrow">BIENVENIDA • SISTEMA DE 7 DÍAS</div>
+        <h2>Claridad financiera en 7 pasos concretos</h2>
+        <p>Este espacio reúne las actividades y herramientas prácticas de cada día. No hace falta hacerlo perfecto ni llenar todo de una sola vez: lo que registras queda guardado en este navegador y se reutiliza en los días siguientes para ahorrarte trabajo.</p>
+        <div class="callout yellow">
+          <div class="callout-title">Cómo aprovechar este recorrido</div>
+          <div>Avanza un día a la vez. Si prefieres trabajar con papel y lápiz en algún ejercicio, hazlo con total libertad y vuelca aquí solo los datos clave para que el sistema los conecte por ti.</div>
+        </div>
+      </div>
+
+      <div class="home-grid" id="homeCards"></div>
+    </section>
+
+    <!-- DAY 1 VIEW -->
+    <section id="view-day1" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 1 • ILUSIÓN DE PRIVACIDAD</div>
+        <h2>Diagnóstico inicial y autoengaños cotidianos</h2>
+        <p>El cambio real no empieza cuando aumentan los ingresos, sino cuando dejas de contarte la misma explicación de siempre. Completa estas dos piezas breves: tus respuestas sirven de espejo en los días siguientes.</p>
+      </div>
+
+      <!-- Actividad Cap 1 -->
+      <div class="card">
+        <h3>1. Tu primera actividad (60 segundos por pregunta)</h3>
+        <p>Escribe esto para ti. Nadie más lo va a leer. No busques quedar bien ni suavizar la respuesta; responde lo primero que aparezca antes de que tu mente arme una excusa cómoda.</p>
+
+        <div class="form-group">
+          <label for="d1-q1">1. ¿En qué momento del mes empiezas a sentir que el dinero no alcanza?</label>
+          <input type="text" id="d1-q1" placeholder="Ej: A mitad de mes, la última semana, apenas pago la tarjeta..." oninput="saveDay1()" />
+        </div>
+
+        <div class="form-group">
+          <label for="d1-q2">2. ¿Qué explicación te das cuando pasa esto?</label>
+          <input type="text" id="d1-q2" placeholder="Ej: Fue un mes raro, hubo un imprevisto, todo subió..." oninput="saveDay1()" />
+        </div>
+
+        <div class="form-group">
+          <label for="d1-q3">3. ¿Es la misma explicación que el mes anterior? (Detente un segundo aquí. Esta es la pregunta que más revela.)</label>
+          <input type="text" id="d1-q3" placeholder="Ej: Sí, casi todos los meses digo lo mismo..." oninput="saveDay1()" />
+        </div>
+
+        <div class="callout">
+          <div>Si prefieres escribir esto en papel o en una nota privada, hazlo como te resulte más cómodo. Lo importante es que quede registrado para mirarlo más adelante con calma.</div>
+        </div>
+      </div>
+
+      <!-- Checklist Dia 1 -->
+      <div class="card">
+        <h3>2. Checklist: ¿Cuántos autoengaños tienes hoy?</h3>
+        <p>Lee cada afirmación y marca las que te representan en la vida real. No marques lo que debería pasarte; marca lo que ocurre de verdad. Cada marca activa alertas útiles en los próximos días.</p>
+
+        <div id="d1-checklist-container"></div>
+
+        <div class="metric-row" style="margin-top: 14px;">
+          <span class="metric-label">Puntaje actual del checklist</span>
+          <span class="metric-value"><span id="d1-score">0</span> / 19 puntos</span>
+        </div>
+
+        <div id="d1-profile-box" class="callout yellow"></div>
+      </div>
+    </section>
+
+    <!-- DAY 2 VIEW -->
+    <section id="view-day2" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 2 • VISIBILIDAD REAL</div>
+        <h2>Ver lo que pasa sin adivinar</h2>
+        <p>No necesitas armar una planilla gigante ni hacer cálculos complicados. Hoy solo hay dos pasos cortos: mirar un momento hacia atrás para detectar fugas evidentes y anotar lo que se mueve hoy en tres momentos breves. Menos culpa, más claridad.</p>
+        <div id="d2-d1-alert" class="callout amber hidden"></div>
+      </div>
+
+      <!-- Actividad del Día 2 -->
+      <div class="card">
+        <h3>1. Actividad del Día 2: Revisar tus movimientos</h3>
+        <p>Confiar solo en la memoria suele ocultar en qué se fue el dinero. Abre el historial de <strong>todas</strong> tus cuentas, tarjetas y billeteras de los últimos 30 días —y mira los últimos 3 meses para detectar gastos repetitivos que no sean imprescindibles (fuera de alquiler, servicios o comida básica).</p>
+        <div class="callout">
+          <div class="callout-title">Sin presión ni fórmulas rígidas</div>
+          <div>Sabemos que revisar extractos en el celular puede ser incómodo o llevar tiempo. Si te resulta más fácil, hazlo con papel y lápiz o en una nota y anota aquí lo principal; hacerlo es por tu propio beneficio, para dejar de avanzar a ciegas.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="d2-small-sum">Suma aproximada de gastos pequeños o "que no cuentan" en los últimos 30 días ($)</label>
+          <input type="number" id="d2-small-sum" placeholder="0.00" step="0.01" oninput="saveDay2Activity()" />
+        </div>
+
+        <label style="margin-bottom:8px;">Tres gastos repetitivos de los últimos 3 meses que podrían no haber estado:</label>
+
+        <div class="form-grid">
+          <input type="text" id="d2-rep1" placeholder="Gasto repetitivo 1 (ej: suscripción, delivery...)" oninput="saveDay2Activity()" />
+          <select id="d2-rep1-why" onchange="saveDay2Activity()">
+            <option value="">¿Lo decidí o simplemente pasó?</option>
+            <option value="Lo decidí conscientemente">Lo decidí conscientemente</option>
+            <option value="Simplemente pasó (piloto automático)">Simplemente pasó (piloto automático)</option>
+          </select>
+        </div>
+
+        <div class="form-grid">
+          <input type="text" id="d2-rep2" placeholder="Gasto repetitivo 2" oninput="saveDay2Activity()" />
+          <select id="d2-rep2-why" onchange="saveDay2Activity()">
+            <option value="">¿Lo decidí o simplemente pasó?</option>
+            <option value="Lo decidí conscientemente">Lo decidí conscientemente</option>
+            <option value="Simplemente pasó (piloto automático)">Simplemente pasó (piloto automático)</option>
+          </select>
+        </div>
+
+        <div class="form-grid">
+          <input type="text" id="d2-rep3" placeholder="Gasto repetitivo 3" oninput="saveDay2Activity()" />
+          <select id="d2-rep3-why" onchange="saveDay2Activity()">
+            <option value="">¿Lo decidí o simplemente pasó?</option>
+            <option value="Lo decidí conscientemente">Lo decidí conscientemente</option>
+            <option value="Simplemente pasó (piloto automático)">Simplemente pasó (piloto automático)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Registro Unificado: 3 Momentos + Facturas/Impuestos + Vista 30 Días -->
+      <div class="card">
+        <h3>2. Registro de Gastos (3 Momentos + Planilla de 30 Días)</h3>
+        <p>Esperar hasta la noche para recordar todo suele terminar en olvidos y en un <em>"mañana lo hago bien"</em>. Anotar en tres momentos cortos (<strong>Mañana</strong>, <strong>Mediodía / Tarde</strong> y <strong>Noche</strong>) toma menos de un minuto por vez y te ayuda a ver <strong>dónde te encuentras</strong> en cada tramo del día.</p>
+        <p>Registra aquí tus decisiones del día y también tus pagos de <strong>impuestos, servicios, facturas o tarjeta</strong> el día que los pagas: todo se agrupa solo por semana y alimenta el total del ciclo sin duplicar trabajo.</p>
+
+        <div class="subtabs">
+          <button class="subtab active" id="tab-btn-diario" onclick="switchD2Tab('diario')">Gasto diario (3 Momentos)</button>
+          <button class="subtab" id="tab-btn-fijo" onclick="switchD2Tab('fijo')">+ Impuesto / Servicio / Factura</button>
+        </div>
+
+        <!-- Form Diario -->
+        <div id="d2-form-diario">
+          <div class="form-grid">
+            <div>
+              <label for="d2-day">Día del ciclo / mes (1 a 31)</label>
+              <select id="d2-day"></select>
             </div>
-
-            <div class="space-y-3" id="menu-dias"></div>
-        </section>
-
-        <!-- ==================== DÍA 1: CHECKLIST + AUDIO ==================== -->
-        <section id="view-dia1" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg space-y-2">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 1 • Diagnóstico Conductual</span>
-                <h2 class="title-main text-white">¿Cuántos Autoengaños Tienes?</h2>
-                <p class="text-base text-neutral-300 leading-relaxed">No hace falta que te castigues. Tampoco hace falta que te mientas. Este checklist no está para decirte que eres un desastre con la plata. Está para mostrarte cuántas veces ya sabías lo que estaba pasando... y elegiste mirar para otro lado.</p>
+            <div>
+              <label for="d2-moment">Momento del día</label>
+              <select id="d2-moment">
+                <option value="🌅 Mañana">🌅 Mañana</option>
+                <option value="🌤️ Mediodía / Tarde" selected>🌤️ Mediodía / Tarde</option>
+                <option value="🌙 Noche">🌙 Noche</option>
+              </select>
             </div>
+          </div>
+          <div class="form-group">
+            <label for="d2-desc">¿Qué fue? (Descripción corta)</label>
+            <input type="text" id="d2-desc" placeholder="Ej: Café, transporte, comida rápida, transferencia..." />
+          </div>
+          <div class="form-group">
+            <label for="d2-amount">¿Cuánto? ($ exacto)</label>
+            <input type="number" id="d2-amount" placeholder="0.00" step="0.01" />
+          </div>
+          <button class="btn" onclick="addExpense('diario')">+ Guardar gasto del momento</button>
+        </div>
 
-            <!-- Audio de Bienvenida -->
-            <div class="bg-[#0F3D74]/40 border border-[#9CCCE3]/40 p-4 rounded-2xl space-y-2.5">
-                <div class="flex items-center space-x-2">
-                    <span class="text-xl">🎧</span>
-                    <div>
-                        <h3 class="subtitle-main text-white text-base">Audio de Bienvenida — Día 1</h3>
-                        <p class="text-xs text-[#9CCCE3]">Escucha esto antes de marcar el checklist</p>
-                    </div>
-                </div>
-                <audio controls class="w-full h-10 rounded-lg" preload="none">
-                    <source src="Dia1B_Audio_Bienvenida_LATAM(1).mp3" type="audio/mpeg">
-                    Tu navegador no soporta el reproductor de audio.
-                </audio>
+        <!-- Form Impuestos / Servicios / Facturas -->
+        <div id="d2-form-fijo" class="hidden">
+          <div class="form-grid">
+            <div>
+              <label for="d2-fijo-day">Día en que se pagó (1 a 31)</label>
+              <select id="d2-fijo-day"></select>
             </div>
-
-            <!-- Checklist 19 afirmaciones -->
-            <div class="space-y-3" id="contenedor-checklist-d1"></div>
-
-            <div class="bg-neutral-900 border border-neutral-700 p-4 rounded-2xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <span class="text-base font-medium text-neutral-300">Afirmaciones marcadas:</span>
-                    <span id="contador-d1" class="font-extrabold text-2xl text-[#F29F05]">0 / 19</span>
-                </div>
-                <button type="button" onclick="calcularPerfilDia1()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
-                    Ver Mi Perfil Detectado
-                </button>
+            <div>
+              <label for="d2-fijo-cat">Tipo de pago</label>
+              <select id="d2-fijo-cat">
+                <option value="Servicio / Factura">Servicio / Factura (luz, agua, internet...)</option>
+                <option value="Impuesto / Tasa">Impuesto / Tasa</option>
+                <option value="Pago de Tarjeta">Pago de Tarjeta de Crédito</option>
+                <option value="Alquiler / Cuota fija">Alquiler / Cuota fija</option>
+              </select>
             </div>
+          </div>
+          <div class="form-group">
+            <label for="d2-fijo-desc">Detalle del pago</label>
+            <input type="text" id="d2-fijo-desc" placeholder="Ej: Factura de electricidad, resumen Visa, impuesto..." />
+          </div>
+          <div class="form-group">
+            <label for="d2-fijo-amount">¿Cuánto pagaste? ($ exacto)</label>
+            <input type="number" id="d2-fijo-amount" placeholder="0.00" step="0.01" />
+          </div>
+          <button class="btn" onclick="addExpense('fijo')">+ Guardar factura / servicio / impuesto</button>
+        </div>
+      </div>
 
-            <div id="resultado-d1" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-4 shadow-xl">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Resultado del Diagnóstico</span>
-                <h3 id="titulo-perfil-d1" class="subtitle-main text-white"></h3>
-                <p id="desc-perfil-d1" class="text-base text-neutral-300 leading-relaxed whitespace-pre-line"></p>
-                <div class="bg-black/40 p-3.5 rounded-xl border border-neutral-700">
-                    <p id="frase-perfil-d1" class="text-sm font-bold text-[#9CCCE3] italic"></p>
-                </div>
-                <button type="button" onclick="completarDia(1, 'dia2')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base cursor-pointer">
-                    Continuar al Día 2 ➔
-                </button>
+      <!-- Resumen Semanal, Mensual y Listado -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+          <h3 style="margin:0;">3. Vista de 30 Días y Registros</h3>
+          <select id="d2-filter-day" style="width:auto; min-width:150px;" onchange="renderExpenses()">
+            <option value="all">Todos los días</option>
+          </select>
+        </div>
+
+        <div class="metric-row">
+          <span class="metric-label">Total acumulado del ciclo</span>
+          <span class="metric-value" id="d2-total-all">$0,00</span>
+        </div>
+
+        <div class="form-grid" style="margin-bottom:14px;">
+          <div class="metric-row" style="margin:0;">
+            <span class="metric-label">Decisiones diarias (3 Momentos)</span>
+            <strong style="color:#93c5fd;" id="d2-total-diario">$0,00</strong>
+          </div>
+          <div class="metric-row" style="margin:0;">
+            <span class="metric-label">Impuestos, servicios y facturas</span>
+            <strong style="color:#fcd34d;" id="d2-total-fijo">$0,00</strong>
+          </div>
+        </div>
+
+        <!-- Tabla de 4 Semanas -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Bloque semanal</th>
+                <th>Rango</th>
+                <th>Total acumulado</th>
+              </tr>
+            </thead>
+            <tbody id="d2-weeks-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Comparador simple Ingresos vs Gastos de la guía -->
+        <div class="callout" style="margin-top:14px;">
+          <div class="callout-title">Indicador clave del mes: Entradas vs. Salidas</div>
+          <div class="form-grid" style="margin-top:8px; margin-bottom:6px;">
+            <div>
+              <label for="d2-monthly-income">Ingresos del mes ($)</label>
+              <input type="number" id="d2-monthly-income" placeholder="0.00" step="0.01" oninput="saveDay2Income()" />
             </div>
-        </section>
-
-        <!-- ==================== DÍA 2: REGISTRO DE GASTOS ==================== -->
-        <section id="view-dia2" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl shadow-lg space-y-2">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 2 • Visibilidad Real</span>
-                <h2 class="title-main text-white">Registro de Gastos Diario (Método de los 3 Momentos)</h2>
-                <p class="text-base text-neutral-300 leading-relaxed">Registrar gastos no es hacerte sentir culpable ni armar una planilla gigante. Es dejar de vivir con una sensación y empezar a mirar un dato.</p>
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+              <span style="font-size:12px; color:var(--text-muted);">Diferencia actual:</span>
+              <strong id="d2-income-diff" style="font-size:17px; color:#fff;">Ingresa tus ingresos para comparar</strong>
             </div>
+          </div>
+        </div>
 
-            <!-- Carga de Movimiento -->
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
-                <h3 class="subtitle-main text-white text-lg">Cargar Gasto del Día</h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-1">Día del mes (1 a 31)</label>
-                        <select id="d2-dia" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3 py-2.5 text-base text-white"></select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-1">Momento del día</label>
-                        <select id="d2-momento" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3 py-2.5 text-base text-white">
-                            <option value="☀️ Mañana">☀️ Mañana</option>
-                            <option value="🌤️ Mediodía / Tarde">🌤️ Mediodía / Tarde</option>
-                            <option value="🌙 Noche">🌙 Noche</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">¿Qué fue? (Descripción corta)</label>
-                    <input type="text" id="d2-desc" placeholder="Ej: Café, transporte, tienda..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">¿Cuánto? ($ exacto)</label>
-                    <input type="number" id="d2-monto" inputmode="decimal" placeholder="0.00" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <button type="button" onclick="agregarGastoD2()" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base shadow cursor-pointer">
-                    + Guardar Gasto
-                </button>
-            </div>
+        <div id="d2-records-list" style="margin-top:14px; max-height:320px; overflow-y:auto;"></div>
 
-            <!-- Lista y Acumulado -->
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="subtitle-main text-white text-lg">Tus Registros</h3>
-                    <select id="d2-filtro" onchange="renderGastosD2()" class="bg-neutral-950 border border-neutral-700 rounded-xl px-3 py-1.5 text-sm text-white"></select>
-                </div>
-                <div class="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800 flex justify-between items-center">
-                    <span class="text-sm text-neutral-400">Total acumulado:</span>
-                    <span id="d2-total" class="font-extrabold text-xl text-[#F29F05]">$0.00</span>
-                </div>
-                <div id="d2-lista" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
-            </div>
+        <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <span style="font-size:12px; color:var(--text-muted);">Los datos quedan guardados en este dispositivo durante tu ciclo actual.</span>
+          <button class="btn btn-danger-outline" onclick="resetCycleDay2()">Reiniciar ciclo (empezar de cero)</button>
+        </div>
+      </div>
+    </section>
 
-            <button type="button" onclick="completarDia(2, 'dia3')" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
-                Marcar Día 2 Completado y Seguir ➔
-            </button>
-        </section>
+    <!-- DAY 3 VIEW -->
+    <section id="view-day3" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 3 • LA TARJETA Y DEUDAS</div>
+        <h2>El costo real de tu deuda</h2>
+        <p>El resumen de tarjeta muestra una tasa pequeña en letra grande, pero existe otro número obligatorio (CFTEA, CAT, TCEA, CAE o TEA) que suma intereses, comisiones, seguros e impuestos. Ese es el costo real.</p>
+        <div id="d3-context-alert" class="callout amber hidden"></div>
+      </div>
 
-        <!-- ==================== DÍA 3: EL COSTO REAL DE TU DEUDA ==================== -->
-        <section id="view-dia3" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4 shadow-lg">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Día 3 • El Costo Real de tu Deuda</span>
-                    <h2 class="title-main text-white mt-1">El camino que nadie planea recorrer</h2>
-                    <p class="text-base text-neutral-300 mt-1.5 italic">"Nadie decide arruinarse. La escalada es silenciosa. Y en cada paso hay una razón que suena lógica."</p>
-                </div>
+      <div class="card">
+        <h3>1. Datos de tu tarjeta principal</h3>
+        <div class="form-grid">
+          <div>
+            <label for="d3-card-name">Nombre de la tarjeta</label>
+            <input type="text" id="d3-card-name" placeholder="Ej: Visa, Mastercard..." oninput="calcDay3()" />
+          </div>
+          <div>
+            <label for="d3-debt">Deuda total actual ($)</label>
+            <input type="number" id="d3-debt" placeholder="0.00" step="0.01" oninput="calcDay3()" />
+          </div>
+        </div>
 
-                <!-- Infografía Completa de los 5 Pasos -->
-                <div class="space-y-3 text-sm">
-                    <div class="bg-neutral-950 p-4 rounded-xl border-l-4 border-[#9CCCE3] space-y-1">
-                        <p class="font-bold text-white text-base">1. El pago mínimo</p>
-                        <p class="text-neutral-300 italic">"Solo por este mes. El mes que viene lo arreglo."</p>
-                        <p class="text-xs text-[#9CCCE3]">Alivio inmediato. El problema no desaparece: crece con intereses.</p>
-                    </div>
-                    <div class="bg-neutral-950 p-4 rounded-xl border-l-4 border-[#F29F05] space-y-1">
-                        <p class="font-bold text-white text-base">2. El préstamo personal del banco</p>
-                        <p class="text-neutral-300 italic">"Cancelo la tarjeta y listo. Tasa más baja."</p>
-                        <p class="text-xs text-[#9CCCE3]">La tarjeta queda en cero. En 3 meses: préstamo corriendo + deuda nueva en la tarjeta.</p>
-                    </div>
-                    <div class="bg-neutral-950 p-4 rounded-xl border-l-4 border-amber-500 space-y-1">
-                        <p class="font-bold text-white text-base">3. El crédito de la app o billetera virtual</p>
-                        <p class="text-neutral-300 italic">"Aprobación en 2 minutos. Es solo para salir del paso."</p>
-                        <p class="text-xs text-neutral-400">Más rápido. Tasa más alta. El paso del que quieres salir lo creó el paso anterior.</p>
-                    </div>
-                    <div class="bg-neutral-950 p-4 rounded-xl border-l-4 border-orange-500 space-y-1">
-                        <p class="font-bold text-white text-base">4. La financiera</p>
-                        <p class="text-neutral-300 italic">"Menos requisitos. Más rápido."</p>
-                        <p class="text-xs text-neutral-400">La velocidad con que te aprueban es proporcional al costo que te van a cobrar.</p>
-                    </div>
-                    <div class="bg-neutral-950 p-4 rounded-xl border-l-4 border-rose-500 space-y-1">
-                        <p class="font-bold text-white text-base">5. El prestamista informal</p>
-                        <p class="text-neutral-300 italic">"Sin contrato. Sin espera."</p>
-                        <p class="text-xs text-neutral-400">Sin tasa oficial. Con intereses que se cobran de otra manera. Este no te llama. Te golpea la puerta.</p>
-                    </div>
-                    <div class="bg-[#0F3D74]/40 p-4 rounded-xl border border-[#9CCCE3]/40 space-y-1">
-                        <p class="font-bold text-white text-sm">Lo que todos los que llegaron al paso 5 tienen en común:</p>
-                        <p class="text-neutral-300 text-xs leading-relaxed">En algún momento creyeron que estaban en el paso 2 por última vez. La frase que te estás diciendo ahora mismo <em>"este mes veo cómo lo arreglo"</em> es exactamente la misma que se dijeron ellos.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="form-grid">
+          <div>
+            <label for="d3-rate">Tasa anual total % (CFTEA / CAT / TCEA / CAE / TEA)</label>
+            <input type="number" id="d3-rate" placeholder="Ej: 120" step="0.01" oninput="calcDay3()" />
+          </div>
+          <div>
+            <label for="d3-fee">Cargo fijo mensual adicional $ (si aplica)</label>
+            <input type="number" id="d3-fee" placeholder="0.00" step="0.01" oninput="calcDay3()" />
+          </div>
+        </div>
 
-            <!-- Guía de Países y Tasas -->
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3 text-sm">
-                <h3 class="subtitle-main text-white text-base">¿Cómo se llama tu indicador de Costo Financiero Total?</h3>
-                <p class="text-xs text-neutral-400">Por ley, no mires la tasa pequeña de arriba. Usa el indicador con todo incluido:</p>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800"><strong>Argentina / Uruguay:</strong> CFTEA con IVA</div>
-                    <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800"><strong>México:</strong> CAT</div>
-                    <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800"><strong>Perú:</strong> TCEA</div>
-                    <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800"><strong>Chile:</strong> CTC o CAE</div>
-                    <div class="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800 col-span-2"><strong>Colombia:</strong> TEA + Cuota de manejo</div>
-                </div>
-            </div>
+        <div class="form-grid">
+          <div>
+            <label for="d3-min">Pago mínimo actual ($)</label>
+            <input type="number" id="d3-min" placeholder="0.00" step="0.01" oninput="calcDay3()" />
+          </div>
+          <div>
+            <label for="d3-custom">¿Cuánto puedes pagar por mes? ($)</label>
+            <input type="number" id="d3-custom" placeholder="0.00" step="0.01" oninput="calcDay3()" />
+          </div>
+        </div>
 
-            <!-- Calculadora de Tarjeta -->
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
-                <h3 class="subtitle-main text-white text-lg">Escáner de tu Tarjeta Principal</h3>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Nombre de la tarjeta</label>
-                    <input type="text" id="d3-nombre" placeholder="Ej: Visa Principal" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Deuda total actual ($)</label>
-                    <input type="number" id="d3-deuda" inputmode="decimal" placeholder="Ej: 150000" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Tasa anual SIN % (CFTEA/CAT/TCEA/CAE/TEA)</label>
-                    <input type="number" id="d3-tasa" inputmode="decimal" placeholder="Ej: 238.52" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-neutral-300 mb-1">Pago mínimo actual $</label>
-                    <input type="number" id="d3-minimo" inputmode="decimal" placeholder="Ej: 15000" class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <button type="button" onclick="analizarTarjetaD3()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
-                    Calcular Lo Que Le Regalas al Banco
-                </button>
-            </div>
+        <div id="d3-prefill-box" class="callout hidden"></div>
+      </div>
 
-            <div id="resultado-d3" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-4 shadow-xl">
-                <h4 class="subtitle-main text-[#F29F05] text-lg">Radiografía de tu Tarjeta</h4>
-                <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800 space-y-2.5">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-neutral-400">Interés mensual efectivo (TEM):</span>
-                        <span id="d3-tasa-mensual" class="font-bold text-white">0%</span>
-                    </div>
-                    <div class="flex justify-between text-base pt-2 border-t border-neutral-800">
-                        <span class="text-neutral-400">Cada mes que pagas el mínimo, regalas:</span>
-                        <span id="d3-interes-mes" class="font-extrabold text-rose-400">$0.00</span>
-                    </div>
-                </div>
-                <button type="button" onclick="completarDia(3, 'dia4')" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base cursor-pointer">
-                    Continuar al Día 4 ➔
-                </button>
-            </div>
-        </section>
+      <div class="card">
+        <h3>2. Proyección a 12 meses: lo que realmente pagas</h3>
+        <div id="d3-results">
+          <p>Completa el saldo de deuda, la tasa anual y el pago mínimo para ver cuánto dinero se va solo en intereses y cargos.</p>
+        </div>
+      </div>
+    </section>
 
-        <!-- ==================== DÍA 4: MINI-TEST PATRÓN DE AHORRO ==================== -->
-        <section id="view-dia4" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3 shadow-lg">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 4 • Tu Psicología del Dinero</span>
-                <h2 class="title-main text-white">¿Cuál es tu Patrón de Ahorro?</h2>
-                <p class="text-base text-neutral-300 leading-relaxed">A veces el problema no es que no puedas ahorrar. Es que tienes un patrón tan repetido que ya ni lo ves. Responde las 8 preguntas con sinceridad.</p>
-            </div>
+    <!-- DAY 4 VIEW -->
+    <section id="view-day4" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 4 • FALSO AHORRO COTIDIANO</div>
+        <h2>¿Cuál es tu patrón de ahorro?</h2>
+        <p>A veces el problema no es falta de voluntad, sino repetir una misma excusa cada vez que intentas guardar dinero. Responde con honestidad lo que ocurre cuando nadie te mira.</p>
+        <div id="d4-d1-alert" class="callout amber hidden"></div>
+      </div>
 
-            <div id="contenedor-test-d4" class="space-y-4"></div>
+      <div class="card">
+        <div id="d4-quiz-container"></div>
+        <div class="metric-row" style="margin-top:14px;">
+          <span class="metric-label">Puntaje del mini-test</span>
+          <span class="metric-value"><span id="d4-score">0</span> / 24 puntos</span>
+        </div>
+        <div id="d4-result-box" class="callout yellow"></div>
+      </div>
+    </section>
 
-            <button type="button" onclick="calcularTestD4()" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
-                Descubrir Mi Patrón de Ahorro
-            </button>
+    <!-- DAY 5 VIEW -->
+    <section id="view-day5" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 5 • GESTIÓN DEL ESTRÉS Y LÍMITES</div>
+        <h2>Cómo decir que no sin drama y sin perder a nadie</h2>
+        <p>Muchas fugas no nacen de un deseo propio, sino de evitar una conversación incómoda. Decir que no a tiempo cuida tu bolsillo sin romper vínculos sanos.</p>
+        <div id="d5-d1-alert" class="callout amber hidden"></div>
+      </div>
 
-            <div id="resultado-d4" style="display:none;" class="space-y-5">
-                <div class="bg-neutral-900 border-2 border-[#9CCCE3] p-5 rounded-2xl space-y-3.5 shadow-xl">
-                    <span class="text-xs font-bold uppercase text-[#9CCCE3]">Tu Perfil Detectado</span>
-                    <h3 id="titulo-perfil-d4" class="subtitle-main text-white"></h3>
-                    <p id="desc-perfil-d4" class="text-base text-neutral-300 leading-relaxed"></p>
-                </div>
-                <div class="bg-[#0F3D74]/40 border border-[#9CCCE3]/40 p-5 rounded-2xl space-y-4">
-                    <h4 class="subtitle-main text-white text-base">Mini acción de 5 minutos</h4>
-                    <p class="text-xs text-neutral-300">Completa esta frase para fijar tu compromiso:</p>
-                    <div class="text-sm text-white leading-relaxed bg-neutral-950 p-3.5 rounded-xl border border-neutral-800">
-                        "En mi próximo cobro, antes de gastar en otra cosa, voy a separar 
-                        <input type="number" id="d4-porcentaje" min="1" max="100" placeholder="%" class="w-16 bg-neutral-900 border border-[#F29F05] rounded-lg px-2 py-1 text-center font-extrabold text-[#F29F05] mx-1"> 
-                        % de lo que entre para ahorro."
-                    </div>
-                    <button type="button" onclick="guardarMiniAccionD4()" class="w-full btn-primary font-bold py-3.5 rounded-xl text-base cursor-pointer">
-                        Guardar Compromiso y Continuar al Día 5 ➔
-                    </button>
-                </div>
-            </div>
-        </section>
+      <div class="card">
+        <h3>Situaciones cotidianas y frases listas para usar</h3>
+        <div id="d5-scenarios"></div>
 
-        <!-- ==================== DÍA 5: CÓMO DECIR QUE NO SIN DRAMA ==================== -->
-        <section id="view-dia5" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3 shadow-lg">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 5 • Asertividad Financiera</span>
-                <h2 class="title-main text-white">Cómo Decir Que No Sin Drama</h2>
-                <p class="text-base text-neutral-300 leading-relaxed">A veces no gastas por ganas. Gastas para evitar una conversación o por culpa. Aquí tienes guiones exactos sin rodeos.</p>
-            </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label for="d5-boundary">¿Qué gasto social, familiar o compromiso vas a frenar esta semana usando una de estas respuestas?</label>
+          <input type="text" id="d5-boundary" placeholder="Ej: La salida del viernes o un préstamo que no puedo cubrir..." oninput="saveDay5()" />
+        </div>
+      </div>
+    </section>
 
-            <div class="space-y-3 text-sm">
-                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
-                    <span class="text-xs font-bold text-[#F29F05] uppercase">1. Salidas de trabajo</span>
-                    <p class="text-base text-white font-medium">"Hoy no me sumo, estoy cuidando bastante los gastos esta semana. Vayan tranquilos que la semana que viene veo si puedo."</p>
-                </div>
-                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
-                    <span class="text-xs font-bold text-[#F29F05] uppercase">2. La vaquita / colecta de regalo</span>
-                    <p class="text-base text-white font-medium">"Esta vez no voy a poder sumarme, pero le dejo un mensaje lindo y la saludo personalmente."</p>
-                </div>
-                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
-                    <span class="text-xs font-bold text-[#F29F05] uppercase">3. Familiar que pide y excede presupuesto</span>
-                    <p class="text-base text-white font-medium">"Este mes no puedo poner ese monto. Sí puedo colaborar con lo que me entre o ayudar con otra cosa."</p>
-                </div>
-                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
-                    <span class="text-xs font-bold text-[#F29F05] uppercase">4. Amigo que pide prestado</span>
-                    <p class="text-base text-white font-medium">"No puedo prestarte más dinero ahora. Todavía está pendiente lo anterior, y prefiero que primero ordenemos eso."</p>
-                </div>
-                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-1.5">
-                    <span class="text-xs font-bold text-[#F29F05] uppercase">5. Pareja y expectativas de salidas</span>
-                    <p class="text-base text-white font-medium">"Me encanta hacer planes contigo, pero este mes necesito cuidar más el dinero. Busquemos algo que podamos disfrutar sin quedar ajustados después."</p>
-                </div>
-            </div>
+    <!-- DAY 6 VIEW -->
+    <section id="view-day6" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 6 • EL PATRÓN UNIFICADOR</div>
+        <h2>Tu historia financiera en perspectiva</h2>
+        <p>Los gastos que parecen aislados casi siempre siguen un mismo hilo. Aquí reunimos lo que fuiste descubriendo desde el Día 1 para que veas el patrón completo sin autoengaños.</p>
+        <div id="d6-mirror-box" class="callout yellow"></div>
+      </div>
 
-            <button type="button" onclick="completarDia(5, 'dia6')" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
-                Continuar al Día 6 ➔
-            </button>
-        </section>
+      <div class="card">
+        <h3>Reflexión clave y cierre de patrón</h3>
+        <p>Revisa estas preguntas de fondo (puedes responderlas en papel con calma y dejar aquí tu síntesis final):</p>
+        <ul style="margin: 10px 0 16px 20px; color: var(--text-secondary); font-size: 14px;">
+          <li>¿Cuándo fue la primera vez que sentiste que el dinero no alcanzaba?</li>
+          <li>¿Qué frase sobre el dinero escuchaste más veces en tu entorno?</li>
+          <li>Cuando gastas en algo que sabes que no conviene, ¿qué te dices para justificarlo?</li>
+          <li>¿Qué patrón se repite aunque cambien los meses o los ingresos?</li>
+        </ul>
 
-        <!-- ==================== DÍA 6: TU HISTORIA FINANCIERA ==================== -->
-        <section id="view-dia6" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-3 shadow-lg">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#9CCCE3]">Día 6 • Auditoría Interna</span>
-                <h2 class="title-main text-white">Tu Historia Financiera en 10 Preguntas</h2>
-                <p class="text-base text-neutral-300 leading-relaxed">Tu relación con el dinero no empezó este mes. Responde con honestidad para identificar patrones heredados.</p>
-            </div>
+        <div class="form-group">
+          <label for="d6-pattern">El patrón que más se repite en mi historia financiera es:</label>
+          <textarea id="d6-pattern" placeholder="Escribe con total honestidad el hilo que une tus decisiones..." oninput="saveDay6()"></textarea>
+        </div>
 
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-4">
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">1. ¿Cuándo fue la primera vez que sentiste que el dinero no alcanzaba? ¿Qué edad tenías?</label>
-                    <input type="text" id="d6-p1" placeholder="Tu respuesta honesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">2. Cuando cobraste tu primer dinero propio, ¿qué hiciste con eso?</label>
-                    <input type="text" id="d6-p2" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">3. ¿Cómo manejaba el dinero la persona que más te influyó en tu infancia?</label>
-                    <input type="text" id="d6-p3" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">4. ¿Qué frase sobre el dinero escuchaste muchas veces en tu casa?</label>
-                    <input type="text" id="d6-p4" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">5. ¿Hay alguna decisión financiera del pasado que todavía te pesa?</label>
-                    <input type="text" id="d6-p5" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">6. Cuando gastas en algo que no debes, ¿qué te dices para justificarlo?</label>
-                    <input type="text" id="d6-p6" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">7. ¿Qué emoción aparece más seguido al mirar tu cuenta o tarjeta?</label>
-                    <input type="text" id="d6-p7" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">8. ¿Qué patrón se repite en tu vida financiera desde hace tiempo?</label>
-                    <input type="text" id="d6-p8" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">9. ¿Qué parte de tu manejo del dinero ya no quieres seguir heredando?</label>
-                    <input type="text" id="d6-p9" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-[#9CCCE3] mb-1">10. Si te miraras con total honestidad, ¿qué verdad vienes evitando mirar?</label>
-                    <input type="text" id="d6-p10" placeholder="Tu respuesta..." class="w-full bg-neutral-950 border border-neutral-700 rounded-xl px-3.5 py-2.5 text-base text-white">
-                </div>
-            </div>
+        <div class="form-group">
+          <label for="d6-action">Esta semana voy a empezar a cambiarlo haciendo esto:</label>
+          <textarea id="d6-action" placeholder="Una acción concreta, pequeña y verificable..." oninput="saveDay6()"></textarea>
+        </div>
+      </div>
+    </section>
 
-            <button type="button" onclick="completarDia(6, 'dia7')" class="w-full btn-accent font-extrabold py-3.5 rounded-xl text-base shadow-lg cursor-pointer">
-                Continuar al Día 7 ➔
-            </button>
-        </section>
+    <!-- DAY 7 VIEW -->
+    <section id="view-day7" class="hidden">
+      <div class="card">
+        <div class="eyebrow">DÍA 7 • TRANSICIÓN Y AGENDA</div>
+        <h2>Tu primer plan de control de 7 días</h2>
+        <p>No necesitas una revolución financiera. Necesitas un sistema mínimo desde hoy hasta tu próximo cobro para no volver al piloto automático. Aprovecha los datos que ya cargaste en los días previos.</p>
+        <div id="d7-prefill-box" class="callout green hidden"></div>
+      </div>
 
-        <!-- ==================== DÍA 7: MAPA DE FUGAS ==================== -->
-        <section id="view-dia7" style="display:none;" class="space-y-6">
-            <div class="bg-neutral-900 border border-neutral-800 p-5 rounded-2xl space-y-2 shadow-lg">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#F29F05]">Día 7 • Cierre del Diagnóstico</span>
-                <h2 class="title-main text-white">Tu Mapa de Fugas</h2>
-                <p class="text-base text-neutral-300 leading-relaxed">Estima cuánto gastaste en tu último mes cerrado en cada categoría hormiga. La trampa no es que sean grandes, sino que son invisibles.</p>
-            </div>
+      <div class="card">
+        <h3>1. Plan mínimo de control (de hoy hasta tu próximo cobro)</h3>
 
-            <div id="contenedor-fugas-d7" class="space-y-3"></div>
+        <div class="form-grid">
+          <div>
+            <label for="d7-income">1. Dinero disponible hasta mi próximo cobro ($)</label>
+            <input type="number" id="d7-income" placeholder="El monto más realista" step="0.01" oninput="saveDay7()" />
+          </div>
+          <div>
+            <label for="d7-pay-self">2. Monto mínimo para pagarme primero ($)</label>
+            <input type="number" id="d7-pay-self" placeholder="Aunque sea poco, sale primero" step="0.01" oninput="saveDay7()" />
+          </div>
+        </div>
 
-            <button type="button" onclick="calcularMapaFugasD7()" class="w-full btn-accent font-extrabold py-4 rounded-xl text-base shadow-lg cursor-pointer">
-                Calcular Proyección Anual y Top 3 Fugas
-            </button>
+        <div class="form-group">
+          <label for="d7-save-place">¿Dónde voy a separar ese monto?</label>
+          <input type="text" id="d7-save-place" placeholder="Ej: Cuenta separada, billetera virtual, sobre en efectivo..." oninput="saveDay7()" />
+        </div>
 
-            <div id="resultado-d7" style="display:none;" class="bg-neutral-900 border-2 border-[#F29F05] p-5 rounded-2xl space-y-5 shadow-xl">
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800">
-                        <span class="text-xs text-neutral-400 block">Total Mensual en Fugas</span>
-                        <span id="d7-total-mes" class="font-extrabold text-xl text-white">$0</span>
-                    </div>
-                    <div class="bg-neutral-950 p-3.5 rounded-xl border border-[#F29F05]/40">
-                        <span class="text-xs text-[#F29F05] block">Proyección a 12 Meses</span>
-                        <span id="d7-total-anio" class="font-extrabold text-xl text-[#F29F05]">$0</span>
-                    </div>
-                </div>
-                <div class="space-y-2">
-                    <h4 class="subtitle-main text-white text-base">🔥 Tus 3 Fugas Más Grandes:</h4>
-                    <div id="d7-top3" class="space-y-2"></div>
-                </div>
-                <div class="bg-[#0F3D74]/40 p-4 rounded-xl border border-[#9CCCE3]/40 space-y-2">
-                    <p class="text-xs text-white leading-relaxed">💡 <em>"Por tan solo dos dólares puedes ver exactamente a dónde se te escapa el dinero cada mes con nuestra planilla completa en Google Sheets."</em></p>
-                    <a href="https://21dp.gumroad.com/l/yzjckm" target="_blank" class="block text-center btn-accent font-bold py-3 rounded-xl text-sm shadow">
-                        QUIERO VER MIS FUGAS EN GOOGLE SHEETS ➔
-                    </a>
-                </div>
-            </div>
-        </section>
+        <label style="margin-top:8px;">3. Tres gastos inevitables de esta semana ($)</label>
+        <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <input type="number" id="d7-inev1" placeholder="Gasto 1 ($)" step="0.01" oninput="saveDay7()" />
+          <input type="number" id="d7-inev2" placeholder="Gasto 2 ($)" step="0.01" oninput="saveDay7()" />
+          <input type="number" id="d7-inev3" placeholder="Gasto 3 ($)" step="0.01" oninput="saveDay7()" />
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Total inevitable estimado</span>
+          <span class="metric-value" id="d7-inev-total">$0,00</span>
+        </div>
 
-    </main>
+        <div class="form-grid">
+          <div>
+            <label for="d7-danger">4. Mi gasto más peligroso de esta semana</label>
+            <input type="text" id="d7-danger" placeholder="Ej: Delivery nocturno, ofertas online..." oninput="saveDay7()" />
+          </div>
+          <div>
+            <label for="d7-excuse">La excusa que suelo usar para justificarlo</label>
+            <input type="text" id="d7-excuse" placeholder="Ej: Me lo merezco, hoy tuve un día largo..." oninput="saveDay7()" />
+          </div>
+        </div>
 
-    <!-- Footer -->
-    <footer class="bg-neutral-950 border-t border-neutral-800 py-3.5 px-4 text-center text-xs text-neutral-500 w-full">
-        Finanzas Express • Método 21DP
-    </footer>
+        <h3 style="margin-top:16px;">Semáforo de decisiones (20 segundos antes de gastar)</h3>
+        <div class="traffic-grid">
+          <div class="traffic-box verde">
+            <strong style="color:#86efac;">VERDE</strong>
+            <p style="font-size:12.5px; margin-top:4px;">Entra en mi semana, no toca lo que separé para mí ni compromete pagos inevitables.</p>
+          </div>
+          <div class="traffic-box amarillo">
+            <strong style="color:#fcd34d;">AMARILLO</strong>
+            <p style="font-size:12.5px; margin-top:4px;">No estaba planeado. Espera 24 horas antes de decidir si sigue teniendo sentido.</p>
+          </div>
+          <div class="traffic-box rojo">
+            <strong style="color:#fca5a5;">ROJO</strong>
+            <p style="font-size:12.5px; margin-top:4px;">Obliga a usar tarjeta, pedir prestado o desarmar lo que ya ordenaste.</p>
+          </div>
+        </div>
+      </div>
 
-    <script>
-        const FRASES_DIA_1 = [
-            "A fin de mes no sé exactamente en qué se me fue la plata.",
-            "Digo '...este mes me ordeno...' y a los pocos días ya volví a improvisar.",
-            "Miro el saldo de mi billetera virtual o app bancaria como si fuera una sorpresa, aunque yo hice todos los gastos.",
-            "Pago el mínimo de la tarjeta y después me convenzo de que '...el mes que viene lo arreglo...'",
-            "Compro cosas baratas porque '...total no es tanta plata...', pero después no entiendo por qué no llego a fin de mes.",
-            "Me prometo ahorrar cuando cobre, pero termino intentando ahorrar lo que sobra.",
-            "Evito revisar los movimientos de la cuenta porque prefiero no saber.",
-            "Uso cuotas para sentir que algo no pesa tanto, aunque sé que igual lo voy a pagar.",
-            "Presto plata aunque ya sé que probablemente tenga que reclamarla.",
-            "Gasto en salidas, regalos o compromisos para no quedar mal, aunque por dentro esté calculando cómo llegar.",
-            "Me digo que mi problema es el sueldo, pero nunca revisé con honestidad mis gastos de los últimos 30 días.",
-            "Sé qué gasto debería cortar, pero lo sigo justificando con frases como '...me lo merezco...'",
-            "Me da vergüenza hablar de plata, entonces termino aceptando planes, gastos o pedidos que no puedo sostener.",
-            "Cuando cobro siento alivio, pero a los pocos días ya estoy haciendo cuentas otra vez.",
-            "Tengo suscripciones, débitos o gastos automáticos que hace meses no reviso.",
-            "Apuesto dinero online o en lugares físicos, aunque sea de vez en cuando, y no lo registro como gasto.",
-            "Me enojo con la inflación, el país o el contexto, pero no tengo un sistema mínimo para manejar mi plata.",
-            "Siento que '...no gasto tanto...', aunque nunca lo confirmé con números reales.",
-            "Cuando aparece un gasto inesperado, no tengo margen: tengo que postergar algo, usar tarjeta o pedir ayuda."
-        ];
+      <!-- Mapa de Fugas -->
+      <div class="card">
+        <h3>2. Mapa de Fugas (10 categorías del último mes)</h3>
+        <p>Estima cuánto se fue el último mes en cada categoría (deja 0 si no aplica). El sistema calcula el impacto anual y tus 3 fugas principales.</p>
+        <div id="d7-leaks-container"></div>
 
-        const PREGUNTAS_DIA_4 = [
-            { q: "1. Cuando cobras, ¿qué es lo primero que pasa con tu dinero?", opts: [
-                { t: "a) Pago lo urgente, gasto lo necesario y veo si queda algo para guardar.", p: 2 },
-                { t: "b) Me digo que esta vez voy a ahorrar, pero primero quiero 'ordenar todo'.", p: 1 },
-                { t: "c) Separo algo solo si el mes viene tranquilo y no hay gastos raros.", p: 3 }
-            ]},
-            { q: "2. Cuando piensas en ahorrar, ¿qué frase aparece más rápido en tu cabeza?", opts: [
-                { t: "a) '...si sobra algo después de pagar todo, lo guardo...'", p: 2 },
-                { t: "b) '...cuando cobre un poco más, ahí sí voy a poder hacerlo bien...'", p: 3 },
-                { t: "c) '...arranco el mes que viene, ahora ya está un poco desordenado...'", p: 1 }
-            ]},
-            { q: "3. Si te quedara dinero disponible antes de fin de mes, ¿qué suele pasar?", opts: [
-                { t: "a) Lo guardo solo si sé que no viene ningún gasto pendiente.", p: 3 },
-                { t: "b) Lo dejo 'por las dudas', pero termina desapareciendo en cualquier cosa.", p: 1 },
-                { t: "c) Lo uso para llegar más cómodo y, si queda algo, lo ahorro.", p: 2 }
-            ]},
-            { q: "4. ¿Qué haces cuando aparece una compra pequeña que no estaba planeada?", opts: [
-                { t: "a) La hago si siento que este mes '...me lo puedo permitir...'", p: 3 },
-                { t: "b) La hago y me digo que no cambia nada, total después veo cómo lo arreglo.", p: 1 },
-                { t: "c) La hago si creo que igual me va a sobrar algo a fin de mes.", p: 2 }
-            ]},
-            { q: "5. ¿Cómo usas las apps de tu banco o billetera virtual para ahorrar?", opts: [
-                { t: "a) Las uso para guardar solo cuando el mes está estable y no tengo miedo de necesitar ese dinero.", p: 3 },
-                { t: "b) Mando algo cuando veo que quedó saldo suelto.", p: 2 },
-                { t: "c) Tengo la intención de separar dinero ahí, pero casi nunca lo hago a tiempo.", p: 1 }
-            ]},
-            { q: "6. Cuando un mes logras ahorrar algo, ¿qué pasa después?", opts: [
-                { t: "a) Me siento bien, aunque sé que fue más porque sobró que porque lo decidí.", p: 2 },
-                { t: "b) Lo hago mientras no aparezcan gastos, presión familiar, salidas o imprevistos.", p: 3 },
-                { t: "c) Me entusiasmo, pero al mes siguiente pierdo el ritmo.", p: 1 }
-            ]},
-            { q: "7. Si alguien te dijera 'separa ahorro apenas cobras', ¿qué pensarías?", opts: [
-                { t: "a) '...podría, si tuviera un ingreso más alto o menos gastos encima...'", p: 3 },
-                { t: "b) '...sí, debería hacerlo, pero primero necesito organizarme mejor...'", p: 1 },
-                { t: "c) '...me gustaría, pero prefiero esperar a ver cuánto queda después de pagar...'", p: 2 }
-            ]},
-            { q: "8. ¿Cuál de estas frases te representa más?", opts: [
-                { t: "a) 'Ahorro si el mes acompaña. Si no, es imposible.'", p: 3 },
-                { t: "b) 'Sé que tengo que empezar, pero nunca encuentro el momento limpio para hacerlo.'", p: 1 },
-                { t: "c) 'Yo ahorro cuando puedo. El problema es que casi nunca sobra.'", p: 2 }
-            ]}
-        ];
+        <div class="metric-row" style="margin-top:12px;">
+          <span class="metric-label">Total mensual en fugas</span>
+          <span class="metric-value" id="d7-leaks-month">$0,00</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Proyección a 12 meses si nada cambia</span>
+          <span class="metric-value" style="color:#fca5a5;" id="d7-leaks-year">$0,00</span>
+        </div>
+        <div id="d7-top-leaks" class="callout yellow"></div>
+      </div>
+    </section>
 
-        const CATEGORIAS_FUGAS_D7 = [
-            { nombre: "Streaming y apps duplicadas", desc: "Netflix, Spotify, apps sin usar" },
-            { nombre: "Delivery de comida", desc: "Pedidos a domicilio listos para comer" },
-            { nombre: "Café o kiosco diario", desc: "Café de todos los días, snacks" },
-            { nombre: "Salidas sociales", desc: "Bares, comidas afuera" },
-            { nombre: "Compras impulsivas online", desc: "Ropa, gadgets, ofertas de un clic" },
-            { nombre: "Gimnasio o apps sin usar", desc: "Cuotas que pagas y no pisas" },
-            { nombre: "Tabaco o vapeo", desc: "Cigarrillos, recargas" },
-            { nombre: "Apuestas online", desc: "Casas de apuestas, casinos digitales" },
-            { nombre: "Transporte por apps", desc: "Viajes que podrías haber evitado" },
-            { nombre: "Seguros olvidados", desc: "Protección de compras, celular" }
-        ];
+    <div class="footer-note">
+      21DP • Finanzas Express — Tus datos se guardan localmente en tu navegador.
+    </div>
+  </main>
 
-        let appData = {
-            completados: JSON.parse(localStorage.getItem('fe7_completados')) || [],
-            d1Checks: JSON.parse(localStorage.getItem('fe7_d1_checks')) || new Array(19).fill(false),
-            d2Gastos: JSON.parse(localStorage.getItem('fe7_d2_gastos')) || [],
-            d3Tarjeta: JSON.parse(localStorage.getItem('fe7_d3_tarjeta')) || null,
-            d4Respuestas: JSON.parse(localStorage.getItem('fe7_d4_resp')) || {},
-            d4Porcentaje: localStorage.getItem('fe7_d4_pct') || "",
-            d6Respuestas: JSON.parse(localStorage.getItem('fe7_d6_resp')) || {},
-            d7Fugas: JSON.parse(localStorage.getItem('fe7_d7_fugas')) || new Array(10).fill(0)
+  <script>
+    const STORAGE_KEY = 'finanzas_express_21dp_v2';
+
+    const DAYS_META = [
+      { id: 'day1', num: 'Día 1', title: 'Diagnóstico y Autoengaños', desc: '3 preguntas rápidas + checklist de 19 conductas' },
+      { id: 'day2', num: 'Día 2', title: 'Visibilidad Real (3 Momentos + 30 Días)', desc: 'Auditoría de 3 meses + registro diario y facturas' },
+      { id: 'day3', num: 'Día 3', title: 'El Costo Real de tu Deuda', desc: 'Impacto del pago mínimo y proyecciones de tarjeta' },
+      { id: 'day4', num: 'Día 4', title: 'Tu Patrón de Ahorro', desc: 'Mini-test de 8 preguntas sobre por qué no sobra' },
+      { id: 'day5', num: 'Día 5', title: 'Cómo Decir que No', desc: 'Frases listas para frenar gastos por compromiso' },
+      { id: 'day6', num: 'Día 6', title: 'El Patrón Unificador', desc: 'Conecta tus hallazgos y define tu cambio base' },
+      { id: 'day7', num: 'Día 7', title: 'Plan de Control y Mapa de Fugas', desc: 'Hoja de ruta semanal + proyección anual de fugas' }
+    ];
+
+    const CHECKLIST_ITEMS = [
+      { id: 'c1', text: 'A fin de mes no sé exactamente en qué se me fue el dinero.', tag: 'general' },
+      { id: 'c2', text: 'Digo "...este mes me ordeno..." y a los pocos días vuelvo a improvisar.', tag: 'general' },
+      { id: 'c3', text: 'Miro el saldo de mi billetera virtual o app bancaria como si fuera una sorpresa.', tag: 'gastos' },
+      { id: 'c4', text: 'Pago el mínimo de la tarjeta y después me convenzo de que el mes que viene lo arreglo.', tag: 'deuda' },
+      { id: 'c5', text: 'Compro cosas baratas porque "...total no es tanto...", pero después no llego a fin de mes.', tag: 'fugas' },
+      { id: 'c6', text: 'Me prometo ahorrar cuando cobre, pero termino intentando ahorrar lo que sobra.', tag: 'ahorro' },
+      { id: 'c7', text: 'Evito revisar los movimientos de la cuenta porque prefiero no saber.', tag: 'gastos' },
+      { id: 'c8', text: 'Uso cuotas para sentir que algo no pesa tanto, aunque sé que igual lo voy a pagar.', tag: 'deuda' },
+      { id: 'c9', text: 'Presto dinero aunque ya sé que probablemente tenga que reclamarlo.', tag: 'limites' },
+      { id: 'c10', text: 'Gasto en salidas, regalos o compromisos para no quedar mal.', tag: 'limites' },
+      { id: 'c11', text: 'Me digo que mi problema es el ingreso, pero nunca revisé con honestidad mis últimos 30 días.', tag: 'gastos' },
+      { id: 'c12', text: 'Sé qué gasto debería cortar, pero lo justifico con frases como "...me lo merezco...".', tag: 'fugas' },
+      { id: 'c13', text: 'Me incomoda hablar de dinero, entonces acepto planes o pedidos que no puedo sostener.', tag: 'limites' },
+      { id: 'c14', text: 'Cuando cobro siento alivio, pero a los pocos días ya estoy haciendo cuentas otra vez.', tag: 'general' },
+      { id: 'c15', text: 'Tengo suscripciones, débitos o gastos automáticos que hace meses no reviso.', tag: 'suscripciones' },
+      { id: 'c16', text: 'Apuesto dinero online o en lugares físicos y no lo registro como gasto.', tag: 'gastos' },
+      { id: 'c17', text: 'Me enojo con la inflación o el contexto, pero no tengo un sistema mínimo para manejar mi dinero.', tag: 'general' },
+      { id: 'c18', text: 'Siento que "...no gasto tanto...", aunque nunca lo confirmé con números reales.', tag: 'gastos' },
+      { id: 'c19', text: 'Cuando aparece un gasto inesperado, no tengo margen y recurro a la tarjeta o a pedir ayuda.', tag: 'deuda' }
+    ];
+
+    const D4_QUESTIONS = [
+      {
+        q: '1. Cuando cobras, ¿qué es lo primero que pasa con tu dinero?',
+        opts: [
+          { label: 'Pago lo urgente, gasto lo necesario y veo si queda algo para guardar.', pts: 2 },
+          { label: 'Me digo que esta vez voy a ahorrar, pero primero quiero "ordenar todo".', pts: 1 },
+          { label: 'Separo algo solo si el mes viene tranquilo y no hay gastos raros.', pts: 3 }
+        ]
+      },
+      {
+        q: '2. Cuando piensas en ahorrar, ¿qué frase aparece más rápido?',
+        opts: [
+          { label: '"...si sobra algo después de pagar todo, lo guardo..."', pts: 2 },
+          { label: '"...cuando cobre un poco más, ahí sí voy a poder hacerlo bien..."', pts: 3 },
+          { label: '"...arranco el mes que viene, ahora ya está un poco desordenado..."', pts: 1 }
+        ]
+      },
+      {
+        q: '3. Si te quedara dinero disponible antes de fin de mes, ¿qué suele pasar?',
+        opts: [
+          { label: 'Lo guardo solo si sé que no viene ningún gasto pendiente.', pts: 3 },
+          { label: 'Lo dejo "por las dudas", pero termina desapareciendo en cualquier cosa.', pts: 1 },
+          { label: 'Lo uso para llegar más cómodo y, si queda algo, lo ahorro.', pts: 2 }
+        ]
+      },
+      {
+        q: '4. ¿Qué haces cuando aparece una compra pequeña que no estaba planeada?',
+        opts: [
+          { label: 'La hago si siento que este mes "...me lo puedo permitir..."', pts: 3 },
+          { label: 'La hago y me digo que no cambia nada, total después veo cómo lo arreglo.', pts: 1 },
+          { label: 'La hago si creo que igual me va a sobrar algo a fin de mes.', pts: 2 }
+        ]
+      },
+      {
+        q: '5. ¿Cómo usas las apps de tu banco o billetera virtual para ahorrar?',
+        opts: [
+          { label: 'Las uso solo cuando el mes está estable y no temo necesitar ese dinero.', pts: 3 },
+          { label: 'Mando algo cuando veo que quedó saldo suelto.', pts: 2 },
+          { label: 'Tengo la intención de separar dinero ahí, pero casi nunca lo hago a tiempo.', pts: 1 }
+        ]
+      },
+      {
+        q: '6. Cuando un mes logras ahorrar algo, ¿qué pasa después?',
+        opts: [
+          { label: 'Fue más porque sobró que porque lo decidí de antemano.', pts: 2 },
+          { label: 'Lo sostengo mientras no aparezcan gastos, compromisos o imprevistos.', pts: 3 },
+          { label: 'Me entusiasmo, pero al mes siguiente pierdo el ritmo.', pts: 1 }
+        ]
+      },
+      {
+        q: '7. Si alguien te dijera "separa ahorro apenas cobras", ¿qué pensarías?',
+        opts: [
+          { label: '"...podría, si tuviera un ingreso más alto o menos gastos encima..."', pts: 3 },
+          { label: '"...sí, debería hacerlo, pero primero necesito organizarme mejor..."', pts: 1 },
+          { label: '"...me gustaría, pero prefiero esperar a ver cuánto queda después de pagar..."', pts: 2 }
+        ]
+      },
+      {
+        q: '8. ¿Cuál de estas frases te representa más?',
+        opts: [
+          { label: '"Ahorro si el mes acompaña. Si no, es imposible."', pts: 3 },
+          { label: '"Sé que tengo que empezar, pero nunca encuentro el momento limpio."', pts: 1 },
+          { label: '"Yo ahorro cuando puedo. El problema es que casi nunca sobra."', pts: 2 }
+        ]
+      }
+    ];
+
+    const D5_SCENARIOS = [
+      {
+        title: '1. Salida después del trabajo sin presupuesto ni energía',
+        say: '"Hoy no me sumo, estoy cuidando bastante los gastos esta semana. Vayan tranquilos que más adelante veo si puedo."',
+        alt: 'Propón una alternativa sin gasto: "Hoy no puedo salir, pero en otro momento hacemos algo más tranquilo."'
+      },
+      {
+        title: '2. Colecta grupal para un regalo que excede tu margen',
+        say: '"Esta vez no voy a poder sumarme, pero le dejo un mensaje y saludo personalmente."',
+        alt: 'Tu presupuesto no necesita convertirse en debate grupal ni venir con disculpas largas.'
+      },
+      {
+        title: '3. Reunión o cumpleaños familiar fuera de alcance',
+        say: '"Este mes no puedo poner ese monto. Sí puedo colaborar con lo que me entre o ayudar con la organización."',
+        alt: 'Marca hasta dónde sí puedes llegar con claridad y ofrece ayuda práctica.'
+      },
+      {
+        title: '4. Alguien pide dinero prestado y aún tiene saldo pendiente',
+        say: '"No puedo prestar más dinero ahora. Todavía está pendiente lo anterior y prefiero ordenar eso primero."',
+        alt: 'Ayudar no significa convertirte en el banco emocional de otra persona.'
+      }
+    ];
+
+    const LEAK_CATEGORIES = [
+      { id: 'l1', name: 'Streaming y apps duplicadas', hint: 'Suscripciones que pagas y casi no usas' },
+      { id: 'l2', name: 'Delivery de comida', hint: 'Pedidos listos a domicilio (fuera de compras básicas)' },
+      { id: 'l3', name: 'Café o tienda diaria', hint: 'Snacks, café al paso, compras pequeñas del día' },
+      { id: 'l4', name: 'Salidas sociales', hint: 'Bares, comidas afuera, encuentros no esenciales' },
+      { id: 'l5', name: 'Compras impulsivas online', hint: 'Compras de un clic no planificadas' },
+      { id: 'l6', name: 'Gimnasio o membresías sin usar', hint: 'Cuotas activas que no aprovechas' },
+      { id: 'l7', name: 'Tabaco o vapeo', hint: 'Consumo recurrente diario o semanal' },
+      { id: 'l8', name: 'Apuestas online o juegos', hint: 'Casas de apuestas, loterías o recargas' },
+      { id: 'l9', name: 'Transporte por apps evitable', hint: 'Viajes que podrías haber combinado o evitado' },
+      { id: 'l10', name: 'Seguros o cargos olvidados', hint: 'Protecciones de compras, cargos bancarios, etc.' }
+    ];
+
+    const defaultState = {
+      activeView: 'home',
+      day1: { q1: '', q2: '', q3: '', checked: {} },
+      day2: {
+        smallSum: '',
+        rep1: '', rep1Why: '',
+        rep2: '', rep2Why: '',
+        rep3: '', rep3Why: '',
+        monthlyIncome: '',
+        expenses: []
+      },
+      day3: { cardName: '', debt: '', rate: '', fee: '', minPay: '', customPay: '' },
+      day4: { answers: {} },
+      day5: { boundary: '' },
+      day6: { pattern: '', action: '' },
+      day7: {
+        income: '', paySelf: '', savePlace: '',
+        inev1: '', inev2: '', inev3: '',
+        danger: '', excuse: '',
+        leaks: {}
+      }
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(defaultState));
+        const parsed = JSON.parse(raw);
+        return {
+          ...defaultState,
+          ...parsed,
+          day1: { ...defaultState.day1, ...(parsed.day1 || {}) },
+          day2: { ...defaultState.day2, ...(parsed.day2 || {}) },
+          day3: { ...defaultState.day3, ...(parsed.day3 || {}) },
+          day4: { ...defaultState.day4, ...(parsed.day4 || {}) },
+          day5: { ...defaultState.day5, ...(parsed.day5 || {}) },
+          day6: { ...defaultState.day6, ...(parsed.day6 || {}) },
+          day7: { ...defaultState.day7, ...(parsed.day7 || {}) }
         };
+      } catch (e) {
+        return JSON.parse(JSON.stringify(defaultState));
+      }
+    }
 
-        function saveApp() {
-            localStorage.setItem('fe7_completados', JSON.stringify(appData.completados));
-            localStorage.setItem('fe7_d1_checks', JSON.stringify(appData.d1Checks));
-            localStorage.setItem('fe7_d2_gastos', JSON.stringify(appData.d2Gastos));
-            if(appData.d3Tarjeta) localStorage.setItem('fe7_d3_tarjeta', JSON.stringify(appData.d3Tarjeta));
-            localStorage.setItem('fe7_d4_resp', JSON.stringify(appData.d4Respuestas));
-            localStorage.setItem('fe7_d4_pct', appData.d4Porcentaje);
-            localStorage.setItem('fe7_d7_fugas', JSON.stringify(appData.d7Fugas));
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderNavAndHome();
+    }
+
+    function fmtMoney(n) {
+      const val = Number(n) || 0;
+      return '$' + val.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function isDayComplete(dayId) {
+      if (dayId === 'day1') return Object.values(state.day1.checked).some(Boolean) || Boolean(state.day1.q1.trim());
+      if (dayId === 'day2') return state.day2.expenses.length > 0 || Boolean(state.day2.rep1.trim());
+      if (dayId === 'day3') return Number(state.day3.debt) > 0;
+      if (dayId === 'day4') return Object.keys(state.day4.answers).length >= 4;
+      if (dayId === 'day5') return Boolean(state.day5.boundary.trim());
+      if (dayId === 'day6') return Boolean(state.day6.pattern.trim());
+      if (dayId === 'day7') return Number(state.day7.income) > 0 || Object.values(state.day7.leaks).some(v => Number(v) > 0);
+      return false;
+    }
+
+    function renderNavAndHome() {
+      const pillsEl = document.getElementById('dayPills');
+      const homeEl = document.getElementById('homeCards');
+      pillsEl.innerHTML = '';
+      homeEl.innerHTML = '';
+
+      DAYS_META.forEach(d => {
+        const done = isDayComplete(d.id);
+        const pill = document.createElement('button');
+        pill.className = 'day-pill' + (state.activeView === d.id ? ' active' : '');
+        pill.innerHTML = `${done ? '<span class="dot-done"></span>' : ''}${d.num}`;
+        pill.onclick = () => openView(d.id);
+        pillsEl.appendChild(pill);
+
+        const card = document.createElement('button');
+        card.className = 'day-card-btn';
+        card.innerHTML = `
+          <div>
+            <div class="day-card-meta">${d.num}</div>
+            <div class="day-card-title">${d.title}</div>
+            <div class="day-card-desc">${d.desc}</div>
+          </div>
+          <span class="status-badge ${done ? 'done' : ''}">${done ? 'Con datos' : 'Pendiente'}</span>
+        `;
+        card.onclick = () => openView(d.id);
+        homeEl.appendChild(card);
+      });
+    }
+
+    function openView(viewId) {
+      state.activeView = viewId;
+      document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+      const target = document.getElementById('view-' + viewId);
+      if (target) target.classList.remove('hidden');
+      persist();
+      refreshCrossDayInsights();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goHome() {
+      openView('home');
+    }
+
+    /* ================= DAY 1 ================= */
+    function initDay1() {
+      document.getElementById('d1-q1').value = state.day1.q1 || '';
+      document.getElementById('d1-q2').value = state.day1.q2 || '';
+      document.getElementById('d1-q3').value = state.day1.q3 || '';
+
+      const container = document.getElementById('d1-checklist-container');
+      container.innerHTML = '';
+      CHECKLIST_ITEMS.forEach(item => {
+        const label = document.createElement('label');
+        label.className = 'check-item';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = Boolean(state.day1.checked[item.id]);
+        cb.onchange = () => {
+          state.day1.checked[item.id] = cb.checked;
+          updateDay1Score();
+          persist();
+        };
+        const span = document.createElement('span');
+        span.textContent = item.text;
+        label.appendChild(cb);
+        label.appendChild(span);
+        container.appendChild(label);
+      });
+      updateDay1Score();
+    }
+
+    function saveDay1() {
+      state.day1.q1 = document.getElementById('d1-q1').value;
+      state.day1.q2 = document.getElementById('d1-q2').value;
+      state.day1.q3 = document.getElementById('d1-q3').value;
+      persist();
+    }
+
+    function getDay1Profile() {
+      const score = Object.values(state.day1.checked).filter(Boolean).length;
+      if (score <= 5) {
+        return {
+          score,
+          name: 'Perfil 1 — Negación externa (0 a 5 puntos)',
+          desc: 'Todavía sientes que el problema está casi siempre afuera. Tu desafío hoy no es resolver toda tu vida financiera, sino empezar a mirar tus propios números sin escaparte.'
+        };
+      } else if (score <= 12) {
+        return {
+          score,
+          name: 'Perfil 2 — Conciencia inmóvil (6 a 12 puntos)',
+          desc: 'Ya sabes qué compras o hábitos te desordenan, pero postergas el cambio con excusas elegantes. La conciencia sin movimiento también es una forma de autoengaño.'
+        };
+      } else {
+        return {
+          score,
+          name: 'Perfil 3 — Patrón crónico (13 puntos o más)',
+          desc: 'Hace tiempo repites el mismo ciclo con distintos nombres. Cuando una mala racha se repite demasiado, deja de ser racha y se vuelve sistema. Hoy empiezas a nombrarlo.'
+        };
+      }
+    }
+
+    function updateDay1Score() {
+      const prof = getDay1Profile();
+      document.getElementById('d1-score').textContent = prof.score;
+      document.getElementById('d1-profile-box').innerHTML = `
+        <div class="callout-title">${prof.name}</div>
+        <div>${prof.desc}</div>
+      `;
+    }
+
+    /* ================= DAY 2 ================= */
+    function initDay2() {
+      const daySel = document.getElementById('d2-day');
+      const fijoSel = document.getElementById('d2-fijo-day');
+      const filterSel = document.getElementById('d2-filter-day');
+
+      for (let i = 1; i <= 31; i++) {
+        const opt1 = new Option(`Día ${i}`, i);
+        const opt2 = new Option(`Día ${i}`, i);
+        const opt3 = new Option(`Día ${i}`, i);
+        daySel.add(opt1);
+        fijoSel.add(opt2);
+        filterSel.add(opt3);
+      }
+
+      document.getElementById('d2-small-sum').value = state.day2.smallSum || '';
+      document.getElementById('d2-rep1').value = state.day2.rep1 || '';
+      document.getElementById('d2-rep1-why').value = state.day2.rep1Why || '';
+      document.getElementById('d2-rep2').value = state.day2.rep2 || '';
+      document.getElementById('d2-rep2-why').value = state.day2.rep2Why || '';
+      document.getElementById('d2-rep3').value = state.day2.rep3 || '';
+      document.getElementById('d2-rep3-why').value = state.day2.rep3Why || '';
+      document.getElementById('d2-monthly-income').value = state.day2.monthlyIncome || '';
+
+      renderExpenses();
+    }
+
+    function switchD2Tab(tab) {
+      document.getElementById('tab-btn-diario').classList.toggle('active', tab === 'diario');
+      document.getElementById('tab-btn-fijo').classList.toggle('active', tab === 'fijo');
+      document.getElementById('d2-form-diario').classList.toggle('hidden', tab !== 'diario');
+      document.getElementById('d2-form-fijo').classList.toggle('hidden', tab !== 'fijo');
+    }
+
+    function saveDay2Activity() {
+      state.day2.smallSum = document.getElementById('d2-small-sum').value;
+      state.day2.rep1 = document.getElementById('d2-rep1').value;
+      state.day2.rep1Why = document.getElementById('d2-rep1-why').value;
+      state.day2.rep2 = document.getElementById('d2-rep2').value;
+      state.day2.rep2Why = document.getElementById('d2-rep2-why').value;
+      state.day2.rep3 = document.getElementById('d2-rep3').value;
+      state.day2.rep3Why = document.getElementById('d2-rep3-why').value;
+      persist();
+    }
+
+    function saveDay2Income() {
+      state.day2.monthlyIncome = document.getElementById('d2-monthly-income').value;
+      renderExpenses();
+      persist();
+    }
+
+    function addExpense(kind) {
+      if (kind === 'diario') {
+        const day = Number(document.getElementById('d2-day').value);
+        const moment = document.getElementById('d2-moment').value;
+        const desc = document.getElementById('d2-desc').value.trim();
+        const amount = parseFloat(document.getElementById('d2-amount').value);
+        if (!desc || isNaN(amount) || amount <= 0) {
+          alert('Ingresa una descripción corta y un monto mayor a 0.');
+          return;
         }
-
-        function irVista(idVista) {
-            const vistas = ['dashboard', 'dia1', 'dia2', 'dia3', 'dia4', 'dia5', 'dia6', 'dia7'];
-            vistas.forEach(v => {
-                const el = document.getElementById('view-' + v);
-                if (el) el.style.display = 'none';
-            });
-            const activa = document.getElementById('view-' + idVista);
-            if (activa) activa.style.display = 'block';
-            const btnMenu = document.getElementById('btnMenu');
-            if (btnMenu) btnMenu.style.display = (idVista === 'dashboard') ? 'none' : 'inline-block';
-            if (idVista === 'dashboard') renderDashboard();
-            window.scrollTo(0, 0);
+        state.day2.expenses.unshift({
+          id: Date.now(),
+          kind: 'diario',
+          day,
+          moment,
+          desc,
+          amount
+        });
+        document.getElementById('d2-desc').value = '';
+        document.getElementById('d2-amount').value = '';
+      } else {
+        const day = Number(document.getElementById('d2-fijo-day').value);
+        const cat = document.getElementById('d2-fijo-cat').value;
+        const desc = document.getElementById('d2-fijo-desc').value.trim();
+        const amount = parseFloat(document.getElementById('d2-fijo-amount').value);
+        if (!desc || isNaN(amount) || amount <= 0) {
+          alert('Ingresa el detalle del pago y un monto mayor a 0.');
+          return;
         }
+        state.day2.expenses.unshift({
+          id: Date.now(),
+          kind: 'fijo',
+          day,
+          moment: cat,
+          desc,
+          amount
+        });
+        document.getElementById('d2-fijo-desc').value = '';
+        document.getElementById('d2-fijo-amount').value = '';
+      }
+      renderExpenses();
+      persist();
+    }
 
-        function completarDia(numDia, siguienteVista) {
-            if (!appData.completados.includes(numDia)) {
-                appData.completados.push(numDia);
-                saveApp();
-            }
-            irVista(siguienteVista);
+    function deleteExpense(id) {
+      state.day2.expenses = state.day2.expenses.filter(item => item.id !== id);
+      renderExpenses();
+      persist();
+    }
+
+    function resetCycleDay2() {
+      if (!confirm('¿Quieres reiniciar los gastos registrados del Día 2 para comenzar un nuevo ciclo limpio?')) return;
+      state.day2.expenses = [];
+      state.day2.monthlyIncome = '';
+      document.getElementById('d2-monthly-income').value = '';
+      renderExpenses();
+      persist();
+    }
+
+    function renderExpenses() {
+      const filter = document.getElementById('d2-filter-day').value;
+      const listEl = document.getElementById('d2-records-list');
+      listEl.innerHTML = '';
+
+      let totalAll = 0;
+      let totalDiario = 0;
+      let totalFijo = 0;
+      let w1 = 0, w2 = 0, w3 = 0, w4 = 0;
+
+      state.day2.expenses.forEach(item => {
+        const amt = Number(item.amount) || 0;
+        totalAll += amt;
+        if (item.kind === 'fijo') totalFijo += amt;
+        else totalDiario += amt;
+
+        if (item.day <= 7) w1 += amt;
+        else if (item.day <= 14) w2 += amt;
+        else if (item.day <= 21) w3 += amt;
+        else w4 += amt;
+      });
+
+      document.getElementById('d2-total-all').textContent = fmtMoney(totalAll);
+      document.getElementById('d2-total-diario').textContent = fmtMoney(totalDiario);
+      document.getElementById('d2-total-fijo').textContent = fmtMoney(totalFijo);
+
+      document.getElementById('d2-weeks-body').innerHTML = `
+        <tr><td>Semana 1</td><td>Días 1 a 7</td><td><strong>${fmtMoney(w1)}</strong></td></tr>
+        <tr><td>Semana 2</td><td>Días 8 a 14</td><td><strong>${fmtMoney(w2)}</strong></td></tr>
+        <tr><td>Semana 3</td><td>Días 15 a 21</td><td><strong>${fmtMoney(w3)}</strong></td></tr>
+        <tr><td>Semana 4</td><td>Días 22 a 31</td><td><strong>${fmtMoney(w4)}</strong></td></tr>
+      `;
+
+      const inc = parseFloat(state.day2.monthlyIncome);
+      const diffEl = document.getElementById('d2-income-diff');
+      if (!isNaN(inc) && inc > 0) {
+        const diff = inc - totalAll;
+        if (diff > 0) {
+          diffEl.style.color = '#86efac';
+          diffEl.textContent = `+${fmtMoney(diff)} (Hay margen disponible)`;
+        } else if (diff < 0) {
+          diffEl.style.color = '#fca5a5';
+          diffEl.textContent = `${fmtMoney(diff)} (Salió más de lo que entró)`;
+        } else {
+          diffEl.style.color = '#fcd34d';
+          diffEl.textContent = `$0,00 (Estás en el límite exacto)`;
         }
+      } else {
+        diffEl.style.color = '#94a3b8';
+        diffEl.textContent = 'Ingresa tus ingresos para comparar';
+      }
 
-        function renderDashboard() {
-            const menu = document.getElementById('menu-dias');
-            const prog = document.getElementById('progreso-texto');
-            prog.textContent = `${appData.completados.length} de 7 completados`;
+      const filtered = filter === 'all'
+        ? state.day2.expenses
+        : state.day2.expenses.filter(e => String(e.day) === String(filter));
 
-            const diasInfo = [
-                { n: 1, id: 'dia1', titulo: 'Día 1: ¿Cuántos Autoengaños Tienes?', sub: 'Audio + Checklist de 19 frases' },
-                { n: 2, id: 'dia2', titulo: 'Día 2: Registro de Gastos Diario', sub: 'Método de los 3 momentos' },
-                { n: 3, id: 'dia3', titulo: 'Día 3: El Costo Real de tu Deuda', sub: 'Infografía de 5 pasos + Tasas LATAM' },
-                { n: 4, id: 'dia4', titulo: 'Día 4: ¿Cuál es tu Patrón de Ahorro?', sub: 'Mini-test de 8 preguntas' },
-                { n: 5, id: 'dia5', titulo: 'Día 5: Cómo Decir Que No Sin Drama', sub: 'Guiones prácticos de asertividad' },
-                { n: 6, id: 'dia6', titulo: 'Día 6: Tu Historia Financiera', sub: 'Auditoría interna en 10 preguntas' },
-                { n: 7, id: 'dia7', titulo: 'Día 7: Tu Mapa de Fugas', sub: 'Proyección anual y Top 3 de fugas' }
-            ];
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:12px;">Aún no hay movimientos cargados en este filtro.</p>';
+        return;
+      }
 
-            menu.innerHTML = '';
-            diasInfo.forEach(d => {
-                const done = appData.completados.includes(d.n);
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.onclick = () => irVista(d.id);
-                btn.className = `w-full text-left p-4 rounded-2xl border transition flex items-center justify-between cursor-pointer shadow-sm ${done ? 'bg-emerald-950/25 border-emerald-500/40' : 'bg-neutral-900 hover:bg-neutral-800 border-neutral-800 hover:border-[#9CCCE3]'}`;
-                btn.innerHTML = `
-                    <div class="flex items-center space-x-3.5">
-                        <div style="background-color: ${done ? '#10B981' : '#0F3D74'}; color: #FFF;" class="w-11 h-11 rounded-xl font-extrabold text-base flex items-center justify-center shrink-0">
-                            ${done ? '✓' : 'D' + d.n}
-                        </div>
-                        <div>
-                            <h3 class="subtitle-main text-white text-base">${d.titulo}</h3>
-                            <p class="text-xs text-neutral-400 mt-0.5">${d.sub}</p>
-                        </div>
-                    </div>
-                    <span class="text-neutral-400 text-xl font-bold pl-2">›</span>
-                `;
-                menu.appendChild(btn);
-            });
-        }
+      filtered.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'record-item';
+        row.innerHTML = `
+          <div>
+            <div class="record-meta">
+              Día ${item.day} • ${item.moment}
+              <span class="record-tag ${item.kind === 'fijo' ? 'fijo' : ''}">${item.kind === 'fijo' ? 'Factura / Servicio' : '3 Momentos'}</span>
+            </div>
+            <div class="record-title">${item.desc}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="record-amount">${fmtMoney(item.amount)}</span>
+            <button class="btn-del" title="Eliminar" onclick="deleteExpense(${item.id})">✕</button>
+          </div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
 
-        function renderDia1() {
-            const cont = document.getElementById('contenedor-checklist-d1');
-            cont.innerHTML = '';
-            let marcados = 0;
-            FRASES_DIA_1.forEach((frase, idx) => {
-                const isChecked = appData.d1Checks[idx];
-                if (isChecked) marcados++;
-                const card = document.createElement('div');
-                card.onclick = () => {
-                    appData.d1Checks[idx] = !appData.d1Checks[idx];
-                    saveApp();
-                    renderDia1();
-                };
-                card.className = `p-4 rounded-2xl border transition flex items-start space-x-3.5 cursor-pointer ${isChecked ? 'bg-[#0F3D74]/35 border-[#F29F05]' : 'bg-neutral-900 border-neutral-800 hover:border-neutral-600'}`;
-                card.innerHTML = `
-                    <div class="w-6 h-6 rounded-lg mt-0.5 shrink-0 flex items-center justify-center border font-bold text-sm ${isChecked ? 'bg-[#F29F05] border-[#F29F05] text-black' : 'bg-neutral-950 border-neutral-600 text-transparent'}">✓</div>
-                    <p class="text-base text-neutral-100 leading-snug">${frase}</p>
-                `;
-                cont.appendChild(card);
-            });
-            document.getElementById('contador-d1').textContent = `${marcados} / 19`;
-        }
+    /* ================= DAY 3 ================= */
+    function initDay3() {
+      document.getElementById('d3-card-name').value = state.day3.cardName || '';
+      document.getElementById('d3-debt').value = state.day3.debt || '';
+      document.getElementById('d3-rate').value = state.day3.rate || '';
+      document.getElementById('d3-fee').value = state.day3.fee || '';
+      document.getElementById('d3-min').value = state.day3.minPay || '';
+      document.getElementById('d3-custom').value = state.day3.customPay || '';
+      calcDay3();
+    }
 
-        function calcularPerfilDia1() {
-            const pts = appData.d1Checks.filter(Boolean).length;
-            const resBox = document.getElementById('resultado-d1');
-            resBox.style.display = 'block';
-            let titulo = "", desc = "", frase = "";
-            if (pts <= 5) {
-                titulo = `Perfil 1 — El Negador (${pts} puntos)`;
-                desc = "Todavía crees que el problema está casi siempre afuera: la inflación, el sueldo, el país, los precios, la mala suerte.\n\nSi no miras tus propios movimientos, cualquier explicación externa te servirá para no cambiar nada.";
-                frase = "Frase clave: No puedes ordenar lo que todavía prefieres no ver.";
-            } else if (pts <= 12) {
-                titulo = `Perfil 2 — El Consciente Inmóvil (${pts} puntos)`;
-                desc = "Ya lo sabes. Sabes que la tarjeta te está comiendo de a poco y que el 'después lo veo' casi nunca termina bien.\n\nPero entre saber y cambiar hay una distancia enorme llena de excusas elegantes ('cuando cobre mejor', 'cuando termine este mes').";
-                frase = "Frase clave: La conciencia sin movimiento también es una forma de autoengaño.";
-            } else {
-                titulo = `Perfil 3 — El Autoengañado Crónico (${pts} puntos)`;
-                desc = "Hace tiempo vienes repitiendo el mismo patrón. Cuando una mala racha se repite demasiado, deja de ser racha y se vuelve sistema.\n\nSi tu sistema actual te deja siempre en el mismo lugar, necesitas otro.";
-                frase = "Frase clave: No estás trabado porque no puedes. Estás trabado porque todavía no nombraste el patrón.";
-            }
-            document.getElementById('titulo-perfil-d1').textContent = titulo;
-            document.getElementById('desc-perfil-d1').textContent = desc;
-            document.getElementById('frase-perfil-d1').textContent = frase;
-            if (!appData.completados.includes(1)) { appData.completados.push(1); saveApp(); }
-            resBox.scrollIntoView({ behavior: 'smooth' });
-        }
+    function simulateDebt(debt, annualRate, monthlyFee, monthlyPay) {
+      let balance = debt;
+      const monthlyRate = Math.pow(1 + (annualRate / 100), 1 / 12) - 1;
+      let totalPaid = 0;
+      let totalInterest = 0;
+      let months = 0;
 
-        function initDia2() {
-            const selDia = document.getElementById('d2-dia');
-            const selFiltro = document.getElementById('d2-filtro');
-            selDia.innerHTML = ''; selFiltro.innerHTML = '<option value="todos">Todos los días</option>';
-            for (let i = 1; i <= 31; i++) {
-                selDia.innerHTML += `<option value="${i}">Día ${i}</option>`;
-                selFiltro.innerHTML += `<option value="${i}">Día ${i}</option>`;
-            }
-            renderGastosD2();
-        }
+      for (let m = 1; m <= 12; m++) {
+        if (balance <= 0.01) break;
+        const interest = balance * monthlyRate + monthlyFee;
+        const due = balance + interest;
+        const pay = Math.min(due, monthlyPay);
+        balance = Math.max(0, due - pay);
+        totalPaid += pay;
+        totalInterest += interest;
+        months = m;
+      }
+      return { totalPaid, totalInterest, endBalance: balance, months };
+    }
 
-        function agregarGastoD2() {
-            const dia = document.getElementById('d2-dia').value;
-            const momento = document.getElementById('d2-momento').value;
-            const desc = document.getElementById('d2-desc').value.trim();
-            const monto = parseFloat(document.getElementById('d2-monto').value);
-            if (!desc || isNaN(monto) || monto <= 0) { alert("Completa descripción y monto."); return; }
-            appData.d2Gastos.unshift({ id: Date.now(), dia, momento, desc, monto });
-            saveApp();
-            document.getElementById('d2-desc').value = ''; document.getElementById('d2-monto').value = '';
-            renderGastosD2();
-        }
+    function calcDay3() {
+      state.day3.cardName = document.getElementById('d3-card-name').value;
+      state.day3.debt = document.getElementById('d3-debt').value;
+      state.day3.rate = document.getElementById('d3-rate').value;
+      state.day3.fee = document.getElementById('d3-fee').value;
+      state.day3.minPay = document.getElementById('d3-min').value;
+      state.day3.customPay = document.getElementById('d3-custom').value;
 
-        function renderGastosD2() {
-            const filtro = document.getElementById('d2-filtro').value;
-            const lista = document.getElementById('d2-lista');
-            const filtrados = filtro === 'todos' ? appData.d2Gastos : appData.d2Gastos.filter(g => g.dia === filtro);
-            const total = filtrados.reduce((sum, g) => sum + g.monto, 0);
-            document.getElementById('d2-total').textContent = `$${total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-            lista.innerHTML = filtrados.length === 0 ? `<p class="text-sm text-neutral-500 text-center py-4">No hay gastos cargados aún.</p>` : '';
-            filtrados.forEach(g => {
-                lista.innerHTML += `
-                    <div class="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex justify-between items-center">
-                        <div><span class="text-xs font-bold text-[#9CCCE3]">Día ${g.dia} • ${g.momento}</span><p class="text-sm font-medium text-white">${g.desc}</p></div>
-                        <span class="font-bold text-base text-[#F29F05]">$${g.monto.toLocaleString('es-AR')}</span>
-                    </div>`;
-            });
-        }
+      const debt = parseFloat(state.day3.debt);
+      const rate = parseFloat(state.day3.rate);
+      const fee = parseFloat(state.day3.fee) || 0;
+      const minPay = parseFloat(state.day3.minPay);
+      const customPay = parseFloat(state.day3.customPay) || minPay;
+      const resEl = document.getElementById('d3-results');
 
-        function analizarTarjetaD3() {
-            const deuda = parseFloat(document.getElementById('d3-deuda').value);
-            const tasa = parseFloat(document.getElementById('d3-tasa').value);
-            const minimo = parseFloat(document.getElementById('d3-minimo').value);
-            if (isNaN(deuda) || isNaN(tasa) || isNaN(minimo)) { alert("Completa todos los campos obligatorios."); return; }
-            const tasaMensual = Math.pow(1 + (tasa / 100), 1 / 12) - 1;
-            const interesMes = deuda * tasaMensual;
-            document.getElementById('resultado-d3').style.display = 'block';
-            document.getElementById('d3-tasa-mensual').textContent = `${(tasaMensual * 100).toFixed(2)}% mensual`;
-            document.getElementById('d3-interes-mes').textContent = `$${interesMes.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-            document.getElementById('resultado-d3').scrollIntoView({ behavior: 'smooth' });
-        }
+      if (isNaN(debt) || debt <= 0 || isNaN(rate) || rate < 0 || isNaN(minPay) || minPay <= 0) {
+        resEl.innerHTML = '<p>Completa el saldo de deuda, la tasa anual y el pago mínimo para ver cuánto dinero se va solo en intereses y cargos.</p>';
+        persist();
+        return;
+      }
 
-        function renderDia4() {
-            const cont = document.getElementById('contenedor-test-d4');
-            cont.innerHTML = '';
-            PREGUNTAS_DIA_4.forEach((item, qIdx) => {
-                let box = `<div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl space-y-2.5"><p class="font-bold text-white">${item.q}</p><div class="space-y-2">`;
-                item.opts.forEach(opt => {
-                    const sel = appData.d4Respuestas[qIdx] === opt.p;
-                    box += `<button type="button" onclick="appData.d4Respuestas[${qIdx}] = ${opt.p}; saveApp(); renderDia4();" class="w-full text-left p-3 rounded-xl border text-sm cursor-pointer transition ${sel ? 'bg-[#0F3D74] border-[#9CCCE3] text-white font-medium' : 'bg-neutral-950 border-neutral-800 text-neutral-300 hover:border-neutral-700'}">${opt.t}</button>`;
-                });
-                cont.innerHTML += box + `</div></div>`;
-            });
-        }
+      const monthlyRate = (Math.pow(1 + rate / 100, 1 / 12) - 1) * 100;
+      const firstMonthCost = debt * (monthlyRate / 100) + fee;
+      const sMin = simulateDebt(debt, rate, fee, minPay);
+      const sDouble = simulateDebt(debt, rate, fee, minPay * 2);
+      const sCustom = simulateDebt(debt, rate, fee, customPay);
+      const savedInterest = Math.max(0, sMin.totalInterest - sCustom.totalInterest);
 
-        function calcularTestD4() {
-            if (Object.keys(appData.d4Respuestas).length < 8) { alert("Responde las 8 preguntas antes de calcular."); return; }
-            const total = Object.values(appData.d4Respuestas).reduce((a, b) => a + b, 0);
-            document.getElementById('resultado-d4').style.display = 'block';
-            let titulo = "", desc = "";
-            if (total <= 12) {
-                titulo = `Perfil A — El Eterno Postergador (${total} puntos)`;
-                desc = "Tu problema no es que no entiendas el ahorro. Es que lo tratas como una tarea que necesita el momento perfecto ('cuando me organice', 'cuando pase este mes'). Mientras esperas que el mes esté ordenado, el mes te pasa por arriba.";
-            } else if (total <= 18) {
-                titulo = `Perfil B — El Ahorrista del Resto (${total} puntos)`;
-                desc = "Tú no decides cuánto ahorrar. Le preguntas al mes cuánto tuvo ganas de dejarte. Y casi siempre, el mes te contesta lo mismo: 'nada'. Si tu ahorro depende de lo que sobra, tienes una esperanza mensual, no un plan.";
-            } else {
-                titulo = `Perfil C — El Condicionado (${total} puntos)`;
-                desc = "Tú ahorrarías, pero con condiciones: si el sueldo fuera un poco mejor, si no hubiera inflación, si la vida colaborara. Esperas que el entorno se acomode antes de tomar una decisión propia.";
-            }
-            document.getElementById('titulo-perfil-d4').textContent = titulo;
-            document.getElementById('desc-perfil-d4').textContent = desc;
-            document.getElementById('resultado-d4').scrollIntoView({ behavior: 'smooth' });
-        }
+      resEl.innerHTML = `
+        <div class="metric-row">
+          <span class="metric-label">Interés mensual efectivo estimado</span>
+          <span class="metric-value">${monthlyRate.toFixed(2)}%</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Intereses + cargos que generas este mes</span>
+          <span class="metric-value" style="color:#fca5a5;">${fmtMoney(firstMonthCost)}</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Escenario (12 meses)</th>
+                <th>Pago mensual</th>
+                <th>Solo intereses + cargos</th>
+                <th>Saldo al mes 12</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1. Pagas solo el mínimo</td>
+                <td>${fmtMoney(minPay)}</td>
+                <td style="color:#fca5a5;"><strong>${fmtMoney(sMin.totalInterest)}</strong></td>
+                <td>${fmtMoney(sMin.endBalance)}</td>
+              </tr>
+              <tr>
+                <td>2. Pagas el doble del mínimo</td>
+                <td>${fmtMoney(minPay * 2)}</td>
+                <td style="color:#86efac;"><strong>${fmtMoney(sDouble.totalInterest)}</strong></td>
+                <td>${fmtMoney(sDouble.endBalance)}</td>
+              </tr>
+              <tr>
+                <td>3. Pagas lo que eliges</td>
+                <td>${fmtMoney(customPay)}</td>
+                <td style="color:#93c5fd;"><strong>${fmtMoney(sCustom.totalInterest)}</strong></td>
+                <td>${fmtMoney(sCustom.endBalance)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout green">
+          <div class="callout-title">Diferencia en 12 meses</div>
+          <div>Eligiendo tu monto de pago en lugar del mínimo, evitas regalar <strong>${fmtMoney(savedInterest)}</strong> en intereses y cargos durante el año.</div>
+        </div>
+      `;
+      persist();
+    }
 
-        function guardarMiniAccionD4() {
-            const pct = document.getElementById('d4-porcentaje').value;
-            if (!pct) { alert("Ingresa un porcentaje válido."); return; }
-            appData.d4Porcentaje = pct; saveApp(); completarDia(4, 'dia5');
-        }
+    function applyDay2CardPaymentToDay3(amount) {
+      document.getElementById('d3-custom').value = amount;
+      calcDay3();
+    }
 
-        function renderDia7() {
-            const cont = document.getElementById('contenedor-fugas-d7');
-            cont.innerHTML = '';
-            CATEGORIAS_FUGAS_D7.forEach((cat, idx) => {
-                const val = appData.d7Fugas[idx] || '';
-                cont.innerHTML += `
-                    <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl flex justify-between items-center gap-3">
-                        <div><h4 class="font-bold text-white text-sm">${cat.nombre}</h4><p class="text-xs text-neutral-400">${cat.desc}</p></div>
-                        <input type="number" min="0" value="${val}" onchange="appData.d7Fugas[${idx}] = parseFloat(this.value)||0; saveApp();" class="w-28 bg-neutral-950 border border-[#F29F05] rounded-xl px-3 py-2 text-white text-right font-bold text-sm" placeholder="0">
-                    </div>`;
-            });
-        }
+    /* ================= DAY 4 ================= */
+    function initDay4() {
+      const container = document.getElementById('d4-quiz-container');
+      container.innerHTML = '';
 
-        function calcularMapaFugasD7() {
-            const totalMes = appData.d7Fugas.reduce((a, b) => a + b, 0);
-            const totalAnio = totalMes * 12;
-            document.getElementById('resultado-d7').style.display = 'block';
-            document.getElementById('d7-total-mes').textContent = `$${totalMes.toLocaleString('es-AR')}`;
-            document.getElementById('d7-total-anio').textContent = `$${totalAnio.toLocaleString('es-AR')}`;
-            
-            const ranking = CATEGORIAS_FUGAS_D7.map((c, i) => ({ nombre: c.nombre, monto: appData.d7Fugas[i] || 0 })).sort((a, b) => b.monto - a.monto);
-            const top3 = document.getElementById('d7-top3');
-            top3.innerHTML = '';
-            ranking.slice(0, 3).forEach((item, pos) => {
-                top3.innerHTML += `<div class="bg-neutral-950 p-3 rounded-xl border border-neutral-800 text-sm flex justify-between items-center"><span><strong>${pos+1}°</strong> ${item.nombre}</span><span class="font-bold text-[#F29F05]">$${item.monto.toLocaleString('es-AR')} / mes</span></div>`;
-            });
-            if (!appData.completados.includes(7)) { appData.completados.push(7); saveApp(); }
-            document.getElementById('resultado-d7').scrollIntoView({ behavior: 'smooth' });
-        }
+      D4_QUESTIONS.forEach((item, idx) => {
+        const block = document.createElement('div');
+        block.style.marginBottom = '16px';
+        const title = document.createElement('div');
+        title.style.fontWeight = '700';
+        title.style.fontSize = '14.5px';
+        title.style.marginBottom = '8px';
+        title.textContent = item.q;
+        block.appendChild(title);
 
-        // Inicializar vistas al cargar
-        renderDashboard();
-        renderDia1();
-        initDia2();
-        renderDia4();
-        renderDia7();
-    </script>
+        item.opts.forEach((opt, optIdx) => {
+          const label = document.createElement('label');
+          label.className = 'check-item';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'd4_q_' + idx;
+          radio.checked = state.day4.answers[idx] === opt.pts && state.day4.answers['opt_' + idx] === optIdx;
+          radio.onchange = () => {
+            state.day4.answers[idx] = opt.pts;
+            state.day4.answers['opt_' + idx] = optIdx;
+            updateDay4Score();
+            persist();
+          };
+          const span = document.createElement('span');
+          span.textContent = opt.label;
+          label.appendChild(radio);
+          label.appendChild(span);
+          block.appendChild(label);
+        });
+
+        container.appendChild(block);
+      });
+      updateDay4Score();
+    }
+
+    function getDay4Profile() {
+      let total = 0;
+      for (let i = 0; i < D4_QUESTIONS.length; i++) {
+        total += Number(state.day4.answers[i]) || 0;
+      }
+      if (total === 0) {
+        return { total, name: 'Responde las preguntas para ver tu patrón', desc: 'Marca una opción por pregunta según lo que haces en la práctica.' };
+      }
+      if (total <= 12) {
+        return {
+          total,
+          name: 'Perfil A — Postergación del comienzo (8 a 12 puntos)',
+          desc: 'Tratas el ahorro como una tarea que exige un mes perfecto para arrancar. Mientras esperas ese comienzo limpio, el mes pasa por encima.'
+        };
+      } else if (total <= 18) {
+        return {
+          total,
+          name: 'Perfil B — Ahorro del resto (13 a 18 puntos)',
+          desc: 'No decides cuánto guardar: le preguntas al mes cuánto quiso dejarte al final. Y casi siempre responde que no quedó nada.'
+        };
+      } else {
+        return {
+          total,
+          name: 'Perfil C — Ahorro condicionado (19 a 24 puntos)',
+          desc: 'Solo guardas dinero si no aparece ningún imprevisto ni compromiso. En cuanto surge una presión externa, el ahorro desaparece primero.'
+        };
+      }
+    }
+
+    function updateDay4Score() {
+      const p = getDay4Profile();
+      document.getElementById('d4-score').textContent = p.total;
+      document.getElementById('d4-result-box').innerHTML = `
+        <div class="callout-title">${p.name}</div>
+        <div>${p.desc}</div>
+      `;
+    }
+
+    /* ================= DAY 5 ================= */
+    function initDay5() {
+      const container = document.getElementById('d5-scenarios');
+      container.innerHTML = '';
+      D5_SCENARIOS.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'callout';
+        div.innerHTML = `
+          <div class="callout-title">${s.title}</div>
+          <div style="margin:6px 0; color:#fff;"><strong>Frase directa:</strong> ${s.say}</div>
+          <div style="font-size:13px; color:var(--text-muted);">${s.alt}</div>
+        `;
+        container.appendChild(div);
+      });
+      document.getElementById('d5-boundary').value = state.day5.boundary || '';
+    }
+
+    function saveDay5() {
+      state.day5.boundary = document.getElementById('d5-boundary').value;
+      persist();
+    }
+
+    /* ================= DAY 6 ================= */
+    function initDay6() {
+      document.getElementById('d6-pattern').value = state.day6.pattern || '';
+      document.getElementById('d6-action').value = state.day6.action || '';
+    }
+
+    function saveDay6() {
+      state.day6.pattern = document.getElementById('d6-pattern').value;
+      state.day6.action = document.getElementById('d6-action').value;
+      persist();
+    }
+
+    /* ================= DAY 7 ================= */
+    function initDay7() {
+      document.getElementById('d7-income').value = state.day7.income || '';
+      document.getElementById('d7-pay-self').value = state.day7.paySelf || '';
+      document.getElementById('d7-save-place').value = state.day7.savePlace || '';
+      document.getElementById('d7-inev1').value = state.day7.inev1 || '';
+      document.getElementById('d7-inev2').value = state.day7.inev2 || '';
+      document.getElementById('d7-inev3').value = state.day7.inev3 || '';
+      document.getElementById('d7-danger').value = state.day7.danger || '';
+      document.getElementById('d7-excuse').value = state.day7.excuse || '';
+
+      const leaksEl = document.getElementById('d7-leaks-container');
+      leaksEl.innerHTML = '';
+      LEAK_CATEGORIES.forEach(cat => {
+        const row = document.createElement('div');
+        row.className = 'form-grid';
+        row.style.alignItems = 'center';
+        row.innerHTML = `
+          <div>
+            <strong style="font-size:13.5px; color:#fff;">${cat.name}</strong>
+            <div style="font-size:12px; color:var(--text-muted);">${cat.hint}</div>
+          </div>
+          <div>
+            <input type="number" placeholder="0.00" step="0.01" value="${state.day7.leaks[cat.id] || ''}" oninput="updateLeak('${cat.id}', this.value)" />
+          </div>
+        `;
+        leaksEl.appendChild(row);
+      });
+
+      calcDay7Totals();
+    }
+
+    function saveDay7() {
+      state.day7.income = document.getElementById('d7-income').value;
+      state.day7.paySelf = document.getElementById('d7-pay-self').value;
+      state.day7.savePlace = document.getElementById('d7-save-place').value;
+      state.day7.inev1 = document.getElementById('d7-inev1').value;
+      state.day7.inev2 = document.getElementById('d7-inev2').value;
+      state.day7.inev3 = document.getElementById('d7-inev3').value;
+      state.day7.danger = document.getElementById('d7-danger').value;
+      state.day7.excuse = document.getElementById('d7-excuse').value;
+      calcDay7Totals();
+      persist();
+    }
+
+    function updateLeak(id, val) {
+      state.day7.leaks[id] = val;
+      calcDay7Totals();
+      persist();
+    }
+
+    function calcDay7Totals() {
+      const i1 = parseFloat(state.day7.inev1) || 0;
+      const i2 = parseFloat(state.day7.inev2) || 0;
+      const i3 = parseFloat(state.day7.inev3) || 0;
+      document.getElementById('d7-inev-total').textContent = fmtMoney(i1 + i2 + i3);
+
+      let monthLeaks = 0;
+      const ranked = [];
+      LEAK_CATEGORIES.forEach(cat => {
+        const v = parseFloat(state.day7.leaks[cat.id]) || 0;
+        monthLeaks += v;
+        if (v > 0) ranked.push({ name: cat.name, val: v });
+      });
+
+      ranked.sort((a, b) => b.val - a.val);
+      document.getElementById('d7-leaks-month').textContent = fmtMoney(monthLeaks);
+      document.getElementById('d7-leaks-year').textContent = fmtMoney(monthLeaks * 12);
+
+      const topEl = document.getElementById('d7-top-leaks');
+      if (ranked.length === 0) {
+        topEl.innerHTML = '<div class="callout-title">Tus 3 fugas principales</div><div>Carga montos estimados arriba para identificar dónde empezar a recortar.</div>';
+      } else {
+        const top3 = ranked.slice(0, 3).map((r, i) => `${i + 1}. ${r.name}: <strong>${fmtMoney(r.val)}/mes</strong>`).join('<br>');
+        topEl.innerHTML = `<div class="callout-title">Tus fugas más grandes — Por dónde empezar</div><div>${top3}</div>`;
+      }
+    }
+
+    function applyDay7Prefill() {
+      if (state.day2.monthlyIncome && !document.getElementById('d7-income').value) {
+        document.getElementById('d7-income').value = state.day2.monthlyIncome;
+      }
+      if (state.day2.rep1 && !document.getElementById('d7-danger').value) {
+        document.getElementById('d7-danger').value = state.day2.rep1;
+      }
+      if (state.day1.q2 && !document.getElementById('d7-excuse').value) {
+        document.getElementById('d7-excuse').value = state.day1.q2;
+      }
+      saveDay7();
+    }
+
+    /* ================= CROSS-DAY PROGRESSION ================= */
+    function refreshCrossDayInsights() {
+      const c = state.day1.checked;
+
+      // Day 2 alert from Day 1
+      const d2Alert = document.getElementById('d2-d1-alert');
+      const d2Notes = [];
+      if (c.c15) d2Notes.push('En el Día 1 marcaste que tienes suscripciones o débitos automáticos sin revisar: empieza mirando esos cargos primero.');
+      if (c.c16) d2Notes.push('Recuerda incluir apuestas o juegos dentro de tus decisiones de gasto del día.');
+      if (state.day1.q1.trim()) d2Notes.push(`Señalaste que el dinero empieza a apretar en este momento del mes: "${state.day1.q1.trim()}".`);
+      if (d2Notes.length > 0) {
+        d2Alert.classList.remove('hidden');
+        d2Alert.innerHTML = `<div class="callout-title">Conexión con tu diagnóstico del Día 1</div><div>${d2Notes.join('<br>')}</div>`;
+      } else {
+        d2Alert.classList.add('hidden');
+      }
+
+      // Day 3 alert from Day 1 & Day 2
+      const d3Alert = document.getElementById('d3-context-alert');
+      const d3Notes = [];
+      if (c.c4 || c.c8) d3Notes.push('En el Día 1 marcaste uso de cuotas o pago mínimo de tarjeta: presta especial atención a la diferencia entre el Escenario 1 y el Escenario 3.');
+      const totalD2 = state.day2.expenses.reduce((acc, e) => acc + (Number(e.amount) || 0), 0);
+      if (totalD2 > 0) d3Notes.push(`Llevas ${fmtMoney(totalD2)} registrados en el Día 2. Revisa cuánto margen real puedes destinar a superar el pago mínimo.`);
+      if (d3Notes.length > 0) {
+        d3Alert.classList.remove('hidden');
+        d3Alert.innerHTML = `<div class="callout-title">Referencia de tus días anteriores</div><div>${d3Notes.join('<br>')}</div>`;
+      } else {
+        d3Alert.classList.add('hidden');
+      }
+
+      // Day 3 prefill button if card payment was logged in Day 2
+      const d3Prefill = document.getElementById('d3-prefill-box');
+      const cardExp = state.day2.expenses.find(e => e.kind === 'fijo' && e.moment === 'Pago de Tarjeta');
+      if (cardExp) {
+        d3Prefill.classList.remove('hidden');
+        d3Prefill.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Detectamos un pago de tarjeta registrado en el Día 2 por <strong>${fmtMoney(cardExp.amount)}</strong> (${cardExp.desc}).</span>
+            <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount})">Usar como pago mensual</button>
+          </div>
+        `;
+      } else {
+        d3Prefill.classList.add('hidden');
+      }
+
+      // Day 4 alert from Day 1
+      const d4Alert = document.getElementById('d4-d1-alert');
+      if (c.c6) {
+        d4Alert.classList.remove('hidden');
+        d4Alert.innerHTML = `<div class="callout-title">Nota desde el Día 1</div><div>Marcaste que intentas ahorrar "lo que sobra" al final del mes. Este mini-test te ayudará a confirmar ese patrón.</div>`;
+      } else {
+        d4Alert.classList.add('hidden');
+      }
+
+      // Day 5 alert from Day 1
+      const d5Alert = document.getElementById('d5-d1-alert');
+      if (c.c9 || c.c10 || c.c13) {
+        d5Alert.classList.remove('hidden');
+        d5Alert.innerHTML = `<div class="callout-title">Foco prioritario según tu Día 1</div><div>En tu checklist inicial marcaste préstamos, compromisos o dificultad para rechazar planes fuera de presupuesto. Estas frases están pensadas para esos momentos.</div>`;
+      } else {
+        d5Alert.classList.add('hidden');
+      }
+
+      // Day 6 Mirror Box
+      const d6Mirror = document.getElementById('d6-mirror-box');
+      const prof1 = getDay1Profile();
+      const prof4 = getDay4Profile();
+      const reps = [state.day2.rep1, state.day2.rep2, state.day2.rep3].filter(Boolean);
+      d6Mirror.innerHTML = `
+        <div class="callout-title">Espejo de tu recorrido (Días 1 a 5)</div>
+        <div>
+          • <strong>Diagnóstico inicial:</strong> ${prof1.name}<br>
+          ${state.day1.q2.trim() ? `• <strong>Explicación habitual que anotaste:</strong> "${state.day1.q2.trim()}"<br>` : ''}
+          ${reps.length > 0 ? `• <strong>Gastos repetitivos detectados en Día 2:</strong> ${reps.join(', ')}<br>` : ''}
+          ${Number(state.day3.debt) > 0 ? `• <strong>Deuda de tarjeta analizada:</strong> ${fmtMoney(state.day3.debt)}<br>` : ''}
+          ${prof4.total > 0 ? `• <strong>Patrón de ahorro:</strong> ${prof4.name}` : ''}
+        </div>
+      `;
+
+      // Day 7 Prefill Box
+      const d7Prefill = document.getElementById('d7-prefill-box');
+      const hasPrefillData = Boolean(state.day2.monthlyIncome || state.day2.rep1 || state.day1.q2);
+      if (hasPrefillData) {
+        d7Prefill.classList.remove('hidden');
+        d7Prefill.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Tienes datos previos cargados (ingresos del Día 2, gasto repetitivo o excusa del Día 1). Puedes traerlos como punto de partida editable.</span>
+            <button class="btn btn-secondary btn-small" onclick="applyDay7Prefill()">Traer datos previos</button>
+          </div>
+        `;
+      } else {
+        d7Prefill.classList.add('hidden');
+      }
+    }
+
+    // Bootstrap
+    initDay1();
+    initDay2();
+    initDay3();
+    initDay4();
+    initDay5();
+    initDay6();
+    initDay7();
+    openView(state.activeView || 'home');
+  </script>
 </body>
 </html>
