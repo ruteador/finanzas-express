@@ -948,6 +948,8 @@
       </div>
 
       <div class="card">
+        <p style="color:#fff; font-weight:600; margin-bottom:4px;">Responde las preguntas para ver tu patrón.</p>
+        <p style="margin-bottom:16px;">Marca la opción que refleje lo que haces de verdad —no lo que te gustaría hacer— y descubre tu patrón.</p>
         <div id="d4-quiz-container"></div>
         <div class="metric-row" style="margin-top:14px;">
           <span class="metric-label">Puntaje del mini-test</span>
@@ -1171,7 +1173,7 @@
         q: '5. ¿Cómo usas las apps de tu banco o billetera virtual para ahorrar?',
         opts: [
           { label: 'Las uso solo cuando el mes está estable y no temo necesitar ese dinero.', pts: 3 },
-          { label: 'Mando algo cuando veo que quedó saldo suelto.', pts: 2 },
+          { label: 'Transfiero algo cuando veo que queda saldo suelto.', pts: 2 },
           { label: 'Tengo la intención de separar dinero ahí, pero casi nunca lo hago a tiempo.', pts: 1 }
         ]
       },
@@ -1195,7 +1197,7 @@
         q: '8. ¿Cuál de estas frases te representa más?',
         opts: [
           { label: '"Ahorro si el mes acompaña. Si no, es imposible."', pts: 3 },
-          { label: '"Sé que tengo que empezar, pero nunca encuentro el momento limpio."', pts: 1 },
+          { label: '"Sé que tengo que empezar, pero nunca encuentro el momento justo para hacerlo."', pts: 1 },
           { label: '"Yo ahorro cuando puedo. El problema es que casi nunca sobra."', pts: 2 }
         ]
       }
@@ -1777,7 +1779,7 @@
         total += Number(state.day4.answers[i]) || 0;
       }
       if (total === 0) {
-        return { total, name: 'Responde las preguntas para ver tu patrón', desc: 'Marca una opción por pregunta según lo que haces en la práctica.' };
+        return { total, name: 'Sin respuestas marcadas aún', desc: 'Selecciona una opción en cada pregunta para calcular tu perfil de ahorro.' };
       }
       if (total <= 12) {
         return {
