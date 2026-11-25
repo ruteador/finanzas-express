@@ -700,7 +700,7 @@
       <div class="card">
         <div class="eyebrow">DÍA 2 • VISIBILIDAD REAL</div>
         <h2>Ver lo que pasa sin adivinar</h2>
-        <p>No necesitas armar una planilla gigante ni hacer cálculos complicados. Hoy solo hay dos pasos cortos: mirar un momento hacia atrás para detectar fugas evidentes y anotar lo que se mueve hoy en tres momentos breves. Menos culpa, más claridad.</p>
+        <p>No necesitas armar una planilla gigante ni hacer cálculos complicados. Hoy hay dos pasos cortos y distintos:<br />1. <strong>Mirar hacia atrás:</strong> revisar tus movimientos para detectar fugas evidentes.<br />2. <strong>Anotar el presente:</strong> registrar lo que se mueve hoy en tres momentos breves.<br />Menos culpa, más claridad.</p>
         <div id="d2-d1-alert" class="callout amber hidden"></div>
       </div>
 
@@ -755,11 +755,11 @@
       <!-- Registro Unificado: 3 Momentos + Facturas/Impuestos + Vista 30 Días -->
       <div class="card">
         <h3>2. Registro de Gastos (3 Momentos + Planilla de 30 Días)</h3>
-        <p>Esperar hasta la noche para recordar todo suele terminar en olvidos y en un <em>"mañana lo hago bien"</em>. Anotar en tres momentos cortos (<strong>Mañana</strong>, <strong>Mediodía / Tarde</strong> y <strong>Noche</strong>) toma menos de un minuto por vez y te ayuda a ver <strong>dónde te encuentras</strong> en cada tramo del día.</p>
-        <p>Registra aquí tus decisiones del día y también tus pagos de <strong>impuestos, servicios, facturas o tarjeta</strong> el día que los pagas: todo se agrupa solo por semana y alimenta el total del ciclo sin duplicar trabajo.</p>
+        <p><strong>Todo lo que sale entra aquí. Sin excepciones.</strong><br />No es solo el café al paso ni solo la factura de luz: es el supermercado, el combustible, la ferretería, el delivery, la cuota o ese gasto "chico" que juraste que no pesaba. Si no lo anotas, no existe en tu mapa y vas a seguir inventando excusas a fin de mes.</p>
+        <p>Esperar hasta la noche para recordar todo suele terminar en olvidos y en un <em>"mañana lo hago bien"</em>. Registrar en <strong>tres momentos cortos</strong> (<strong>Mañana</strong>, <strong>Mediodía / Tarde</strong> y <strong>Noche</strong>) toma segundos cuando pasa y evita que llegues de noche a negociar con tu memoria. Sin registro real no hay control real.</p>
 
         <div class="subtabs">
-          <button class="subtab active" id="tab-btn-diario" onclick="switchD2Tab('diario')">Gasto diario (3 Momentos)</button>
+          <button class="subtab active" id="tab-btn-diario" onclick="switchD2Tab('diario')">Gasto del día (3 Momentos — todo lo que sale)</button>
           <button class="subtab" id="tab-btn-fijo" onclick="switchD2Tab('fijo')">+ Impuesto / Servicio / Factura</button>
         </div>
 
@@ -781,7 +781,7 @@
           </div>
           <div class="form-group">
             <label for="d2-desc">¿Qué fue? (Descripción corta)</label>
-            <input type="text" id="d2-desc" placeholder="Ej: Café, transporte, comida rápida, transferencia..." />
+            <input type="text" id="d2-desc" placeholder="Ej: Supermercado, combustible, ferretería, almuerzo, café..." />
           </div>
           <div class="form-group">
             <label for="d2-amount">¿Cuánto? ($ exacto)</label>
@@ -1723,7 +1723,10 @@
       persist();
     }
 
-    function applyDay2CardPaymentToDay3(amount) {
+    function applyDay2CardPaymentToDay3(amount, cardName) {
+      if (cardName) {
+        document.getElementById('d3-card-name').value = cardName;
+      }
       document.getElementById('d3-custom').value = amount;
       calcDay3();
     }
@@ -2001,11 +2004,12 @@
       const d3Prefill = document.getElementById('d3-prefill-box');
       const cardExp = state.day2.expenses.find(e => e.kind === 'fijo' && e.moment === 'Pago de Tarjeta');
       if (cardExp) {
+        const safeCardName = String(cardExp.desc || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
         d3Prefill.classList.remove('hidden');
         d3Prefill.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-            <span>Detectamos un pago de tarjeta registrado en el Día 2 por <strong>${fmtMoney(cardExp.amount)}</strong> (${cardExp.desc}).</span>
-            <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount})">Usar como pago mensual</button>
+            <span>Detectamos un pago de tarjeta registrado en el Día 2: <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong>.</span>
+            <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount}, '${safeCardName}')">Usar tarjeta y monto</button>
           </div>
         `;
       } else {
