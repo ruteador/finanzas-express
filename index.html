@@ -681,7 +681,7 @@
           No las que "deberían" serlo.<br />
           Las que son.<br />
           Aunque duela un poco.<br />
-          Lo que marques aquí ayuda a conectar tus días siguientes.
+          Cada marca ajusta tus alertas de los próximos días.
         </p>
 
         <div id="d1-checklist-container"></div>
@@ -1100,10 +1100,10 @@
   </main>
 
   <script>
-    const STORAGE_KEY = 'finanzas_express_21dp_v3';
+    const STORAGE_KEY = 'finanzas_express_21dp_v2';
 
     const DAYS_META = [
-      { id: 'day1', num: 'Día 1', title: 'Lo que no miras, no cambia.', desc: '3 preguntas rápidas + checklist de 19 conductas' },
+      { id: 'day1', num: 'Día 1', title: 'Diagnóstico y Autoengaños', desc: '3 preguntas rápidas + checklist de 19 conductas' },
       { id: 'day2', num: 'Día 2', title: 'Visibilidad Real (3 Momentos + 30 Días)', desc: 'Auditoría de 3 meses + registro diario y facturas' },
       { id: 'day3', num: 'Día 3', title: 'El Costo Real de tu Deuda', desc: 'Impacto del pago mínimo y proyecciones de tarjeta' },
       { id: 'day4', num: 'Día 4', title: 'Tu Patrón de Ahorro', desc: 'Mini-test de 8 preguntas sobre por qué no sobra' },
@@ -1394,4 +1394,708 @@
         return {
           score,
           name: 'Perfil 2 — Conciencia inmóvil (6 a 12 puntos)',
-          desc: 'Ya sabes qué compras o hábitos te desordenan, pero postergas el
+          desc: 'Ya sabes qué compras o hábitos te desordenan, pero postergas el cambio con excusas elegantes. <strong><em>La conciencia sin movimiento también es una forma de autoengaño.</em></strong>'
+        };
+      } else {
+        return {
+          score,
+          name: 'Perfil 3 — Patrón crónico (13 puntos o más)',
+          desc: 'Hace tiempo repites el mismo ciclo con distintos nombres. <strong><em>Cuando una mala racha se repite demasiado, deja de ser racha y se vuelve sistema. Hoy empiezas a nombrarlo.</em></strong>'
+        };
+      }
+    }
+
+    function updateDay1Score() {
+      const prof = getDay1Profile();
+      document.getElementById('d1-score').textContent = prof.score;
+      document.getElementById('d1-profile-box').innerHTML = `
+        <div class="callout-title">${prof.name}</div>
+        <div>${prof.desc}</div>
+      `;
+    }
+
+    /* ================= DAY 2 ================= */
+    function initDay2() {
+      const daySel = document.getElementById('d2-day');
+      const fijoSel = document.getElementById('d2-fijo-day');
+      const filterSel = document.getElementById('d2-filter-day');
+
+      daySel.innerHTML = '';
+      fijoSel.innerHTML = '';
+      filterSel.innerHTML = '<option value="all">Todos los días</option>';
+      for (let i = 1; i <= 31; i++) {
+        const opt1 = new Option(`Día ${i}`, i);
+        const opt2 = new Option(`Día ${i}`, i);
+        const opt3 = new Option(`Día ${i}`, i);
+        daySel.add(opt1);
+        fijoSel.add(opt2);
+        filterSel.add(opt3);
+      }
+
+      document.getElementById('d2-small-sum').value = state.day2.smallSum || '';
+      document.getElementById('d2-rep1').value = state.day2.rep1 || '';
+      document.getElementById('d2-rep1-amt').value = state.day2.rep1Amt || '';
+      document.getElementById('d2-rep1-why').value = state.day2.rep1Why || '';
+      document.getElementById('d2-rep2').value = state.day2.rep2 || '';
+      document.getElementById('d2-rep2-amt').value = state.day2.rep2Amt || '';
+      document.getElementById('d2-rep2-why').value = state.day2.rep2Why || '';
+      document.getElementById('d2-rep3').value = state.day2.rep3 || '';
+      document.getElementById('d2-rep3-amt').value = state.day2.rep3Amt || '';
+      document.getElementById('d2-rep3-why').value = state.day2.rep3Why || '';
+      document.getElementById('d2-monthly-income').value = state.day2.monthlyIncome || '';
+
+      renderExpenses();
+    }
+
+    function switchD2Tab(tab) {
+      document.getElementById('tab-btn-diario').classList.toggle('active', tab === 'diario');
+      document.getElementById('tab-btn-fijo').classList.toggle('active', tab === 'fijo');
+      document.getElementById('d2-form-diario').classList.toggle('hidden', tab !== 'diario');
+      document.getElementById('d2-form-fijo').classList.toggle('hidden', tab !== 'fijo');
+    }
+
+    function saveDay2Activity() {
+      state.day2.smallSum = document.getElementById('d2-small-sum').value;
+      state.day2.rep1 = document.getElementById('d2-rep1').value;
+      state.day2.rep1Amt = document.getElementById('d2-rep1-amt').value;
+      state.day2.rep1Why = document.getElementById('d2-rep1-why').value;
+      state.day2.rep2 = document.getElementById('d2-rep2').value;
+      state.day2.rep2Amt = document.getElementById('d2-rep2-amt').value;
+      state.day2.rep2Why = document.getElementById('d2-rep2-why').value;
+      state.day2.rep3 = document.getElementById('d2-rep3').value;
+      state.day2.rep3Amt = document.getElementById('d2-rep3-amt').value;
+      state.day2.rep3Why = document.getElementById('d2-rep3-why').value;
+      persist();
+    }
+
+    function saveDay2Income() {
+      state.day2.monthlyIncome = document.getElementById('d2-monthly-income').value;
+      renderExpenses();
+      persist();
+    }
+
+    function addExpense(kind) {
+      if (kind === 'diario') {
+        const day = Number(document.getElementById('d2-day').value);
+        const moment = document.getElementById('d2-moment').value;
+        const desc = document.getElementById('d2-desc').value.trim();
+        const amount = parseFloat(document.getElementById('d2-amount').value);
+        if (!desc || isNaN(amount) || amount <= 0) {
+          alert('Ingresa una descripción corta y un monto mayor a 0.');
+          return;
+        }
+        state.day2.expenses.unshift({
+          id: Date.now(),
+          kind: 'diario',
+          day,
+          moment,
+          desc,
+          amount
+        });
+        document.getElementById('d2-desc').value = '';
+        document.getElementById('d2-amount').value = '';
+      } else {
+        const day = Number(document.getElementById('d2-fijo-day').value);
+        const cat = document.getElementById('d2-fijo-cat').value;
+        const desc = document.getElementById('d2-fijo-desc').value.trim();
+        const amount = parseFloat(document.getElementById('d2-fijo-amount').value);
+        if (!desc || isNaN(amount) || amount <= 0) {
+          alert('Ingresa el detalle del pago y un monto mayor a 0.');
+          return;
+        }
+        state.day2.expenses.unshift({
+          id: Date.now(),
+          kind: 'fijo',
+          day,
+          moment: cat,
+          desc,
+          amount
+        });
+        document.getElementById('d2-fijo-desc').value = '';
+        document.getElementById('d2-fijo-amount').value = '';
+      }
+      renderExpenses();
+      persist();
+    }
+
+    function deleteExpense(id) {
+      state.day2.expenses = state.day2.expenses.filter(item => item.id !== id);
+      renderExpenses();
+      persist();
+    }
+
+    function resetCycleDay2() {
+      if (!confirm('¿Quieres reiniciar los gastos registrados del Día 2 para comenzar un nuevo ciclo limpio?')) return;
+      state.day2.expenses = [];
+      state.day2.monthlyIncome = '';
+      document.getElementById('d2-monthly-income').value = '';
+      renderExpenses();
+      persist();
+    }
+
+    function renderExpenses() {
+      const filter = document.getElementById('d2-filter-day').value;
+      const listEl = document.getElementById('d2-records-list');
+      listEl.innerHTML = '';
+
+      let totalAll = 0;
+      let totalDiario = 0;
+      let totalFijo = 0;
+      let w1 = 0, w2 = 0, w3 = 0, w4 = 0;
+
+      state.day2.expenses.forEach(item => {
+        const amt = Number(item.amount) || 0;
+        totalAll += amt;
+        if (item.kind === 'fijo') totalFijo += amt;
+        else totalDiario += amt;
+
+        if (item.day <= 7) w1 += amt;
+        else if (item.day <= 14) w2 += amt;
+        else if (item.day <= 21) w3 += amt;
+        else w4 += amt;
+      });
+
+      document.getElementById('d2-total-all').textContent = fmtMoney(totalAll);
+      document.getElementById('d2-total-diario').textContent = fmtMoney(totalDiario);
+      document.getElementById('d2-total-fijo').textContent = fmtMoney(totalFijo);
+
+      document.getElementById('d2-weeks-body').innerHTML = `
+        <tr><td>Semana 1</td><td>Días 1 a 7</td><td><strong>${fmtMoney(w1)}</strong></td></tr>
+        <tr><td>Semana 2</td><td>Días 8 a 14</td><td><strong>${fmtMoney(w2)}</strong></td></tr>
+        <tr><td>Semana 3</td><td>Días 15 a 21</td><td><strong>${fmtMoney(w3)}</strong></td></tr>
+        <tr><td>Semana 4</td><td>Días 22 a 31</td><td><strong>${fmtMoney(w4)}</strong></td></tr>
+      `;
+
+      const inc = parseFloat(state.day2.monthlyIncome);
+      const diffEl = document.getElementById('d2-income-diff');
+      if (!isNaN(inc) && inc > 0) {
+        const diff = inc - totalAll;
+        if (diff > 0) {
+          diffEl.style.color = '#86efac';
+          diffEl.textContent = `+${fmtMoney(diff)} (Hay margen disponible)`;
+        } else if (diff < 0) {
+          diffEl.style.color = '#fca5a5';
+          diffEl.textContent = `${fmtMoney(diff)} (Salió más de lo que entró)`;
+        } else {
+          diffEl.style.color = '#fcd34d';
+          diffEl.textContent = `$0,00 (Estás en el límite exacto)`;
+        }
+      } else {
+        diffEl.style.color = '#94a3b8';
+        diffEl.textContent = 'Ingresa tus ingresos para comparar';
+      }
+
+      const filtered = filter === 'all'
+        ? state.day2.expenses
+        : state.day2.expenses.filter(e => String(e.day) === String(filter));
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<p style="font-size:13px; color:var(--text-muted); text-align:center; padding:12px;">Aún no hay movimientos cargados en este filtro.</p>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'record-item';
+        row.innerHTML = `
+          <div>
+            <div class="record-meta">
+              Día ${item.day} • ${item.moment}
+              <span class="record-tag ${item.kind === 'fijo' ? 'fijo' : ''}">${item.kind === 'fijo' ? 'Factura / Servicio' : '3 Momentos'}</span>
+            </div>
+            <div class="record-title">${item.desc}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="record-amount">${fmtMoney(item.amount)}</span>
+            <button class="btn-del" title="Eliminar" onclick="deleteExpense(${item.id})">✕</button>
+          </div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    /* ================= DAY 3 ================= */
+    function initDay3() {
+      document.getElementById('d3-card-name').value = state.day3.cardName || '';
+      document.getElementById('d3-debt').value = state.day3.debt || '';
+      document.getElementById('d3-rate').value = state.day3.rate || '';
+      document.getElementById('d3-fee').value = state.day3.fee || '';
+      document.getElementById('d3-min').value = state.day3.minPay || '';
+      document.getElementById('d3-custom').value = state.day3.customPay || '';
+      calcDay3();
+    }
+
+    function simulateDebt(debt, annualRate, monthlyFee, monthlyPay) {
+      let balance = debt;
+      const monthlyRate = Math.pow(1 + (annualRate / 100), 1 / 12) - 1;
+      let totalPaid = 0;
+      let totalInterest = 0;
+      let months = 0;
+
+      for (let m = 1; m <= 12; m++) {
+        if (balance <= 0.01) break;
+        const interest = balance * monthlyRate + monthlyFee;
+        const due = balance + interest;
+        const pay = Math.min(due, monthlyPay);
+        balance = Math.max(0, due - pay);
+        totalPaid += pay;
+        totalInterest += interest;
+        months = m;
+      }
+      return { totalPaid, totalInterest, endBalance: balance, months };
+    }
+
+    function calcDay3() {
+      state.day3.cardName = document.getElementById('d3-card-name').value;
+      state.day3.debt = document.getElementById('d3-debt').value;
+      state.day3.rate = document.getElementById('d3-rate').value;
+      state.day3.fee = document.getElementById('d3-fee').value;
+      state.day3.minPay = document.getElementById('d3-min').value;
+      state.day3.customPay = document.getElementById('d3-custom').value;
+
+      const debt = parseFloat(state.day3.debt);
+      const rate = parseFloat(state.day3.rate);
+      const fee = parseFloat(state.day3.fee) || 0;
+      const minPay = parseFloat(state.day3.minPay);
+      const customPay = parseFloat(state.day3.customPay) || minPay;
+      const resEl = document.getElementById('d3-results');
+
+      if (isNaN(debt) || debt <= 0 || isNaN(rate) || rate < 0 || isNaN(minPay) || minPay <= 0) {
+        resEl.innerHTML = '<p>Completa el saldo de deuda, la tasa anual y el pago mínimo para ver cuánto dinero se va solo en intereses y cargos.</p>';
+        persist();
+        return;
+      }
+
+      const monthlyRateDecimal = Math.pow(1 + rate / 100, 1 / 12) - 1;
+      const monthlyRate = monthlyRateDecimal * 100;
+      const firstMonthCost = debt * monthlyRateDecimal + fee;
+      const sMin = simulateDebt(debt, rate, fee, minPay);
+      const sDouble = simulateDebt(debt, rate, fee, minPay * 2);
+      const sCustom = simulateDebt(debt, rate, fee, customPay);
+      const savedInterest = Math.max(0, sMin.totalInterest - sCustom.totalInterest);
+
+      resEl.innerHTML = `
+        <div class="metric-row">
+          <span class="metric-label">Interés mensual efectivo estimado</span>
+          <span class="metric-value">${monthlyRate.toFixed(2)}%</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Intereses + cargos que generas este mes</span>
+          <span class="metric-value" style="color:#fca5a5;">${fmtMoney(firstMonthCost)}</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Escenario (12 meses)</th>
+                <th>Pago mensual</th>
+                <th>Solo intereses + cargos</th>
+                <th>Saldo al mes 12</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1. Pagas solo el mínimo</td>
+                <td>${fmtMoney(minPay)}</td>
+                <td style="color:#fca5a5;"><strong>${fmtMoney(sMin.totalInterest)}</strong></td>
+                <td>${fmtMoney(sMin.endBalance)}</td>
+              </tr>
+              <tr>
+                <td>2. Pagas el doble del mínimo</td>
+                <td>${fmtMoney(minPay * 2)}</td>
+                <td style="color:#86efac;"><strong>${fmtMoney(sDouble.totalInterest)}</strong></td>
+                <td>${fmtMoney(sDouble.endBalance)}</td>
+              </tr>
+              <tr>
+                <td>3. Pagas lo que eliges</td>
+                <td>${fmtMoney(customPay)}</td>
+                <td style="color:#93c5fd;"><strong>${fmtMoney(sCustom.totalInterest)}</strong></td>
+                <td>${fmtMoney(sCustom.endBalance)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout green">
+          <div class="callout-title">Diferencia en 12 meses</div>
+          <div>Eligiendo tu monto de pago en lugar del mínimo, evitas regalar <strong>${fmtMoney(savedInterest)}</strong> en intereses y cargos durante el año.</div>
+        </div>
+      `;
+      persist();
+    }
+
+    function applyDay2CardPaymentToDay3(amount) {
+      document.getElementById('d3-custom').value = amount;
+      calcDay3();
+    }
+
+    /* ================= DAY 4 ================= */
+    function initDay4() {
+      const container = document.getElementById('d4-quiz-container');
+      container.innerHTML = '';
+
+      D4_QUESTIONS.forEach((item, idx) => {
+        const block = document.createElement('div');
+        block.style.marginBottom = '16px';
+        const title = document.createElement('div');
+        title.style.fontWeight = '700';
+        title.style.fontSize = '14.5px';
+        title.style.marginBottom = '8px';
+        title.textContent = item.q;
+        block.appendChild(title);
+
+        item.opts.forEach((opt, optIdx) => {
+          const label = document.createElement('label');
+          label.className = 'check-item';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'd4_q_' + idx;
+          radio.checked = state.day4.answers[idx] === opt.pts && state.day4.answers['opt_' + idx] === optIdx;
+          radio.onchange = () => {
+            state.day4.answers[idx] = opt.pts;
+            state.day4.answers['opt_' + idx] = optIdx;
+            updateDay4Score();
+            persist();
+          };
+          const span = document.createElement('span');
+          span.textContent = opt.label;
+          label.appendChild(radio);
+          label.appendChild(span);
+          block.appendChild(label);
+        });
+
+        container.appendChild(block);
+      });
+      updateDay4Score();
+    }
+
+    function getDay4Profile() {
+      let total = 0;
+      for (let i = 0; i < D4_QUESTIONS.length; i++) {
+        total += Number(state.day4.answers[i]) || 0;
+      }
+      if (total === 0) {
+        return { total, name: 'Responde las preguntas para ver tu patrón', desc: 'Marca una opción por pregunta según lo que haces en la práctica.' };
+      }
+      if (total <= 12) {
+        return {
+          total,
+          name: 'Perfil A — Postergación del comienzo (8 a 12 puntos)',
+          desc: 'Tratas el ahorro como una tarea que exige un mes perfecto para arrancar. Mientras esperas ese comienzo limpio, el mes pasa por encima.'
+        };
+      } else if (total <= 18) {
+        return {
+          total,
+          name: 'Perfil B — Ahorro del resto (13 a 18 puntos)',
+          desc: 'No decides cuánto guardar: le preguntas al mes cuánto quiso dejarte al final. Y casi siempre responde que no quedó nada.'
+        };
+      } else {
+        return {
+          total,
+          name: 'Perfil C — Ahorro condicionado (19 a 24 puntos)',
+          desc: 'Solo guardas dinero si no aparece ningún imprevisto ni compromiso. En cuanto surge una presión externa, el ahorro desaparece primero.'
+        };
+      }
+    }
+
+    function updateDay4Score() {
+      const p = getDay4Profile();
+      document.getElementById('d4-score').textContent = p.total;
+      document.getElementById('d4-result-box').innerHTML = `
+        <div class="callout-title">${p.name}</div>
+        <div>${p.desc}</div>
+      `;
+    }
+
+    /* ================= DAY 5 ================= */
+    function initDay5() {
+      const container = document.getElementById('d5-scenarios');
+      container.innerHTML = '';
+      D5_SCENARIOS.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'callout';
+        div.innerHTML = `
+          <div class="callout-title">${s.title}</div>
+          <div style="margin:6px 0; color:#fff;"><strong>Frase directa:</strong> ${s.say}</div>
+          <div style="font-size:13px; color:var(--text-muted);">${s.alt}</div>
+        `;
+        container.appendChild(div);
+      });
+      document.getElementById('d5-boundary').value = state.day5.boundary || '';
+    }
+
+    function saveDay5() {
+      state.day5.boundary = document.getElementById('d5-boundary').value;
+      persist();
+    }
+
+    /* ================= DAY 6 ================= */
+    function initDay6() {
+      document.getElementById('d6-pattern').value = state.day6.pattern || '';
+      document.getElementById('d6-action').value = state.day6.action || '';
+    }
+
+    function saveDay6() {
+      state.day6.pattern = document.getElementById('d6-pattern').value;
+      state.day6.action = document.getElementById('d6-action').value;
+      persist();
+    }
+
+    /* ================= DAY 7 ================= */
+    function initDay7() {
+      document.getElementById('d7-income').value = state.day7.income || '';
+      document.getElementById('d7-pay-self').value = state.day7.paySelf || '';
+      document.getElementById('d7-save-place').value = state.day7.savePlace || '';
+      document.getElementById('d7-inev1').value = state.day7.inev1 || '';
+      document.getElementById('d7-inev2').value = state.day7.inev2 || '';
+      document.getElementById('d7-inev3').value = state.day7.inev3 || '';
+      document.getElementById('d7-danger').value = state.day7.danger || '';
+      document.getElementById('d7-excuse').value = state.day7.excuse || '';
+
+      const leaksEl = document.getElementById('d7-leaks-container');
+      leaksEl.innerHTML = '';
+      LEAK_CATEGORIES.forEach(cat => {
+        const row = document.createElement('div');
+        row.className = 'form-grid';
+        row.style.alignItems = 'center';
+        row.innerHTML = `
+          <div>
+            <strong style="font-size:13.5px; color:#fff;">${cat.name}</strong>
+            <div style="font-size:12px; color:var(--text-muted);">${cat.hint}</div>
+          </div>
+          <div>
+            <input type="number" placeholder="0.00" step="0.01" value="${state.day7.leaks[cat.id] || ''}" oninput="updateLeak('${cat.id}', this.value)" />
+          </div>
+        `;
+        leaksEl.appendChild(row);
+      });
+
+      calcDay7Totals();
+    }
+
+    function saveDay7() {
+      state.day7.income = document.getElementById('d7-income').value;
+      state.day7.paySelf = document.getElementById('d7-pay-self').value;
+      state.day7.savePlace = document.getElementById('d7-save-place').value;
+      state.day7.inev1 = document.getElementById('d7-inev1').value;
+      state.day7.inev2 = document.getElementById('d7-inev2').value;
+      state.day7.inev3 = document.getElementById('d7-inev3').value;
+      state.day7.danger = document.getElementById('d7-danger').value;
+      state.day7.excuse = document.getElementById('d7-excuse').value;
+      calcDay7Totals();
+      persist();
+    }
+
+    function updateLeak(id, val) {
+      state.day7.leaks[id] = val;
+      calcDay7Totals();
+      persist();
+    }
+
+    function calcDay7Totals() {
+      const i1 = parseFloat(state.day7.inev1) || 0;
+      const i2 = parseFloat(state.day7.inev2) || 0;
+      const i3 = parseFloat(state.day7.inev3) || 0;
+      document.getElementById('d7-inev-total').textContent = fmtMoney(i1 + i2 + i3);
+
+      let monthLeaks = 0;
+      const ranked = [];
+      LEAK_CATEGORIES.forEach(cat => {
+        const v = parseFloat(state.day7.leaks[cat.id]) || 0;
+        monthLeaks += v;
+        if (v > 0) ranked.push({ name: cat.name, val: v });
+      });
+
+      ranked.sort((a, b) => b.val - a.val);
+      document.getElementById('d7-leaks-month').textContent = fmtMoney(monthLeaks);
+      document.getElementById('d7-leaks-year').textContent = fmtMoney(monthLeaks * 12);
+
+      const topEl = document.getElementById('d7-top-leaks');
+      if (ranked.length === 0) {
+        topEl.innerHTML = '<div class="callout-title">Tus 3 fugas principales</div><div>Carga montos estimados arriba para identificar dónde empezar a recortar.</div>';
+      } else {
+        const top3 = ranked.slice(0, 3).map((r, i) => `${i + 1}. ${r.name}: <strong>${fmtMoney(r.val)}/mes</strong>`).join('<br>');
+        topEl.innerHTML = `<div class="callout-title">Tus fugas más grandes — Por dónde empezar</div><div>${top3}</div>`;
+      }
+    }
+
+    function matchLeakCategory(text) {
+      const t = text.toLowerCase();
+      if (t.includes('stream') || t.includes('netflix') || t.includes('spotify') || t.includes('app') || t.includes('suscrip')) return 'l1';
+      if (t.includes('delivery') || t.includes('pedido') || t.includes('rappi') || t.includes('uber eats')) return 'l2';
+      if (t.includes('caf') || t.includes('tienda') || t.includes('kiosco') || t.includes('snack') || t.includes('gallet')) return 'l3';
+      if (t.includes('salida') || t.includes('bar') || t.includes('cena') || t.includes('restaur') || t.includes('cerveza')) return 'l4';
+      if (t.includes('online') || t.includes('amazon') || t.includes('mercado') || t.includes('compra')) return 'l5';
+      if (t.includes('gim') || t.includes('gym') || t.includes('club')) return 'l6';
+      if (t.includes('cigarr') || t.includes('tabaco') || t.includes('vape')) return 'l7';
+      if (t.includes('apuesta') || t.includes('casino') || t.includes('loter') || t.includes('juego')) return 'l8';
+      if (t.includes('uber') || t.includes('taxi') || t.includes('didi') || t.includes('cabify') || t.includes('transporte')) return 'l9';
+      return 'l10';
+    }
+
+    function importDay2RepsToLeaks() {
+      const items = [
+        { name: state.day2.rep1, amt: parseFloat(state.day2.rep1Amt) },
+        { name: state.day2.rep2, amt: parseFloat(state.day2.rep2Amt) },
+        { name: state.day2.rep3, amt: parseFloat(state.day2.rep3Amt) }
+      ].filter(x => x.name && !isNaN(x.amt) && x.amt > 0);
+
+      if (items.length === 0) {
+        alert('Anota al menos un gasto repetitivo con su monto mensual en el Día 2 para sumarlo aquí.');
+        return;
+      }
+
+      items.forEach(item => {
+        const catId = matchLeakCategory(item.name);
+        const current = parseFloat(state.day7.leaks[catId]) || 0;
+        state.day7.leaks[catId] = (current + item.amt).toFixed(2);
+      });
+
+      initDay7();
+      persist();
+    }
+
+    function applyDay7Prefill() {
+      if (state.day2.monthlyIncome && !document.getElementById('d7-income').value) {
+        document.getElementById('d7-income').value = state.day2.monthlyIncome;
+      }
+      if (state.day2.rep1 && !document.getElementById('d7-danger').value) {
+        document.getElementById('d7-danger').value = state.day2.rep1;
+      }
+      if (state.day1.q2 && !document.getElementById('d7-excuse').value) {
+        document.getElementById('d7-excuse').value = state.day1.q2;
+      }
+      saveDay7();
+    }
+
+    /* ================= CROSS-DAY PROGRESSION ================= */
+    function refreshCrossDayInsights() {
+      const c = state.day1.checked;
+
+      // Day 2 alert from Day 1
+      const d2Alert = document.getElementById('d2-d1-alert');
+      const d2Notes = [];
+      if (c.c15) d2Notes.push('En el Día 1 marcaste que tienes suscripciones o débitos automáticos sin revisar: empieza mirando esos cargos primero.');
+      if (c.c16) d2Notes.push('Recuerda incluir apuestas o juegos dentro de tus decisiones de gasto del día.');
+      if (state.day1.q1.trim()) d2Notes.push(`Señalaste que el dinero empieza a apretar en este momento del mes: "${state.day1.q1.trim()}".`);
+      if (d2Notes.length > 0) {
+        d2Alert.classList.remove('hidden');
+        d2Alert.innerHTML = `<div class="callout-title">Conexión con tu diagnóstico del Día 1</div><div>${d2Notes.join('<br>')}</div>`;
+      } else {
+        d2Alert.classList.add('hidden');
+      }
+
+      // Day 3 alert from Day 1 & Day 2
+      const d3Alert = document.getElementById('d3-context-alert');
+      const d3Notes = [];
+      if (c.c4 || c.c8) d3Notes.push('En el Día 1 marcaste uso de cuotas o pago mínimo de tarjeta: presta especial atención a la diferencia entre el Escenario 1 y el Escenario 3.');
+      const totalD2 = state.day2.expenses.reduce((acc, e) => acc + (Number(e.amount) || 0), 0);
+      if (totalD2 > 0) d3Notes.push(`Llevas ${fmtMoney(totalD2)} registrados en el Día 2. Revisa cuánto margen real puedes destinar a superar el pago mínimo.`);
+      if (d3Notes.length > 0) {
+        d3Alert.classList.remove('hidden');
+        d3Alert.innerHTML = `<div class="callout-title">Referencia de tus días anteriores</div><div>${d3Notes.join('<br>')}</div>`;
+      } else {
+        d3Alert.classList.add('hidden');
+      }
+
+      // Day 3 prefill button if card payment was logged in Day 2
+      const d3Prefill = document.getElementById('d3-prefill-box');
+      const cardExp = state.day2.expenses.find(e => e.kind === 'fijo' && e.moment === 'Pago de Tarjeta');
+      if (cardExp) {
+        d3Prefill.classList.remove('hidden');
+        d3Prefill.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Detectamos un pago de tarjeta registrado en el Día 2 por <strong>${fmtMoney(cardExp.amount)}</strong> (${cardExp.desc}).</span>
+            <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount})">Usar como pago mensual</button>
+          </div>
+        `;
+      } else {
+        d3Prefill.classList.add('hidden');
+      }
+
+      // Day 4 alert from Day 1
+      const d4Alert = document.getElementById('d4-d1-alert');
+      if (c.c6) {
+        d4Alert.classList.remove('hidden');
+        d4Alert.innerHTML = `<div class="callout-title">Nota desde el Día 1</div><div>Marcaste que intentas ahorrar "lo que sobra" al final del mes. Este mini-test te ayudará a confirmar ese patrón.</div>`;
+      } else {
+        d4Alert.classList.add('hidden');
+      }
+
+      // Day 5 alert from Day 1
+      const d5Alert = document.getElementById('d5-d1-alert');
+      if (c.c9 || c.c10 || c.c13) {
+        d5Alert.classList.remove('hidden');
+        d5Alert.innerHTML = `<div class="callout-title">Foco prioritario según tu Día 1</div><div>En tu checklist inicial marcaste préstamos, compromisos o dificultad para rechazar planes fuera de presupuesto. Estas frases están pensadas para esos momentos.</div>`;
+      } else {
+        d5Alert.classList.add('hidden');
+      }
+
+      // Day 6 Mirror Box
+      const d6Mirror = document.getElementById('d6-mirror-box');
+      const prof1 = getDay1Profile();
+      const prof4 = getDay4Profile();
+      const repDetails = [
+        state.day2.rep1 ? `${state.day2.rep1}${state.day2.rep1Why ? ' (' + state.day2.rep1Why + ')' : ''}` : '',
+        state.day2.rep2 ? `${state.day2.rep2}${state.day2.rep2Why ? ' (' + state.day2.rep2Why + ')' : ''}` : '',
+        state.day2.rep3 ? `${state.day2.rep3}${state.day2.rep3Why ? ' (' + state.day2.rep3Why + ')' : ''}` : ''
+      ].filter(Boolean);
+      d6Mirror.innerHTML = `
+        <div class="callout-title">Espejo de tu recorrido (Días 1 a 5)</div>
+        <div>
+          • <strong>Diagnóstico inicial:</strong> ${prof1.name}<br>
+          ${state.day1.q2.trim() ? `• <strong>Explicación habitual que anotaste:</strong> "${state.day1.q2.trim()}"<br>` : ''}
+          ${repDetails.length > 0 ? `• <strong>Gastos repetitivos del Día 2:</strong> ${repDetails.join(' | ')}<br>` : ''}
+          ${Number(state.day3.debt) > 0 ? `• <strong>Deuda de tarjeta analizada:</strong> ${fmtMoney(state.day3.debt)}<br>` : ''}
+          ${prof4.total > 0 ? `• <strong>Patrón de ahorro:</strong> ${prof4.name}` : ''}
+        </div>
+      `;
+
+      // Day 7 Prefill Box
+      const d7Prefill = document.getElementById('d7-prefill-box');
+      const hasPrefillData = Boolean(state.day2.monthlyIncome || state.day2.rep1 || state.day1.q2);
+      if (hasPrefillData) {
+        d7Prefill.classList.remove('hidden');
+        d7Prefill.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Tienes datos previos cargados (ingresos del Día 2, gasto repetitivo o excusa del Día 1). Puedes traerlos como punto de partida editable.</span>
+            <button class="btn btn-secondary btn-small" onclick="applyDay7Prefill()">Traer datos previos</button>
+          </div>
+        `;
+      } else {
+        d7Prefill.classList.add('hidden');
+      }
+
+      // Day 7 Repetitive Expenses Import Box
+      const d7RepBox = document.getElementById('d7-rep-import-box');
+      const validReps = [
+        { name: state.day2.rep1, amt: parseFloat(state.day2.rep1Amt) },
+        { name: state.day2.rep2, amt: parseFloat(state.day2.rep2Amt) },
+        { name: state.day2.rep3, amt: parseFloat(state.day2.rep3Amt) }
+      ].filter(x => x.name && !isNaN(x.amt) && x.amt > 0);
+
+      if (validReps.length > 0) {
+        const listTxt = validReps.map(r => `${r.name} (${fmtMoney(r.amt)}/mes)`).join(', ');
+        d7RepBox.classList.remove('hidden');
+        d7RepBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Detectamos gastos repetitivos mensuales del Día 2: <strong>${listTxt}</strong>.</span>
+            <button class="btn btn-secondary btn-small" onclick="importDay2RepsToLeaks()">Sumar al Mapa de Fugas</button>
+          </div>
+        `;
+      } else {
+        d7RepBox.classList.add('hidden');
+      }
+    }
+
+    // Bootstrap
+    initDay1();
+    initDay2();
+    initDay3();
+    initDay4();
+    initDay5();
+    initDay6();
+    initDay7();
+    openView(state.activeView || 'home');
+  </script>
+</body>
+</html>
