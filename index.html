@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Finanzas Express — Reto de 7 Días | 21DP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg-primary: #0b1120;
@@ -29,7 +32,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-primary);
       color: var(--text-primary);
       line-height: 1.55;
@@ -169,8 +172,12 @@
       margin-bottom: 6px;
     }
 
+    h1, h2, h3, .brand-title h1, .day-card-title {
+      font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
     h2 {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 10px;
@@ -178,16 +185,19 @@
     }
 
     h3 {
-      font-size: 17px;
+      font-size: 19px;
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: 8px;
+      line-height: 1.3;
     }
 
     p {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--text-secondary);
-      font-size: 14.5px;
+      font-size: 16px;
       margin-bottom: 12px;
+      line-height: 1.6;
     }
 
     p:last-child {
@@ -201,7 +211,7 @@
       border-radius: 8px;
       padding: 14px 16px;
       margin: 14px 0;
-      font-size: 14px;
+      font-size: 16px;
       color: var(--text-secondary);
     }
 
@@ -232,25 +242,8 @@
       margin-bottom: 12px;
     }
 
-    .rep-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 0.8fr 1.2fr;
-      gap: 12px;
-      margin-bottom: 12px;
-      align-items: start;
-    }
-
-    .inev-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
     @media (max-width: 560px) {
-      .form-grid,
-      .rep-grid,
-      .inev-grid {
+      .form-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -261,7 +254,7 @@
 
     label {
       display: block;
-      font-size: 12.5px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-secondary);
       margin-bottom: 5px;
@@ -277,9 +270,8 @@
       border-radius: 9px;
       padding: 10px 12px;
       color: var(--text-primary);
-      font-size: 14px;
+      font-size: 16px;
       font-family: inherit;
-      line-height: 1.45;
       outline: none;
       transition: border-color 0.15s ease;
     }
@@ -293,12 +285,6 @@
     textarea {
       resize: vertical;
       min-height: 68px;
-    }
-
-    textarea.auto-grow {
-      min-height: 42px;
-      resize: none;
-      overflow-y: hidden;
     }
 
     /* Buttons */
@@ -426,7 +412,7 @@
       border-radius: 9px;
       margin-bottom: 8px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
       color: var(--text-secondary);
       transition: border-color 0.15s ease;
     }
@@ -480,11 +466,10 @@
       padding: 13px 16px;
       border-radius: 10px;
       margin-bottom: 10px;
-      gap: 10px;
     }
 
     .metric-label {
-      font-size: 13.5px;
+      font-size: 16px;
       color: var(--text-secondary);
     }
 
@@ -492,7 +477,6 @@
       font-size: 18px;
       font-weight: 700;
       color: var(--brand-yellow);
-      white-space: nowrap;
     }
 
     /* Records List */
@@ -530,16 +514,10 @@
       color: #fcd34d;
     }
 
-    .record-tag.ingreso {
-      background: rgba(34, 197, 94, 0.16);
-      color: #86efac;
-    }
-
     .record-title {
-      font-size: 14.5px;
+      font-size: 16px;
       font-weight: 600;
       color: #fff;
-      word-break: break-word;
     }
 
     .record-amount {
@@ -547,10 +525,6 @@
       font-weight: 700;
       color: var(--brand-yellow);
       white-space: nowrap;
-    }
-
-    .record-amount.green {
-      color: #86efac;
     }
 
     .btn-del {
@@ -643,8 +617,8 @@
   </header>
 
   <main class="container">
-    <!-- Day Navigation (oculta en Inicio, visible dentro de cada día) -->
-    <nav class="day-pills hidden" id="dayPills"></nav>
+    <!-- Day Navigation -->
+    <nav class="day-pills" id="dayPills"></nav>
 
     <!-- HOME VIEW -->
     <section id="view-home">
@@ -685,19 +659,19 @@
 
         <div class="form-group">
           <label for="d1-q1">1. ¿En qué momento del mes empiezas a sentir que el dinero no alcanza?</label>
-          <textarea rows="1" class="auto-grow" id="d1-q1" placeholder="Ej: A mitad de mes, la última semana, apenas pago la tarjeta..." oninput="autoGrow(this); saveDay1()"></textarea>
+          <input type="text" id="d1-q1" placeholder="Ej: A mitad de mes, la última semana, apenas pago la tarjeta..." oninput="saveDay1()" />
         </div>
 
         <div class="form-group">
           <label for="d1-q2">2. ¿Qué explicación te das cuando pasa esto?</label>
-          <textarea rows="1" class="auto-grow" id="d1-q2" placeholder="Ej: Fue un mes raro, hubo un imprevisto, todo subió..." oninput="autoGrow(this); saveDay1()"></textarea>
+          <input type="text" id="d1-q2" placeholder="Ej: Fue un mes raro, hubo un imprevisto, todo subió..." oninput="saveDay1()" />
         </div>
 
         <div class="form-group">
           <label for="d1-q3">3. ¿Es la misma explicación que el mes anterior?</label>
           <div style="font-size: 20px; font-weight: 800; color: var(--brand-yellow); margin: 8px 0 4px;">Silencio.</div>
           <div style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 8px;">Esta es la pregunta que más revela.</div>
-          <textarea rows="1" class="auto-grow" id="d1-q3" placeholder="Ej: Sí, casi todos los meses digo lo mismo..." oninput="autoGrow(this); saveDay1()"></textarea>
+          <input type="text" id="d1-q3" placeholder="Ej: Sí, casi todos los meses digo lo mismo..." oninput="saveDay1()" />
         </div>
 
         <div class="callout">
@@ -757,8 +731,8 @@
         <p style="margin-top:14px; margin-bottom:6px;">Ahora mira <strong>los últimos 3 meses</strong> para detectar gastos repetitivos que no sean imprescindibles (fuera de alquiler, servicios o comida básica).</p>
         <label style="margin-bottom:8px;">Tres gastos repetitivos de los últimos 3 meses (anota su monto <strong>mensual</strong> aproximado para reutilizarlo después):</label>
 
-        <div class="rep-grid">
-          <textarea rows="1" class="auto-grow" id="d2-rep1" placeholder="Gasto repetitivo 1 (ej: delivery, café...)" oninput="autoGrow(this); saveDay2Activity()"></textarea>
+        <div class="form-grid" style="grid-template-columns: 1.4fr 0.8fr 1.2fr;">
+          <input type="text" id="d2-rep1" placeholder="Gasto repetitivo 1 (ej: delivery, café...)" oninput="saveDay2Activity()" />
           <input type="number" id="d2-rep1-amt" placeholder="$/mes" step="0.01" oninput="saveDay2Activity()" />
           <select id="d2-rep1-why" onchange="saveDay2Activity()">
             <option value="">¿Lo decidí o simplemente pasó?</option>
@@ -767,8 +741,8 @@
           </select>
         </div>
 
-        <div class="rep-grid">
-          <textarea rows="1" class="auto-grow" id="d2-rep2" placeholder="Gasto repetitivo 2" oninput="autoGrow(this); saveDay2Activity()"></textarea>
+        <div class="form-grid" style="grid-template-columns: 1.4fr 0.8fr 1.2fr;">
+          <input type="text" id="d2-rep2" placeholder="Gasto repetitivo 2" oninput="saveDay2Activity()" />
           <input type="number" id="d2-rep2-amt" placeholder="$/mes" step="0.01" oninput="saveDay2Activity()" />
           <select id="d2-rep2-why" onchange="saveDay2Activity()">
             <option value="">¿Lo decidí o simplemente pasó?</option>
@@ -777,8 +751,8 @@
           </select>
         </div>
 
-        <div class="rep-grid">
-          <textarea rows="1" class="auto-grow" id="d2-rep3" placeholder="Gasto repetitivo 3" oninput="autoGrow(this); saveDay2Activity()"></textarea>
+        <div class="form-grid" style="grid-template-columns: 1.4fr 0.8fr 1.2fr;">
+          <input type="text" id="d2-rep3" placeholder="Gasto repetitivo 3" oninput="saveDay2Activity()" />
           <input type="number" id="d2-rep3-amt" placeholder="$/mes" step="0.01" oninput="saveDay2Activity()" />
           <select id="d2-rep3-why" onchange="saveDay2Activity()">
             <option value="">¿Lo decidí o simplemente pasó?</option>
@@ -855,7 +829,7 @@
         </div>
       </div>
 
-      <!-- Resumen Semanal, Mensual, Listado y Cierre Entradas vs Salidas (Opción 2) -->
+      <!-- Resumen Semanal, Mensual y Listado -->
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
           <h3 style="margin:0;">3. Vista de 30 Días y Registros</h3>
@@ -865,7 +839,7 @@
         </div>
 
         <div class="metric-row">
-          <span class="metric-label">Total acumulado de salidas del ciclo</span>
+          <span class="metric-label">Total acumulado del ciclo</span>
           <span class="metric-value" id="d2-total-all">$0,00</span>
         </div>
 
@@ -894,36 +868,23 @@
           </table>
         </div>
 
-        <div id="d2-records-list" style="margin-top:14px; max-height:320px; overflow-y:auto;"></div>
-
-        <!-- Cierre: Entradas vs Salidas (múltiples entradas de ingresos) -->
-        <div class="callout" style="margin-top:18px;">
-          <div class="callout-title">4. Cierre del mes: Entradas vs. Salidas (Balance del mes)</div>
-          <div style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">Registra todo lo que ingresa en el mes (sueldo, ventas, comisiones o ingresos extra) para contrastarlo contra el total de salidas que vas anotando arriba. Este cruce te muestra rápido si tu ritmo actual deja margen, está al ras o supera lo que entra.</div>
-
-          <div class="form-grid" style="margin-bottom:8px;">
+        <!-- Comparador simple Ingresos vs Gastos de la guía -->
+        <div class="callout" style="margin-top:14px;">
+          <div class="callout-title">Indicador clave del mes: Entradas vs. Salidas (Balance del mes)</div>
+          <div style="font-size:13px; color:var(--text-secondary); margin-bottom:6px;">Compara todo lo que ingresa en el mes (sueldo, cobros, ventas o ingresos principales) contra el total de salidas que vas registrando aquí. Ver en qué se gasta no alcanza si no se contrasta con lo que entra: este cruce te muestra rápido si tu ritmo actual deja margen, está al ras o supera lo que ingresa.</div>
+          <div class="form-grid" style="margin-top:8px; margin-bottom:6px;">
             <div>
-              <label for="d2-inc-desc">Concepto de entrada</label>
-              <input type="text" id="d2-inc-desc" placeholder="Ej: Sueldo, venta, comisión, ingreso extra..." />
+              <label for="d2-monthly-income">Ingresos del mes ($)</label>
+              <input type="number" id="d2-monthly-income" placeholder="0.00" step="0.01" oninput="saveDay2Income()" />
             </div>
-            <div>
-              <label for="d2-inc-amt">Monto recibido ($)</label>
-              <input type="number" id="d2-inc-amt" placeholder="0.00" step="0.01" />
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+              <span style="font-size:12px; color:var(--text-muted);">Diferencia actual:</span>
+              <strong id="d2-income-diff" style="font-size:17px; color:#fff;">Ingresa tus ingresos para comparar</strong>
             </div>
-          </div>
-          <button class="btn btn-secondary" style="margin-bottom:12px;" onclick="addIncomeEntry()">+ Agregar entrada de dinero</button>
-
-          <div id="d2-incomes-list" style="margin-bottom:10px; max-height:220px; overflow-y:auto;"></div>
-
-          <div class="metric-row" style="margin-bottom:8px;">
-            <span class="metric-label">Total entradas del mes</span>
-            <strong style="font-size:16px; color:#86efac;" id="d2-total-incomes">$0,00</strong>
-          </div>
-          <div class="metric-row" style="margin-bottom:0;">
-            <span class="metric-label">Balance actual (Entradas − Salidas)</span>
-            <strong id="d2-income-diff" style="font-size:15.5px; color:#94a3b8;">Registra tus entradas para comparar</strong>
           </div>
         </div>
+
+        <div id="d2-records-list" style="margin-top:14px; max-height:320px; overflow-y:auto;"></div>
 
         <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
           <span style="font-size:12px; color:var(--text-muted);">Los datos quedan guardados en este dispositivo durante tu ciclo actual.</span>
@@ -956,7 +917,7 @@
 
         <div class="form-grid">
           <div>
-            <label for="d3-rate">Tasa anual total % (CFTEA / CAT / TCEA / CAE / TEA — <span style="color:var(--brand-yellow);">en Argentina, usa el CFTEA con IVA incluido</span>)</label>
+            <label for="d3-rate">Tasa anual total % (CFTEA / CAT / TCEA / CAE / TEA — en Argentina, usa el CFTEA con IVA incluido)</label>
             <input type="number" id="d3-rate" placeholder="Ej: 120" step="0.01" oninput="calcDay3()" />
           </div>
           <div>
@@ -1024,7 +985,7 @@
 
         <div class="form-group" style="margin-top:16px;">
           <label for="d5-boundary">¿Qué gasto social, familiar o compromiso vas a frenar esta semana usando una de estas respuestas?</label>
-          <textarea rows="1" class="auto-grow" id="d5-boundary" placeholder="Ej: La salida del viernes o un préstamo que no puedo cubrir..." oninput="autoGrow(this); saveDay5()"></textarea>
+          <input type="text" id="d5-boundary" placeholder="Ej: La salida del viernes o un préstamo que no puedo cubrir..." oninput="saveDay5()" />
         </div>
       </div>
     </section>
@@ -1050,12 +1011,12 @@
 
         <div class="form-group">
           <label for="d6-pattern">El patrón que más se repite en mi historia financiera es:</label>
-          <textarea class="auto-grow" id="d6-pattern" placeholder="Escribe con total honestidad el hilo que une tus decisiones..." oninput="autoGrow(this); saveDay6()"></textarea>
+          <textarea id="d6-pattern" placeholder="Escribe con total honestidad el hilo que une tus decisiones..." oninput="saveDay6()"></textarea>
         </div>
 
         <div class="form-group">
           <label for="d6-action">Esta semana voy a empezar a cambiarlo haciendo esto:</label>
-          <textarea class="auto-grow" id="d6-action" placeholder="Una acción concreta, pequeña y verificable..." oninput="autoGrow(this); saveDay6()"></textarea>
+          <textarea id="d6-action" placeholder="Una acción concreta, pequeña y verificable..." oninput="saveDay6()"></textarea>
         </div>
       </div>
     </section>
@@ -1085,11 +1046,11 @@
 
         <div class="form-group">
           <label for="d7-save-place">¿Dónde voy a separar ese monto?</label>
-          <textarea rows="1" class="auto-grow" id="d7-save-place" placeholder="Ej: Cuenta separada, billetera virtual, sobre en efectivo..." oninput="autoGrow(this); saveDay7()"></textarea>
+          <input type="text" id="d7-save-place" placeholder="Ej: Cuenta separada, billetera virtual, sobre en efectivo..." oninput="saveDay7()" />
         </div>
 
         <label style="margin-top:8px;">3. Tres gastos inevitables de esta semana ($)</label>
-        <div class="inev-grid">
+        <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);">
           <input type="number" id="d7-inev1" placeholder="Gasto 1 ($)" step="0.01" oninput="saveDay7()" />
           <input type="number" id="d7-inev2" placeholder="Gasto 2 ($)" step="0.01" oninput="saveDay7()" />
           <input type="number" id="d7-inev3" placeholder="Gasto 3 ($)" step="0.01" oninput="saveDay7()" />
@@ -1102,11 +1063,11 @@
         <div class="form-grid">
           <div>
             <label for="d7-danger">4. Mi gasto más peligroso de esta semana</label>
-            <textarea rows="1" class="auto-grow" id="d7-danger" placeholder="Ej: Delivery nocturno, ofertas online..." oninput="autoGrow(this); saveDay7()"></textarea>
+            <input type="text" id="d7-danger" placeholder="Ej: Delivery nocturno, ofertas online..." oninput="saveDay7()" />
           </div>
           <div>
             <label for="d7-excuse">La excusa que suelo usar para justificarlo</label>
-            <textarea rows="1" class="auto-grow" id="d7-excuse" placeholder="Ej: Me lo merezco, hoy tuve un día largo..." oninput="autoGrow(this); saveDay7()"></textarea>
+            <input type="text" id="d7-excuse" placeholder="Ej: Me lo merezco, hoy tuve un día largo..." oninput="saveDay7()" />
           </div>
         </div>
 
@@ -1298,7 +1259,6 @@
         rep2: '', rep2Amt: '', rep2Why: '',
         rep3: '', rep3Amt: '', rep3Why: '',
         monthlyIncome: '',
-        incomes: [],
         expenses: []
       },
       day3: { cardName: '', debt: '', rate: '', fee: '', minPay: '', customPay: '' },
@@ -1315,22 +1275,12 @@
 
     let state = loadState();
 
-    function autoGrow(el) {
-      if (!el) return;
-      el.style.height = 'auto';
-      el.style.height = el.scrollHeight + 'px';
-    }
-
-    function refreshAllAutoGrow() {
-      document.querySelectorAll('textarea.auto-grow').forEach(autoGrow);
-    }
-
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return JSON.parse(JSON.stringify(defaultState));
         const parsed = JSON.parse(raw);
-        const merged = {
+        return {
           ...defaultState,
           ...parsed,
           day1: { ...defaultState.day1, ...(parsed.day1 || {}) },
@@ -1341,13 +1291,6 @@
           day6: { ...defaultState.day6, ...(parsed.day6 || {}) },
           day7: { ...defaultState.day7, ...(parsed.day7 || {}) }
         };
-        if (!Array.isArray(merged.day2.incomes)) merged.day2.incomes = [];
-        const legacyInc = parseFloat(merged.day2.monthlyIncome);
-        if (merged.day2.incomes.length === 0 && !isNaN(legacyInc) && legacyInc > 0) {
-          merged.day2.incomes.push({ id: 1, desc: 'Ingreso mensual cargado', amount: legacyInc });
-          merged.day2.monthlyIncome = '';
-        }
-        return merged;
       } catch (e) {
         return JSON.parse(JSON.stringify(defaultState));
       }
@@ -1363,16 +1306,9 @@
       return '$' + val.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function getDay2TotalIncome() {
-      if (state.day2.incomes && state.day2.incomes.length > 0) {
-        return state.day2.incomes.reduce((acc, item) => acc + (Number(item.amount) || 0), 0);
-      }
-      return parseFloat(state.day2.monthlyIncome) || 0;
-    }
-
     function isDayComplete(dayId) {
       if (dayId === 'day1') return Object.values(state.day1.checked).some(Boolean) || Boolean(state.day1.q1.trim());
-      if (dayId === 'day2') return state.day2.expenses.length > 0 || state.day2.incomes.length > 0 || Boolean(state.day2.rep1.trim());
+      if (dayId === 'day2') return state.day2.expenses.length > 0 || Boolean(state.day2.rep1.trim());
       if (dayId === 'day3') return Number(state.day3.debt) > 0;
       if (dayId === 'day4') return Object.keys(state.day4.answers).length >= 4;
       if (dayId === 'day5') return Boolean(state.day5.boundary.trim());
@@ -1415,13 +1351,8 @@
       document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
       const target = document.getElementById('view-' + viewId);
       if (target) target.classList.remove('hidden');
-
-      const pillsEl = document.getElementById('dayPills');
-      if (pillsEl) pillsEl.classList.toggle('hidden', viewId === 'home');
-
       refreshCrossDayInsights();
       persist();
-      requestAnimationFrame(refreshAllAutoGrow);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1506,9 +1437,12 @@
       fijoSel.innerHTML = '';
       filterSel.innerHTML = '<option value="all">Todos los días</option>';
       for (let i = 1; i <= 31; i++) {
-        daySel.add(new Option(`Día ${i}`, i));
-        fijoSel.add(new Option(`Día ${i}`, i));
-        filterSel.add(new Option(`Día ${i}`, i));
+        const opt1 = new Option(`Día ${i}`, i);
+        const opt2 = new Option(`Día ${i}`, i);
+        const opt3 = new Option(`Día ${i}`, i);
+        daySel.add(opt1);
+        fijoSel.add(opt2);
+        filterSel.add(opt3);
       }
 
       document.getElementById('d2-small-sum').value = state.day2.smallSum || '';
@@ -1521,6 +1455,7 @@
       document.getElementById('d2-rep3').value = state.day2.rep3 || '';
       document.getElementById('d2-rep3-amt').value = state.day2.rep3Amt || '';
       document.getElementById('d2-rep3-why').value = state.day2.rep3Why || '';
+      document.getElementById('d2-monthly-income').value = state.day2.monthlyIncome || '';
 
       renderExpenses();
     }
@@ -1546,26 +1481,8 @@
       persist();
     }
 
-    function addIncomeEntry() {
-      const desc = document.getElementById('d2-inc-desc').value.trim();
-      const amount = parseFloat(document.getElementById('d2-inc-amt').value);
-      if (!desc || isNaN(amount) || amount <= 0) {
-        alert('Ingresa una descripción y un monto mayor a 0.');
-        return;
-      }
-      state.day2.incomes.unshift({
-        id: Date.now(),
-        desc,
-        amount
-      });
-      document.getElementById('d2-inc-desc').value = '';
-      document.getElementById('d2-inc-amt').value = '';
-      renderExpenses();
-      persist();
-    }
-
-    function deleteIncomeEntry(id) {
-      state.day2.incomes = state.day2.incomes.filter(item => item.id !== id);
+    function saveDay2Income() {
+      state.day2.monthlyIncome = document.getElementById('d2-monthly-income').value;
       renderExpenses();
       persist();
     }
@@ -1621,10 +1538,10 @@
     }
 
     function resetCycleDay2() {
-      if (!confirm('¿Quieres reiniciar los gastos y entradas registrados del Día 2 para comenzar un nuevo ciclo limpio?')) return;
+      if (!confirm('¿Quieres reiniciar los gastos registrados del Día 2 para comenzar un nuevo ciclo limpio?')) return;
       state.day2.expenses = [];
-      state.day2.incomes = [];
       state.day2.monthlyIncome = '';
+      document.getElementById('d2-monthly-income').value = '';
       renderExpenses();
       persist();
     }
@@ -1662,29 +1579,9 @@
         <tr><td>Semana 4</td><td>Días 22 a 31</td><td><strong>${fmtMoney(w4)}</strong></td></tr>
       `;
 
-      const incListEl = document.getElementById('d2-incomes-list');
-      incListEl.innerHTML = '';
-      state.day2.incomes.forEach(incItem => {
-        const row = document.createElement('div');
-        row.className = 'record-item';
-        row.innerHTML = `
-          <div>
-            <div class="record-meta">Entrada registrada <span class="record-tag ingreso">Ingreso</span></div>
-            <div class="record-title">${incItem.desc}</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="record-amount green">+${fmtMoney(incItem.amount)}</span>
-            <button class="btn-del" title="Eliminar" onclick="deleteIncomeEntry(${incItem.id})">✕</button>
-          </div>
-        `;
-        incListEl.appendChild(row);
-      });
-
-      const inc = getDay2TotalIncome();
-      document.getElementById('d2-total-incomes').textContent = fmtMoney(inc);
-
+      const inc = parseFloat(state.day2.monthlyIncome);
       const diffEl = document.getElementById('d2-income-diff');
-      if (inc > 0) {
+      if (!isNaN(inc) && inc > 0) {
         const diff = inc - totalAll;
         if (diff > 0) {
           diffEl.style.color = '#86efac';
@@ -1698,7 +1595,7 @@
         }
       } else {
         diffEl.style.color = '#94a3b8';
-        diffEl.textContent = 'Registra tus entradas para comparar';
+        diffEl.textContent = 'Ingresa tus ingresos para comparar';
       }
 
       const filtered = filter === 'all'
@@ -1778,7 +1675,6 @@
 
       if (isNaN(debt) || debt <= 0 || isNaN(rate) || rate < 0 || isNaN(minPay) || minPay <= 0) {
         resEl.innerHTML = '<p>Completa el saldo de deuda, la tasa anual y el pago mínimo para ver cuánto dinero se va solo en intereses y cargos.</p>';
-        refreshCrossDayInsights();
         persist();
         return;
       }
@@ -2090,9 +1986,8 @@
     }
 
     function applyDay7Prefill() {
-      const totalInc = getDay2TotalIncome();
-      if (totalInc > 0 && !document.getElementById('d7-income').value) {
-        document.getElementById('d7-income').value = totalInc;
+      if (state.day2.monthlyIncome && !document.getElementById('d7-income').value) {
+        document.getElementById('d7-income').value = state.day2.monthlyIncome;
       }
       if (state.day2.rep1 && !document.getElementById('d7-danger').value) {
         document.getElementById('d7-danger').value = state.day2.rep1;
@@ -2101,7 +1996,6 @@
         document.getElementById('d7-excuse').value = state.day1.q2;
       }
       saveDay7();
-      refreshAllAutoGrow();
     }
 
     /* ================= CROSS-DAY PROGRESSION ================= */
@@ -2204,12 +2098,12 @@
 
       // Day 7 Prefill Box
       const d7Prefill = document.getElementById('d7-prefill-box');
-      const hasPrefillData = Boolean(getDay2TotalIncome() > 0 || state.day2.rep1 || state.day1.q2);
+      const hasPrefillData = Boolean(state.day2.monthlyIncome || state.day2.rep1 || state.day1.q2);
       if (hasPrefillData) {
         d7Prefill.classList.remove('hidden');
         d7Prefill.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-            <span>Tienes datos previos cargados (entradas del Día 2, gasto repetitivo o excusa del Día 1). Puedes traerlos como punto de partida editable.</span>
+            <span>Tienes datos previos cargados (ingresos del Día 2, gasto repetitivo o excusa del Día 1). Puedes traerlos como punto de partida editable.</span>
             <button class="btn btn-secondary btn-small" onclick="applyDay7Prefill()">Traer datos previos</button>
           </div>
         `;
