@@ -768,6 +768,13 @@
         <p><strong>Todo lo que sale entra aquí. Sin excepciones.</strong><br />No es solo el café al paso ni solo la factura de luz: es el supermercado, el combustible, la ferretería, el delivery, la cuota o ese gasto "chico" que juraste que no pesaba. Si no lo anotas, no existe en tu mapa y vas a seguir inventando excusas a fin de mes.</p>
         <p>Esperar hasta la noche para recordar todo suele terminar en olvidos y en un <em>"mañana lo hago bien"</em>. Registrar en <strong>tres momentos cortos</strong> (<strong>Mañana</strong>, <strong>Mediodía / Tarde</strong> y <strong>Noche</strong>) toma segundos cuando pasa y evita que llegues de noche a negociar con tu memoria. Sin registro real no hay control real.</p>
 
+        <div id="d2-edit-banner" class="callout yellow hidden" style="margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span>Editando movimiento guardado. Puedes cambiar de pestaña para recategorizarlo (por ejemplo, pasarlo a <strong>Pago de Tarjeta</strong> en <em>Impuesto / Servicio / Factura</em>) o corregir su día, descripción o monto.</span>
+            <button type="button" class="btn btn-secondary btn-small" onclick="cancelEditExpense()">Cancelar edición</button>
+          </div>
+        </div>
+
         <div class="subtabs">
           <button class="subtab active" id="tab-btn-diario" onclick="switchD2Tab('diario')">Gasto del día (3 Momentos — todo lo que sale)</button>
           <button class="subtab" id="tab-btn-fijo" onclick="switchD2Tab('fijo')">+ Impuesto / Servicio / Factura</button>
@@ -797,7 +804,7 @@
             <label for="d2-amount">¿Cuánto? ($ exacto)</label>
             <input type="number" id="d2-amount" placeholder="0.00" step="0.01" />
           </div>
-          <button class="btn" onclick="addExpense('diario')">+ Guardar gasto del momento</button>
+          <button class="btn" id="btn-save-diario" onclick="addExpense('diario')">+ Guardar gasto del momento</button>
         </div>
 
         <!-- Form Impuestos / Servicios / Facturas -->
@@ -825,7 +832,7 @@
             <label for="d2-fijo-amount">¿Cuánto pagaste? ($ exacto)</label>
             <input type="number" id="d2-fijo-amount" placeholder="0.00" step="0.01" />
           </div>
-          <button class="btn" onclick="addExpense('fijo')">+ Guardar factura / servicio / impuesto</button>
+          <button class="btn" id="btn-save-fijo" onclick="addExpense('fijo')">+ Guardar factura / servicio / impuesto</button>
         </div>
       </div>
 
@@ -904,6 +911,7 @@
 
       <div class="card">
         <h3>1. Datos de tu tarjeta principal</h3>
+        <p id="d3-card-rule-note" style="font-size:14px; color:var(--text-muted); margin-bottom:14px;">Completa los datos de tu tarjeta para simular su costo real a 12 meses. Si registraste un pago de tarjeta como servicio/factura en el Día 2, ese movimiento define la tarjeta y el monto de pago mensual tomado de allí (si necesitas cambiarlo o usar otra tarjeta, modifícalo o reemplázalo en el Día 2).</p>
         <div class="form-grid">
           <div>
             <label for="d3-card-name">Nombre de la tarjeta</label>
@@ -1460,11 +1468,65 @@
       renderExpenses();
     }
 
+    let editingExpenseId = null;
+
     function switchD2Tab(tab) {
+      const prevTab = document.getElementById('tab-btn-diario').classList.contains('active') ? 'diario' : 'fijo';
       document.getElementById('tab-btn-diario').classList.toggle('active', tab === 'diario');
       document.getElementById('tab-btn-fijo').classList.toggle('active', tab === 'fijo');
       document.getElementById('d2-form-diario').classList.toggle('hidden', tab !== 'diario');
       document.getElementById('d2-form-fijo').classList.toggle('hidden', tab !== 'fijo');
+
+      // Si está editando y cambia de pestaña para recategorizar, traslada día, descripción y monto automáticamente
+      if (editingExpenseId !== null && prevTab !== tab) {
+        if (tab === 'fijo') {
+          document.getElementById('d2-fijo-day').value = document.getElementById('d2-day').value;
+          document.getElementById('d2-fijo-desc').value = document.getElementById('d2-desc').value;
+          document.getElementById('d2-fijo-amount').value = document.getElementById('d2-amount').value;
+        } else {
+          document.getElementById('d2-day').value = document.getElementById('d2-fijo-day').value;
+          document.getElementById('d2-desc').value = document.getElementById('d2-fijo-desc').value;
+          document.getElementById('d2-amount').value = document.getElementById('d2-fijo-amount').value;
+        }
+      }
+    }
+
+    function startEditExpense(id) {
+      const item = state.day2.expenses.find(e => e.id === id);
+      if (!item) return;
+      editingExpenseId = id;
+
+      document.getElementById('d2-edit-banner').classList.remove('hidden');
+      document.getElementById('btn-save-diario').textContent = '✓ Guardar cambios del gasto';
+      document.getElementById('btn-save-fijo').textContent = '✓ Guardar cambios del pago / servicio';
+
+      if (item.kind === 'fijo') {
+        switchD2Tab('fijo');
+        document.getElementById('d2-fijo-day').value = item.day;
+        document.getElementById('d2-fijo-cat').value = item.moment || 'Servicio / Factura';
+        document.getElementById('d2-fijo-desc').value = item.desc;
+        document.getElementById('d2-fijo-amount').value = item.amount;
+      } else {
+        switchD2Tab('diario');
+        document.getElementById('d2-day').value = item.day;
+        document.getElementById('d2-moment').value = item.moment || '🌤️ Mediodía / Tarde';
+        document.getElementById('d2-desc').value = item.desc;
+        document.getElementById('d2-amount').value = item.amount;
+      }
+
+      const formCard = document.getElementById('d2-edit-banner').closest('.card');
+      if (formCard) formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelEditExpense() {
+      editingExpenseId = null;
+      document.getElementById('d2-edit-banner').classList.add('hidden');
+      document.getElementById('btn-save-diario').textContent = '+ Guardar gasto del momento';
+      document.getElementById('btn-save-fijo').textContent = '+ Guardar factura / servicio / impuesto';
+      document.getElementById('d2-desc').value = '';
+      document.getElementById('d2-amount').value = '';
+      document.getElementById('d2-fijo-desc').value = '';
+      document.getElementById('d2-fijo-amount').value = '';
     }
 
     function saveDay2Activity() {
@@ -1488,6 +1550,7 @@
     }
 
     function addExpense(kind) {
+      let entry = null;
       if (kind === 'diario') {
         const day = Number(document.getElementById('d2-day').value);
         const moment = document.getElementById('d2-moment').value;
@@ -1497,16 +1560,14 @@
           alert('Ingresa una descripción corta y un monto mayor a 0.');
           return;
         }
-        state.day2.expenses.unshift({
-          id: Date.now(),
+        entry = {
+          id: editingExpenseId !== null ? editingExpenseId : Date.now(),
           kind: 'diario',
           day,
           moment,
           desc,
           amount
-        });
-        document.getElementById('d2-desc').value = '';
-        document.getElementById('d2-amount').value = '';
+        };
       } else {
         const day = Number(document.getElementById('d2-fijo-day').value);
         const cat = document.getElementById('d2-fijo-cat').value;
@@ -1516,24 +1577,39 @@
           alert('Ingresa el detalle del pago y un monto mayor a 0.');
           return;
         }
-        state.day2.expenses.unshift({
-          id: Date.now(),
+        entry = {
+          id: editingExpenseId !== null ? editingExpenseId : Date.now(),
           kind: 'fijo',
           day,
           moment: cat,
           desc,
           amount
-        });
+        };
+      }
+
+      if (editingExpenseId !== null) {
+        const idx = state.day2.expenses.findIndex(e => e.id === editingExpenseId);
+        if (idx !== -1) state.day2.expenses[idx] = entry;
+        else state.day2.expenses.unshift(entry);
+        cancelEditExpense();
+      } else {
+        state.day2.expenses.unshift(entry);
+        document.getElementById('d2-desc').value = '';
+        document.getElementById('d2-amount').value = '';
         document.getElementById('d2-fijo-desc').value = '';
         document.getElementById('d2-fijo-amount').value = '';
       }
+
       renderExpenses();
+      refreshCrossDayInsights();
       persist();
     }
 
     function deleteExpense(id) {
+      if (editingExpenseId === id) cancelEditExpense();
       state.day2.expenses = state.day2.expenses.filter(item => item.id !== id);
       renderExpenses();
+      refreshCrossDayInsights();
       persist();
     }
 
@@ -1618,9 +1694,10 @@
             </div>
             <div class="record-title">${item.desc}</div>
           </div>
-          <div style="display:flex; align-items:center; gap:8px;">
+          <div style="display:flex; align-items:center; gap:6px;">
             <span class="record-amount">${fmtMoney(item.amount)}</span>
-            <button class="btn-del" title="Eliminar" onclick="deleteExpense(${item.id})">✕</button>
+            <button class="btn-del" title="Editar o recategorizar" aria-label="Editar" onclick="startEditExpense(${item.id})" style="color:#93c5fd;">✎</button>
+            <button class="btn-del" title="Eliminar" aria-label="Eliminar" onclick="deleteExpense(${item.id})">✕</button>
           </div>
         `;
         listEl.appendChild(row);
@@ -1738,14 +1815,21 @@
     }
 
     function applyDay2CardPaymentToDay3(amount, cardName) {
+      state.day3.useDay2Payment = true;
       if (cardName) {
         document.getElementById('d3-card-name').value = cardName;
+        state.day3.cardName = cardName;
       }
       document.getElementById('d3-debt').value = '';
       document.getElementById('d3-rate').value = '';
       document.getElementById('d3-fee').value = '';
       document.getElementById('d3-min').value = '';
       document.getElementById('d3-custom').value = amount;
+      state.day3.debt = '';
+      state.day3.rate = '';
+      state.day3.fee = '';
+      state.day3.minPay = '';
+      state.day3.customPay = String(amount);
       calcDay3();
     }
 
@@ -2028,32 +2112,65 @@
         d3Alert.classList.add('hidden');
       }
 
-      // Day 3 prefill button if card payment was logged in Day 2
+      // Day 3 prefill & lock to Day 2 card payment when applied
       const d3Prefill = document.getElementById('d3-prefill-box');
       const d3Mismatch = document.getElementById('d3-card-mismatch-box');
+      const cardNameInput = document.getElementById('d3-card-name');
+      const customPayInput = document.getElementById('d3-custom');
       const cardExp = state.day2.expenses.find(e => e.kind === 'fijo' && e.moment === 'Pago de Tarjeta');
+
       if (cardExp) {
         const safeCardName = String(cardExp.desc || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-        d3Prefill.classList.remove('hidden');
-        d3Prefill.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-            <span>Detectamos un pago de tarjeta registrado en el Día 2: <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong>. Al aplicarlo, se limpia la deuda/tasa anterior y se toma <strong>${fmtMoney(cardExp.amount)}</strong> como punto de partida en cuánto pagas al mes (completa luego la deuda total y la tasa de esta tarjeta).</span>
-            <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount}, '${safeCardName}')">Usar tarjeta y monto</button>
-          </div>
-        `;
+        const isLockedToDay2 = Boolean(state.day3.useDay2Payment);
 
-        const currentCardVal = (document.getElementById('d3-card-name').value || '').trim().toLowerCase();
-        const d2CardVal = (cardExp.desc || '').trim().toLowerCase();
-        if (currentCardVal && d2CardVal && currentCardVal !== d2CardVal) {
-          d3Mismatch.classList.remove('hidden');
-          d3Mismatch.innerHTML = `
-            <div class="callout-title">Nombre distinto al registrado en el Día 2</div>
-            <div>En el Día 2 registraste <strong>${cardExp.desc}</strong>, pero aquí escribiste <strong>${document.getElementById('d3-card-name').value.trim()}</strong>. Puedes analizar otra tarjeta aquí, o pulsar <strong>Usar tarjeta y monto</strong> para volver a <strong>${cardExp.desc}</strong> (o cambiar el pago en el Día 2).</div>
+        if (isLockedToDay2) {
+          cardNameInput.value = cardExp.desc;
+          customPayInput.value = cardExp.amount;
+          state.day3.cardName = cardExp.desc;
+          state.day3.customPay = String(cardExp.amount);
+          cardNameInput.setAttribute('readonly', 'readonly');
+          customPayInput.setAttribute('readonly', 'readonly');
+          cardNameInput.style.opacity = '0.75';
+          customPayInput.style.opacity = '0.75';
+
+          d3Prefill.classList.remove('hidden');
+          d3Prefill.innerHTML = `
+            <div class="callout-title">Vinculado al pago registrado en el Día 2</div>
+            <div>Estás usando el pago de <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong> registrado en el Día 2. El nombre de la tarjeta y el monto de pago mensual quedan fijados según ese registro del Día 2; si quieres analizar otra tarjeta o cambiar el monto, edita o reemplaza ese pago en el <strong>Día 2</strong>.</div>
           `;
-        } else {
           d3Mismatch.classList.add('hidden');
+        } else {
+          cardNameInput.removeAttribute('readonly');
+          customPayInput.removeAttribute('readonly');
+          cardNameInput.style.opacity = '1';
+          customPayInput.style.opacity = '1';
+
+          d3Prefill.classList.remove('hidden');
+          d3Prefill.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span>Detectamos un pago de tarjeta registrado en el Día 2: <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong>. Si eliges usar este registro del Día 2, se tomarán esa tarjeta y ese monto desde el Día 2 (para usar otra tarjeta o modificar el monto, hazlo en el Día 2).</span>
+              <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount}, '${safeCardName}')">Usar tarjeta y monto del Día 2</button>
+            </div>
+          `;
+
+          const currentCardVal = (cardNameInput.value || '').trim().toLowerCase();
+          const d2CardVal = (cardExp.desc || '').trim().toLowerCase();
+          if (currentCardVal && d2CardVal && currentCardVal !== d2CardVal) {
+            d3Mismatch.classList.remove('hidden');
+            d3Mismatch.innerHTML = `
+              <div class="callout-title">Tarjeta distinta a la registrada en el Día 2</div>
+              <div>En el Día 2 registraste <strong>${cardExp.desc}</strong> (${fmtMoney(cardExp.amount)}), pero aquí figura <strong>${cardNameInput.value.trim()}</strong>. Si deseas trabajar con el pago del Día 2, pulsa <strong>Usar tarjeta y monto del Día 2</strong> o actualiza/reemplaza el movimiento en el Día 2.</div>
+            `;
+          } else {
+            d3Mismatch.classList.add('hidden');
+          }
         }
       } else {
+        state.day3.useDay2Payment = false;
+        cardNameInput.removeAttribute('readonly');
+        customPayInput.removeAttribute('readonly');
+        cardNameInput.style.opacity = '1';
+        customPayInput.style.opacity = '1';
         d3Prefill.classList.add('hidden');
         d3Mismatch.classList.add('hidden');
       }
