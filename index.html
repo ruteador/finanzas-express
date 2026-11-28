@@ -1736,6 +1736,11 @@
     }
 
     function calcDay3() {
+      const activeCardExp = state.day2.expenses.find(e => e.kind === 'fijo' && e.moment === 'Pago de Tarjeta');
+      if (activeCardExp) {
+        document.getElementById('d3-card-name').value = activeCardExp.desc;
+        document.getElementById('d3-custom').value = activeCardExp.amount;
+      }
       state.day3.cardName = document.getElementById('d3-card-name').value;
       state.day3.debt = document.getElementById('d3-debt').value;
       state.day3.rate = document.getElementById('d3-rate').value;
@@ -2112,7 +2117,7 @@
         d3Alert.classList.add('hidden');
       }
 
-      // Day 3 prefill & lock to Day 2 card payment when applied
+      // Day 3 strictly follows the card payment registered in Day 2 when present
       const d3Prefill = document.getElementById('d3-prefill-box');
       const d3Mismatch = document.getElementById('d3-card-mismatch-box');
       const cardNameInput = document.getElementById('d3-card-name');
@@ -2120,51 +2125,23 @@
       const cardExp = state.day2.expenses.find(e => e.kind === 'fijo' && e.moment === 'Pago de Tarjeta');
 
       if (cardExp) {
-        const safeCardName = String(cardExp.desc || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-        const isLockedToDay2 = Boolean(state.day3.useDay2Payment);
+        state.day3.useDay2Payment = true;
+        cardNameInput.value = cardExp.desc;
+        customPayInput.value = cardExp.amount;
+        state.day3.cardName = cardExp.desc;
+        state.day3.customPay = String(cardExp.amount);
 
-        if (isLockedToDay2) {
-          cardNameInput.value = cardExp.desc;
-          customPayInput.value = cardExp.amount;
-          state.day3.cardName = cardExp.desc;
-          state.day3.customPay = String(cardExp.amount);
-          cardNameInput.setAttribute('readonly', 'readonly');
-          customPayInput.setAttribute('readonly', 'readonly');
-          cardNameInput.style.opacity = '0.75';
-          customPayInput.style.opacity = '0.75';
+        cardNameInput.setAttribute('readonly', 'readonly');
+        customPayInput.setAttribute('readonly', 'readonly');
+        cardNameInput.style.opacity = '0.75';
+        customPayInput.style.opacity = '0.75';
 
-          d3Prefill.classList.remove('hidden');
-          d3Prefill.innerHTML = `
-            <div class="callout-title">Vinculado al pago registrado en el Día 2</div>
-            <div>Estás usando el pago de <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong> registrado en el Día 2. El nombre de la tarjeta y el monto de pago mensual quedan fijados según ese registro del Día 2; si quieres analizar otra tarjeta o cambiar el monto, edita o reemplaza ese pago en el <strong>Día 2</strong>.</div>
-          `;
-          d3Mismatch.classList.add('hidden');
-        } else {
-          cardNameInput.removeAttribute('readonly');
-          customPayInput.removeAttribute('readonly');
-          cardNameInput.style.opacity = '1';
-          customPayInput.style.opacity = '1';
-
-          d3Prefill.classList.remove('hidden');
-          d3Prefill.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-              <span>Detectamos un pago de tarjeta registrado en el Día 2: <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong>. Si eliges usar este registro del Día 2, se tomarán esa tarjeta y ese monto desde el Día 2 (para usar otra tarjeta o modificar el monto, hazlo en el Día 2).</span>
-              <button class="btn btn-secondary btn-small" onclick="applyDay2CardPaymentToDay3(${cardExp.amount}, '${safeCardName}')">Usar tarjeta y monto del Día 2</button>
-            </div>
-          `;
-
-          const currentCardVal = (cardNameInput.value || '').trim().toLowerCase();
-          const d2CardVal = (cardExp.desc || '').trim().toLowerCase();
-          if (currentCardVal && d2CardVal && currentCardVal !== d2CardVal) {
-            d3Mismatch.classList.remove('hidden');
-            d3Mismatch.innerHTML = `
-              <div class="callout-title">Tarjeta distinta a la registrada en el Día 2</div>
-              <div>En el Día 2 registraste <strong>${cardExp.desc}</strong> (${fmtMoney(cardExp.amount)}), pero aquí figura <strong>${cardNameInput.value.trim()}</strong>. Si deseas trabajar con el pago del Día 2, pulsa <strong>Usar tarjeta y monto del Día 2</strong> o actualiza/reemplaza el movimiento en el Día 2.</div>
-            `;
-          } else {
-            d3Mismatch.classList.add('hidden');
-          }
-        }
+        d3Prefill.classList.remove('hidden');
+        d3Prefill.innerHTML = `
+          <div class="callout-title">Solo puedes analizar la tarjeta registrada en el Día 2</div>
+          <div>El Día 3 amplía en detalle la información de la tarjeta registrada como pago en el Día 2: <strong>${cardExp.desc}</strong> por <strong>${fmtMoney(cardExp.amount)}</strong>. No se permite cargar ni usar otra tarjeta distinta aquí; si necesitas cambiar de tarjeta o modificar el monto, edita o reemplaza ese pago en el <strong>Día 2</strong>.</div>
+        `;
+        d3Mismatch.classList.add('hidden');
       } else {
         state.day3.useDay2Payment = false;
         cardNameInput.removeAttribute('readonly');
